@@ -25,7 +25,9 @@ def start_module():
         None
     """
 
-    # your code
+    # your cool code
+
+    print("Printing is illegal here!")
 
     pass
 
