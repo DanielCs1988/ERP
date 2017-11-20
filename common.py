@@ -3,6 +3,20 @@
 import random
 
 
+def id_exists(table, id_to_find):
+    """
+    Checks if an id already exists in the table.
+
+    Args:
+        table: a data table (list of lists)
+
+        id_to_find: The id to find. It is assumed that the first column contains the ID.
+    Returns:
+        True, if the ID is found in the table. False if not.
+    """
+    return len([row[0] for row in table if row[0] == id_to_find]) > 0
+
+
 # generate and return a unique and random string
 # other expectation:
 # - at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter
