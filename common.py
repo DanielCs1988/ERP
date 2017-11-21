@@ -29,6 +29,11 @@ def index_of_value(table, col, value):
 def index_of_id(table, id_to_find):
     return index_of_value(table, 0, id_to_find)
 
+
+def get_longest(table, column):
+    """Returns the length of the longest item in a given column as integer."""
+    return max([len(row[column]) for row in table])
+
 # generate and return a unique and random string
 # other expectation:
 # - at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter
