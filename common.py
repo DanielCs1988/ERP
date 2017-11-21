@@ -1,6 +1,23 @@
-# implement commonly used functions here
+from random import choice
+import string
 
-import random
+CHR_TYPES = {"uppercase": string.ascii_uppercase,
+             "lowercase": string.ascii_lowercase,
+             "digit": string.digits,
+             "symbol": "!@#$%^&*()?",
+             "char": string.ascii_letters
+             }
+
+
+def random_char(chr_type):
+    return choice(CHR_TYPES[chr_type])
+
+
+def index_of(item, in_list):
+    for index in range(len(in_list)):
+        if in_list[index] == item:
+            return index
+    return -1
 
 
 def id_exists(table, id_to_find):
@@ -34,26 +51,17 @@ def get_longest(table, column):
     """Returns the length of the longest item in a given column as integer."""
     return max([len(row[column]) for row in table])
 
-# generate and return a unique and random string
-# other expectation:
-# - at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter
-# - it must be unique in the list
-#
-# @table: list of lists
-# @generated: string - randomly generated string (unique in the @table)
+
 def generate_random(table):
-    """
-    Generates random and unique string. Used for id/key generation.
-
-    Args:
-        table: list containing keys. Generated string should be different then all of them
-
-    Returns:
-        Random and unique string
-    """
-
-    generated = ''
-
-    # your code
-
-    return generated
+    """Generates a random ID with a length of 8.
+       It contains 2 number, 2 special, 2 lower- and 2 uppercase characters."""  
+    while True:
+        hat = ["uppercase", "lowercase", "digit", "symbol"] * 2
+        temp_str = ""
+        for i in range(8):
+            hchoice = choice(hat)
+            temp_str += random_char(hchoice)
+            del hat[index_of(hchoice, hat)]
+        if id_exists(table, temp_str):
+            continue
+        return temp_str
