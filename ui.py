@@ -24,7 +24,7 @@ def print_table(table, title_list):
     pass
 
 
-def print_result(result, label):
+def print_result(result, label=None):
     """
     Displays results of the special functions.
 
@@ -36,9 +36,15 @@ def print_result(result, label):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
+    if label:
+        print("\n{}: ".format(label), end='')
 
-    pass
+    if isinstance(result, (list, set, tuple)):
+        print(", ".join(result))
+    elif isinstance(result, dict):
+        print("\n"+"\n".join("{} = {}".format(name, value) for name, value in result.items()))
+    else:
+        print(result)
 
 
 def print_menu(title, list_options, exit_message):
@@ -62,9 +68,10 @@ def print_menu(title, list_options, exit_message):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
-
-    pass
+    print("{}:".format(title))
+    for option in range(len(list_options)):
+        print("\t({}) {}".format(option + 1, list_options[option]))
+    print("\t(0) {}".format(exit_message))
 
 
 def get_inputs(list_labels, title):
@@ -86,11 +93,8 @@ def get_inputs(list_labels, title):
         List of data given by the user. Sample return:
             [<user_input_1>, <user_input_2>, <user_input_3>]
     """
-    inputs = []
-
-    # your code
-
-    return inputs
+    print(title)
+    return [input(label + ': ') for label in list_labels]
 
 
 # This function displays an error message. (example: Error: @message)
@@ -107,6 +111,4 @@ def print_error_message(message):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
-
-    pass
+    print('[\033[1;31m{}\033[1;m]'.format(message))
