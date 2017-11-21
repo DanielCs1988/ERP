@@ -34,6 +34,11 @@ def get_longest(table, column):
     """Returns the length of the longest item in a given column as integer."""
     return max([len(row[column]) for row in table])
 
+
+def get_sum(table, column):
+    """ Returns the sum of the data of the given column."""
+    return sum([row[column] for row in table])
+
 # generate and return a unique and random string
 # other expectation:
 # - at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter
@@ -41,6 +46,8 @@ def get_longest(table, column):
 #
 # @table: list of lists
 # @generated: string - randomly generated string (unique in the @table)
+
+
 def generate_random(table):
     """
     Generates random and unique string. Used for id/key generation.
