@@ -69,7 +69,8 @@ def show_table(table):
     Returns:
         None
     """
-    ui.print_table(table)
+    titles = ["ID", "Name", "Birth Year"]
+    ui.print_table(table, titles)
 
 
 def add(table):
@@ -85,8 +86,8 @@ def add(table):
     new_person = [common.generate_random(table)]
     new_person.append(ui.get_inputs(["Name: "], "New Person's Information"))
     while True:
-        b_year = ui.get_inputs(["Birth Year: "], "")
-        if common.validate_year(b_year):
+        b_year = ui.get_inputs(["Birth Year: "], "")[0]
+        if common.validate_byear(b_year):
             new_person.append(b_year)
             break
 
@@ -108,7 +109,7 @@ def remove(table, id_):
     index = common.index_of_id(table, id_)
     if index == -1:
         ui.print_error_message("Wrong ID!")
-        return
+        return table  # That was the most ridiculous mistake ever, period.
 
     del table[common.index_of_id(table, id_)]
     return table
@@ -130,10 +131,11 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return
 
-    table[index][1](ui.get_inputs(["Name: "], ""))
+    table[index][1] = ui.get_inputs(["Name: "], "")[0]
+
     while True:
-        b_year = ui.get_inputs(["Birth Year: "], "")
-        if common.validate_year(b_year):
+        b_year = ui.get_inputs(["Birth Year: "], "")[0]
+        if common.validate_byear(b_year):
             table[index][2] = b_year
             break
 
@@ -153,6 +155,6 @@ def get_oldest_person(table):
 # the question: Who is the closest to the average age ?
 # return type: list of strings (name or names if there are two more with the same value)
 def get_persons_closest_to_average(table):
-    average_age = common.get_sum(table, 2) // common.count(table)
+    average_age = common.get_sum(table, 2) // len(table)
     closest_age = min([abs(average_age-person[2]) for person in table])
     return [person[1] for person in table if abs(average_age-person[2]) == closest_age]
