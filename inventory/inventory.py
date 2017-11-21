@@ -16,6 +16,19 @@ import data_manager
 # common module
 import common
 
+import enum
+
+from statistics import mean
+from copy import deepcopy
+
+
+class InvCols(enum.IntEnum):
+    ID = 0,
+    NAME = 1,
+    MANUFACTURER = 2,
+    PURCHASE_DATE = 3,
+    DURABILITY = 4
+
 
 def start_module():
     """
@@ -118,6 +131,12 @@ def get_available_items(table):
 # @table: list of lists
 def get_average_durability_by_manufacturers(table):
 
-    # your code
+    manufacturers = {row[InvCols.MANUFACTURER] for row in table}
 
-    pass
+    durability_by_manufacturers = {}
+
+    for manufacturer in manufacturers:
+        durabilities = [int(row[InvCols.DURABILITY]) for row in table if row[InvCols.MANUFACTURER] == manufacturer]
+        durability_by_manufacturers[manufacturer] = mean(durabilities)
+
+    return durability_by_manufacturers
