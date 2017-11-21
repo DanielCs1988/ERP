@@ -58,7 +58,7 @@ data = [["0", "Counter strike", "fps"], ["1", "fo", "fps"],["dsadw1r", "World of
 print_table(data, titles)
 
 
-def print_result(result, label):
+def print_result(result, label=None):
     """
     Displays results of the special functions.
 
@@ -70,9 +70,15 @@ def print_result(result, label):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
+    if label:
+        print("\n{}: ".format(label), end='')
 
-    pass
+    if isinstance(result, (list, set, tuple)):
+        print(", ".join(result))
+    elif isinstance(result, dict):
+        print("\n"+"\n".join("{} = {}".format(name, value) for name, value in result.items()))
+    else:
+        print(result)
 
 
 def print_menu(title, list_options, exit_message):

@@ -49,8 +49,22 @@ def index_of_id(table, id_to_find):
     return index_of_value(table, 0, id_to_find)
 
 
-def qsort_table(table, col):
-    return qsort(table, key=lambda row: row[col])
+def qsort_table(table, col, **kwargs):
+    """
+    Sorts a table based on the value of one of its columns.
+
+    Args:
+        table: The table to sort.
+
+        col: The index of the column.
+
+        kwargs: Keyword arguments. Accepts "key" and "reversed", just like the default qsort function.\
+            Note that the value passed to the key function will be the value of the given cell (row, column)\
+            of the table.
+    """
+    return qsort(table,
+                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs and inspect.isfunction(kwargs["key"]) else row[col],
+                 reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
 
 
 def qsort(array, **kwargs):
@@ -60,7 +74,8 @@ def qsort(array, **kwargs):
 
     Args:
         array: The array to sort.
-        kwargs: The keyword argument "key" can be used to specify a key function.
+        kwargs: The keyword argument "key" can be used to specify a key function. \
+            The boolean value "reversed" can be used to get a reverse-ordered list.
 
     Returns:
         The sorted array (list).
@@ -71,7 +86,7 @@ def qsort(array, **kwargs):
 
     __qsort(array_copy, 0, len(array) - 1, key)
 
-    return array_copy
+    return array_copy if not ("reversed" in kwargs and kwargs["reversed"]) else array_copy[::-1] 
 
 
 def __qsort(array, lo, hi, key):
