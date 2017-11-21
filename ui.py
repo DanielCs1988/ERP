@@ -19,10 +19,24 @@ def print_table(table, title_list):
         This function doesn't return anything it only prints to console.
     """
 
-    # your goes code
+    lenghts = [[len(row) for row in item] for item in table]
+    lenghts = 
 
-    pass
 
+
+    width = [max(row) for row in lenghts]
+
+    print("\t/-----------------------------------\"")
+    for item in title_list:
+        print("|{0}{1}{0}".format(" "*width[1], item), end="")
+    print("|")
+    # print("\t| {0} | {1} | {2} ".format(title_list[:]))
+    print(lenghts, width)
+
+titles = ["id", "title", "type"]
+data = [["0", "Counter strike", "fps"], ["1", "fo", "fps"]]
+
+print_table(data, titles)
 
 def print_result(result, label):
     """
