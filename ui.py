@@ -1,3 +1,4 @@
+from common import *
 
 
 def print_table(table, title_list):
@@ -19,24 +20,43 @@ def print_table(table, title_list):
         This function doesn't return anything it only prints to console.
     """
 
-    lenghts = [[len(row) for row in item] for item in table]
-    lenghts = 
+    lenghts = [get_longest(table, column) for column in range(len(table[0]))]
+    # gets the lengths of each column (in a list)
+    for x in range(len(title_list)):
+        if len(title_list[x]) > lenghts[x]:
+            lenghts[x] = len(title_list[x])
+        lenghts[x] += 4
+    # if the title bar is longer, then it uses its lenght instead
+    # then, it adds four to make it pretty
+    table_width = sum(lenghts) + len(lenghts) - 1
 
+    print("/{0}\\".format("-"*table_width, end=""))    # the topmost row, which is just a graphic
 
-
-    width = [max(row) for row in lenghts]
-
-    print("\t/-----------------------------------\"")
-    for item in title_list:
-        print("|{0}{1}{0}".format(" "*width[1], item), end="")
+    num = 0
+    for item in title_list:    # this prints the title list
+        print("|{:^{width}}".format(item, width=lenghts[num]), end="")
+        num += 1
     print("|")
-    # print("\t| {0} | {1} | {2} ".format(title_list[:]))
-    print(lenghts, width)
+
+    for row in table:
+        count = 0
+        for item in row:    # this prints each divider row
+            print("|{0}".format("-"*lenghts[count]), end="")
+            count += 1
+        print("|")    # end of row, also a new line
+        count = 0
+        for item in row:    # this prints each data row
+            print("|{:^{width}}".format(item, width=lenghts[count]), end="")
+            count += 1
+        print("|")    # end of row, also a new line
+
+    print("\\{0}/".format("-"*table_width, end=""))    # the bottommost row, which is just a graphic
 
 titles = ["id", "title", "type"]
-data = [["0", "Counter strike", "fps"], ["1", "fo", "fps"]]
+data = [["0", "Counter strike", "fps"], ["1", "fo", "fps"],["dsadw1r", "World of Warcraft", "MMORPG"]]
 
 print_table(data, titles)
+
 
 def print_result(result, label):
     """
