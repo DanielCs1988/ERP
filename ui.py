@@ -115,8 +115,8 @@ def get_inputs(list_labels, title):
         Age <user_input_3>
 
     Args:
-        list_labels: list of strings - labels of inputs
-        title: title of the "input section"
+        list_labels: list of strings - labels of inputs;
+        title: title of the "input section", the first line
 
     Returns:
         List of data given by the user. Sample return:
