@@ -56,7 +56,7 @@ def show_table(table):
         None
     """
 
-    ui.print_table(table, ["Name", "Manufacturer", "Purchase date", "Durability"])
+    ui.print_table(table, ["ID", "Name", "Manufacturer", "Purchase date", "Durability"])
 
 
 def add(table):
