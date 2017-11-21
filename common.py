@@ -52,6 +52,11 @@ def get_longest(table, column):
     return max([len(row[column]) for row in table])
 
 
+def get_sum(table, column):
+    """ Returns the sum of the data of the given column."""
+    return sum([row[column] for row in table])
+
+
 def generate_random(table):
     """Generates a random ID with a length of 8.
        It contains 2 number, 2 special, 2 lower- and 2 uppercase characters."""  
