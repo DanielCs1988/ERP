@@ -49,6 +49,10 @@ def index_of_id(table, id_to_find):
     return index_of_value(table, 0, id_to_find)
 
 
+def qsort_table(table, col):
+    return qsort(table, key=lambda row: row[col])
+
+
 def qsort(array, **kwargs):
     """
     Sorts the array using the Quicksort algorithm (with Hoare partition scheme). \
