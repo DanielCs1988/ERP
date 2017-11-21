@@ -14,7 +14,7 @@ def id_exists(table, id_to_find):
     Returns:
         True, if the ID is found in the table. False if not.
     """
-    return len([row[0] for row in table if row[0] == id_to_find]) > 0
+    return id_to_find in [row[0] for row in table]
 
 
 # generate and return a unique and random string
