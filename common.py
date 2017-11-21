@@ -32,6 +32,7 @@ def index_of_id(table, id_to_find):
     return index_of_value(table, 0, id_to_find)
 
 
+<<<<<<< HEAD
 def qsort(array, **kwargs):
     """
     Sorts the array using the Quicksort algorithm (with Hoare partition scheme). \
@@ -88,6 +89,16 @@ def __qsort_partition(array, lo, hi, key):
         temp = array[i]
         array[i] = array[j]
         array[j] = temp
+=======
+def get_longest(table, column):
+    """Returns the length of the longest item in a given column as integer."""
+    return max([len(row[column]) for row in table])
+
+
+def get_sum(table, column):
+    """ Returns the sum of the data of the given column."""
+    return sum([row[column] for row in table])
+>>>>>>> 350766388a2aaa532aeb57b748212ff8a19b0d6c
 
 # generate and return a unique and random string
 # other expectation:
@@ -96,6 +107,8 @@ def __qsort_partition(array, lo, hi, key):
 #
 # @table: list of lists
 # @generated: string - randomly generated string (unique in the @table)
+
+
 def generate_random(table):
     """
     Generates random and unique string. Used for id/key generation.
