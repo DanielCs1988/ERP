@@ -1,4 +1,3 @@
-import * from common
 
 
 def print_table(table, title_list):
@@ -65,7 +64,7 @@ def print_menu(title, list_options, exit_message):
 
     print("{}:".format(title))
     for option in range(len(list_options)):
-        print("\t({}) {}".format(option+1, list_options[option]))
+        print("\t({}) {}".format(option + 1, list_options[option]))
     print("\t({}) {}".format(exit_message))
 
 
