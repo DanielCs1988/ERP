@@ -52,11 +52,6 @@ def print_table(table, title_list):
 
     print("\\{0}/".format("-"*table_width, end=""))    # the bottommost row, which is just a graphic
 
-titles = ["id", "title", "type"]
-data = [["0", "Counter strike", "fps"], ["1", "fo", "fps"],["dsadw1r", "World of Warcraft", "MMORPG"]]
-
-print_table(data, titles)
-
 
 def print_result(result, label=None):
     """
