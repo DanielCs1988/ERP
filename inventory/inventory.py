@@ -56,9 +56,7 @@ def show_table(table):
         None
     """
 
-    # your code
-
-    pass
+    ui.print_table(table, ["Name", "Manufacturer", "Purchase date", "Durability"])
 
 
 def add(table):
@@ -72,7 +70,24 @@ def add(table):
         Table with a new record
     """
 
-    # your code
+    new_item = [common.generate_random(table)]
+    new_item.extend(ui.get_inputs(["Name", "Manufacturer"], "Please enter item details"))
+
+    year_valid = False
+
+    while not year_valid:
+        values = ui.get_inputs(["Purchase date"], None)
+        year_valid = True  # validation comes here
+        new_item.append(values[0])
+
+    durability_valid = False
+
+    while not durability_valid:
+        values = ui.get_inputs(["Durability"], None)
+        durability_valid = True  # validation comes here
+        new_item.append(values[0])
+
+    table.append(new_item)
 
     return table
 
@@ -89,7 +104,10 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    # your code
+    idx = common.index_of_id(id_)
+
+    if idx >= 0:
+        del table[idx]
 
     return table
 
