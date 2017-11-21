@@ -17,6 +17,18 @@ def id_exists(table, id_to_find):
     return id_to_find in [row[0] for row in table]
 
 
+def index_of_value(table, col, value):
+
+    for index in range(len(table)):
+        if table[index][col] == value:
+            return index
+
+    return -1
+
+
+def index_of_id(table, id_to_find):
+    return index_of_value(table, 0, id_to_find)
+
 # generate and return a unique and random string
 # other expectation:
 # - at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter
