@@ -37,7 +37,10 @@ def get_longest(table, column):
 
 def get_sum(table, column):
     """ Returns the sum of the data of the given column."""
-    return sum([row[column] for row in table])
+    summary = 0
+    for row in range(len(table)):
+        summary += table[row][column]
+    return summary
 
 # generate and return a unique and random string
 # other expectation:
