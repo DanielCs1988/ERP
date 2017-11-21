@@ -1,4 +1,4 @@
-
+import * from common
 
 def print_table(table, title_list):
     """
@@ -62,9 +62,10 @@ def print_menu(title, list_options, exit_message):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
-
-    pass
+    print("{}:".format(title))
+    for option in range(len(list_options)):
+        print("\t({}) {}".format(option+1, list_options[option]))
+    print("\t({}) {}".format(exit_message))
 
 
 def get_inputs(list_labels, title):
@@ -107,6 +108,4 @@ def print_error_message(message):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
-
-    pass
+    print('[\033[1;31m{}\033[1;m]'.format(message))
