@@ -1,4 +1,4 @@
-import * from common
+
 
 def print_table(table, title_list):
     """
@@ -64,8 +64,8 @@ def print_menu(title, list_options, exit_message):
 
     print("{}:".format(title))
     for option in range(len(list_options)):
-        print("\t({}) {}".format(option+1, list_options[option]))
-    print("\t({}) {}".format(exit_message))
+        print("\t({}) {}".format(option + 1, list_options[option]))
+    print("\t(0) {}".format(exit_message))
 
 
 def get_inputs(list_labels, title):
@@ -87,11 +87,8 @@ def get_inputs(list_labels, title):
         List of data given by the user. Sample return:
             [<user_input_1>, <user_input_2>, <user_input_3>]
     """
-    inputs = []
-
-    # your code
-
-    return inputs
+    print(title)
+    return [input(label + ': ') for label in list_labels]
 
 
 # This function displays an error message. (example: Error: @message)
