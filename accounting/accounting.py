@@ -45,7 +45,7 @@ def start_module():
 
     while True:
         try:
-            choose()
+            choose(table)
         except KeyError as err:
             ui.print_error_message(err)
 
@@ -66,7 +66,7 @@ def show_table(table):
     pass
 
 
-def choose():
+def choose(table):    # still needs error checking as well
     inputs = ui.get_inputs(["Please enter a number: "], "")
     option = inputs[0]
     if option == "1":
