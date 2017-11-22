@@ -43,7 +43,12 @@ def start_module():
 
     while True:
         ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
-        inputs = ui.get_inputs(["Please enter a number: "], "")
+        try:
+            inputs = ui.get_inputs(["Please enter a number: "], "")
+        except (KeyboardInterrupt, EOFError):
+            data_manager.write_table_to_file("crm/customers.csv", crm_data)
+            common.exit()
+
         option = inputs[0]
 
         if option == "1":
@@ -51,17 +56,17 @@ def start_module():
         elif option == "2":
             crm_data = add(crm_data)
         elif option == "3":
-            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "])
+            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
             crm_data = remove(crm_data, remove_id)
         elif option == "4":
-            update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "])
+            update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "], "")[0]
             crm_data = update(crm_data, update_id)
         elif option == "5":
             ui.print_result(get_longest_name_id(crm_data))
         elif option == "6":
             ui.print_result(get_subscribed_emails(crm_data))
         elif option == "0":
-            data_manager.write_table_to_file("crm/customers.csv", hr_data)
+            data_manager.write_table_to_file("crm/customers.csv", crm_data)
             break
         else:
             ui.print_error_message(err)
@@ -77,7 +82,6 @@ def show_table(table):
     Returns:
         None
     """
-
     ui.print_table(table, ["ID", "Name", "E-mail", "Subscribed"])
 
 
@@ -92,14 +96,14 @@ def add(table):
         Table with a new record
     """
     new_customer_data = [common.generate_random(table)]
-    new_customre_data.append(ui.get_inputs(["Name: "])[0])
+    new_customer_data.append(ui.get_inputs(["Name: "], "")[0])
     while True:
         email = ui.get_inputs(["E-mail: "], "")[0]
         if common.validate_email(email):
             new_customer_data.append(email)
             break
     while True:
-        boolean = ui.get_inputs(["Is he subscribed?: "])[0]
+        boolean = ui.get_inputs(["Is he subscribed?: "], "")[0]
         if common.validate_boolean(boolean):
             new_customer_data.append(boolean)
             break
@@ -148,16 +152,18 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    table[index][NAME] = new_customer_data(ui.get_inputs(["Name: "])[0])
+    table[index][NAME] = ui.get_inputs(["Name: "], "")[0]
+
     while True:
-        new_email = ui.get_inputs(["E-mail: "], "")[0]
+        email = ui.get_inputs(["E-mail: "], "")[0]
         if common.validate_email(email):
             table[index][EMAIL] = email
             break
+
     while True:
-        new_boolean = ui.get_inputs(["Is he subscribed?: "])[0]
+        boolean = ui.get_inputs(["Is he subscribed?: "], "")[0]
         if common.validate_boolean(boolean):
-            table[index][SUBSCRIBED] = new_boolean
+            table[index][SUBSCRIBED] = boolean
             break
 
     return table
@@ -172,15 +178,15 @@ def update(table, id_):
 def get_longest_name_id(table):
     """Returns the ID of the person who has the longest name. If there are more people it returns the first in
        descending alphabetical order"""
-    names_lengths = [(line[ID], len(line[NAME], line[NAME])) for line in table]
+    names_lengths = [(line[ID], len(line[NAME]), line[NAME]) for line in table]
     max_length = max(names_lengths, key=itemgetter(1))[1]
     max_length_names = [(name[0], name[2]) for name in names_lengths if name[1] == max_length]
 
-    return common.qsort(max_length_names, key=itemgetter(1), reversed=True)[0]
+    return common.qsort(max_length_names, key=itemgetter(1), reversed=True)[0][0]
 
 
 # the question: Which customers has subscribed to the newsletter?
 # return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
     """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
-    return ["; ".join(line[NAME], line[EMAIL]) for line in table if line[SUBSCRIBED] == 1]
+    return ["; ".join((line[NAME], line[EMAIL])) for line in table if line[SUBSCRIBED] == '1']
