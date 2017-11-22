@@ -1,4 +1,36 @@
 from common import *
+import platform
+import os
+
+
+def clear_scr():
+    """
+    Cross platform clear screen. 
+    Source: https://stackoverflow.com/questions/2084508/clear-terminal-in-python
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+# cross-platform getch https://gist.github.com/jfktrey/8928865
+if platform.system() == "Windows":
+    import msvcrt
+
+    def getch():
+        return msvcrt.getch()
+else:
+    import tty
+    import termios
+    import sys
+
+    def getch():
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
 
 
 def print_table(table, title_list):
@@ -28,7 +60,7 @@ def print_table(table, title_list):
         lenghts[x] += 4
     # if the title bar is longer, then it uses its lenght instead
     # then, it adds four to make it pretty
-    table_width = sum(lenghts) + len(lenghts) - 1
+    table_width = sum(lenghts) + len(lenghts) - 1    # the lenght of the whole table
 
     print("/{0}\\".format("-"*table_width, end=""))    # the topmost row, which is just a graphic
 
@@ -115,8 +147,8 @@ def get_inputs(list_labels, title):
         Age <user_input_3>
 
     Args:
-        list_labels: list of strings - labels of inputs
-        title: title of the "input section"
+        list_labels: list of strings - labels of inputs;
+        title: title of the "input section", the first line
 
     Returns:
         List of data given by the user. Sample return:
