@@ -98,7 +98,57 @@ def update(table, id_):
         table with updated record
     """
 
-    # your code
+    ui.clear_scr()
+    index = common.index_of_id(table, id_)
+    if index < 0:
+        ui.print_error_message("Invalid ID: {}.".format(id_))
+        return table
+
+    itemname = table[index][TITLE]
+    ui.print_result("Enter new data for {} ({}). Leave input empty to keep existing values.".format(itemname, id_))
+
+    #  gametitle
+    gametitle = ui.get_inputs(["Game title:"], "")[0]
+
+    if len(gametitle) > 0:
+        table[index][TITLE] = gametitle
+    else:
+        ui.print_result("Title not changed.")
+
+    #  manufacturer
+    manufacturer = ui.get_inputs(["Game manufacturer:"], "")[0]
+
+    if len(manufacturer) > 0:
+        table[index][MANUFACTURER] = manufacturer
+    else:
+        ui.print_result("Manufacturer not changed.")
+
+    #  price
+
+    price_str = ui.get_inputs(["Price:"], "")[0]
+
+    if len(price_str) > 0:
+        try:
+            int(price_str)
+            table[index][PRICE] = price_str
+        except ValueError:
+            ui.print_error_message("{} is not a valid integer. Price not changed.".format(price_str))
+    else:
+        ui.print_result("Price not changed.")
+
+    
+    # price
+
+    in_stock_str = ui.get_inputs(["In stock:"], "")[0]
+
+    if len(in_stock_str) > 0:
+        try:
+            int(in_stock_str)
+            table[index][IN_STOCK] = in_stock_str
+        except ValueError:
+            ui.print_error_message("{} is not a valid integer. In stock not changed.".format(in_stock_str))
+    else:
+        ui.print_result("In stock not changed.")
 
     return table
 
