@@ -15,6 +15,12 @@ import data_manager
 # common module
 import common
 
+ID = 0
+TITLE = 1
+MANUFACTURER = 2
+PRICE = 3
+IN_STOCK = 4
+
 
 def start_module():
     """
@@ -25,10 +31,48 @@ def start_module():
     Returns:
         None
     """
+    options = ["Show Table",
+               "Add Game",
+               "Remove Game",
+               "Update Game",
+               "Show Game Count Per Manufacturer",
+               "Show Average Game Count of a Manufacturer"]
 
-    # your code
+    store_data = data_manager.get_table_from_file("store/games.csv")
+    for game in store_data:
+        game[PRICE] = int(game[PRICE])
+        game[IN_STOCK] = int(game[IN_STOCK])
 
-    pass
+    while True:
+        ui.print_menu("Store: Main menu", options, "Exit program")
+        inputs = ui.get_inputs(["Please enter a number: "], "")
+        option = inputs[0]
+
+        if option == "1":
+            show_table(store_data)
+        elif option == "2":
+            store_data = add(store_data)
+        elif option == "3":
+            to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
+            store_data = remove(store_data, to_remove[0])
+        elif option == "4":
+            to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
+            store_data = update(store_data, to_update[0])
+        elif option == "5":
+            count_by_manufacturer_dict = get_counts_by_manufacturers(store_data)
+            count_by_manufacturer_table = [(manufacturer, num) for manufacturer, num in count_by_manufacturer_dict.items()]
+            ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
+        elif option == "6":
+            manufacturer = ui.get_inputs(["Please a manufacturer: "], "")[0]
+            ui.print_result(get_average_by_manufacturer(store_data, manufacturer))
+        elif option == "0":
+            for game in store_data:
+                game[PRICE] = str(game[PRICE])
+                game[IN_STOCK] = str(game[IN_STOCK])
+            data_manager.write_table_to_file("store/games.csv", store_data)
+            break
+        else:
+            ui.print_error_message(err)
 
 
 def show_table(table):
@@ -42,9 +86,7 @@ def show_table(table):
         None
     """
 
-    # your code
-
-    pass
+    ui.print_table(table, ["ID", "Title", "Manufacturer", "Price", "In Stock"])
 
 
 def add(table):
@@ -58,7 +100,22 @@ def add(table):
         Table with a new record
     """
 
-    # your code
+    new_store = [common.generate_random(table)]
+    new_store.extend(ui.get_inputs(["Title: ", "Manufacturer: "], "New Store Information"))
+
+    while True:
+        price = ui.get_inputs(["Price: "], "")[0]
+        if common.validate_int(price):
+            new_store.append(int(price))
+            break
+
+    while True:
+        in_stock = ui.get_inputs(["In Stock: "], "")[0]
+        if common.validate_int(in_stock):
+            new_store.append(int(in_stock))
+            break
+
+    table.append(new_store)
 
     return table
 
@@ -75,7 +132,12 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    # your code
+    index = common.index_of_id(table, id_)
+    if index == -1:
+        ui.print_error_message("Wrong ID!")
+        return table
+
+    del table[index]
 
     return table
 
@@ -92,7 +154,54 @@ def update(table, id_):
         table with updated record
     """
 
-    # your code
+    ui.clear_scr()
+    index = common.index_of_id(table, id_)
+    if index < 0:
+        ui.print_error_message("Invalid ID: {}.".format(id_))
+        return table
+
+    itemname = table[index][TITLE]
+    ui.print_result("Enter new data for {} ({}). Leave input empty to keep existing values.".format(itemname, id_))
+
+    #  gametitle
+    gametitle = ui.get_inputs(["Game title:"], "")[0]
+
+    if len(gametitle) > 0:
+        table[index][TITLE] = gametitle
+    else:
+        ui.print_result("Title not changed.")
+
+    #  manufacturer
+    manufacturer = ui.get_inputs(["Game manufacturer:"], "")[0]
+
+    if len(manufacturer) > 0:
+        table[index][MANUFACTURER] = manufacturer
+    else:
+        ui.print_result("Manufacturer not changed.")
+
+    #  price
+
+    price_str = ui.get_inputs(["Price:"], "")[0]
+
+    if len(price_str) > 0:
+        if not common.validate_int(price_str):
+            ui.print_error_message("{} is not a valid integer. Price not changed.".format(price_str))
+        else:
+            table[index][PRICE] = price_str
+    else:
+        ui.print_result("Price not changed.")
+
+    # price
+
+    in_stock_str = ui.get_inputs(["In stock:"], "")[0]
+
+    if len(in_stock_str) > 0:
+        if not common.validate_int(in_stock_str):
+            ui.print_error_message("{} is not a valid integer. In stock not changed.".format(in_stock_str))
+        else:
+            table[index][IN_STOCK] = in_stock_str
+    else:
+        ui.print_result("In stock not changed.")
 
     return table
 
@@ -104,15 +213,26 @@ def update(table, id_):
 # return type: a dictionary with this structure: { [manufacturer] : [count] }
 def get_counts_by_manufacturers(table):
 
-    # your code
+    manufacturers = {row[MANUFACTURER] for row in table}
 
-    pass
+    count_by_manufacturers = {}
+
+    for manufacturer in manufacturers:
+        num_games = len([row for row in table if row[MANUFACTURER] == manufacturer])
+        count_by_manufacturers[manufacturer] = num_games
+
+    return count_by_manufacturers
 
 
 # the question: What is the average amount of games in stock of a given manufacturer?
 # return type: number
 def get_average_by_manufacturer(table, manufacturer):
+    """Returns average value of a manufacturer's items in stock."""
 
-    # your code
+    items_for_manufacturer = [item for item in table if item[MANUFACTURER] == manufacturer]
 
-    pass
+    if len(items_for_manufacturer) == 0:
+        return 0
+
+    summed = common.get_sum(items_for_manufacturer, IN_STOCK)
+    return summed / len(items_for_manufacturer)

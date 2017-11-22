@@ -9,6 +9,7 @@
 # month,year and day combined gives the date the sale was made
 
 from datetime import datetime
+from operator import itemgetter
 import os
 import ui
 import data_manager
@@ -64,7 +65,7 @@ def start_module():
         elif option == "5":
             ui.print_result(get_lowest_price_item_id(sales_data))
         elif option == "6":
-            ui.print_result(get_items_sold_between(sales_data))
+            ui.print_table(get_items_sold_between(sales_data, 12, 4, 2015, 2, 7, 2016), ["1", "2", "3", "4", "5", "6"])
         elif option == "0":
             for sale in sales_data:
                 sale[PRICE] = str(sale[PRICE])
@@ -88,7 +89,8 @@ def show_table(table):
         None
     """
     titles = ["ID", "Title", "Price", "Date"]
-    output_table = [[row[ID], row[TITLE], row[PRICE], '/'.join(row[YEAR], row[MONTH], row[DAY])] for row in table]
+    output_table = [[row[ID], row[TITLE], row[PRICE],
+                     '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY])))] for row in table]
     ui.print_table(output_table, titles)
 
 
@@ -206,11 +208,11 @@ def update(table, id_):
 # if there are more than one with the lowest price, return the first by descending alphabetical order
 def get_lowest_price_item_id(table):
 
-    prices = [(line[ID], line[TITLE] line[PRICE]) for line in table]
+    prices = [(line[ID], line[TITLE], line[PRICE]) for line in table]
     max_price = max(prices, key=itemgetter(1))[1]
     max_price_items = [(item[ID], item[TITLE]) for item in prices if item[1] == max_price]
 
-    return common.qsort(max_price_items, key=itemgetter(1), reversed=True)[0]
+    return common.qsort(max_price_items, key=itemgetter(1), reversed=True)[0][ID]
 
 
 # the question: Which items are sold between two given dates ? (from_date < sale_date < to_date)
