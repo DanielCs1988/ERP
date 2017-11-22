@@ -42,9 +42,7 @@ def show_table(table):
         None
     """
 
-    # your code
-
-    pass
+    ui.print_table(table)
 
 
 def add(table):
@@ -58,7 +56,22 @@ def add(table):
         Table with a new record
     """
 
-    # your code
+    new_store = [common.generate_random(table)]
+    new_store.extend(ui.get_inputs(["Title: ", "Manufacturer"], "New Sale Information"))
+
+    while True:
+        price = ui.get_inputs(["Price: "], "")[0]
+        if common.validate_int(price):
+            new_store.append(int(price))
+            break
+
+    while True:
+        in_stock = ui.get_inputs(["In Stock: "], "")[0]
+        if common.validate_int(in_stock):
+            new_store.append(int(in_stock))
+            break
+
+    table.append(new_store)
 
     return table
 
@@ -74,8 +87,13 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
+    
+    index = common.index_of_id(table, id_)
+    if index == -1:
+        ui.print_error_message("Wrong ID!")
+        return table
 
-    # your code
+    del table[index]
 
     return table
 
