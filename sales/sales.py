@@ -8,6 +8,7 @@
 # year: number
 # month,year and day combined gives the date the sale was made
 
+from datetime import datetime
 import os
 import ui
 import data_manager
@@ -211,6 +212,7 @@ def get_lowest_price_item_id(table):
 # return type: list of lists (the filtered table)
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
 
-    # your code
+    min_date = datetime(year_from, month_from, day_from)
+    max_date = datetime(year_to, month_to, day_to)
 
-    pass
+    return [line for line in table if min_date < datetime(line[YEAR], line[MONTH], line[DAY]) < max_date]
