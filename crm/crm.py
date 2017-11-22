@@ -14,6 +14,13 @@ import ui
 import data_manager
 # common module
 import common
+# itemgetter
+from operator import itemgetter
+
+ID = 0
+NAME = 1
+EMAIL = 2
+SUBSCRIBED = 3
 
 
 def start_module():
@@ -84,8 +91,19 @@ def add(table):
         Table with a new record
     """
     new_customer_data = [common.generate_random(table)]
-    new_#continuefromhere
-    ui.get_inputs(["Name: ", "E-mail: ", "Is the person subscribed?(1 for yes, 0 for no)"])
+    new_customre_data.append(ui.get_inputs(["Name: "])[0])
+    while True:
+        email = ui.get_inputs(["E-mail: "], "")[0]
+        if common.validate_email(email):
+            new_customer_data.append(email)
+            break
+    while True:
+        boolean = ui.get_inputs(["Is he subscribed?: "])[0]
+        if common.validate_boolean(boolean):
+            new_customer_data.append(boolean)
+            break
+
+    table.append(new_customer_data)
 
     return table
 
@@ -102,7 +120,12 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    # your code
+    index = common.index_of_id(table, id_)
+    if index == -1:
+        ui.print_error_message("Wrong ID!")
+        return table
+
+    del table(index)
 
     return table
 
@@ -119,7 +142,22 @@ def update(table, id_):
         table with updated record
     """
 
-    # your code
+    index = common.index_of_id(table, id_)
+    if index == -1:
+        ui.print_error_message("Wrong ID!")
+        return table
+
+    table[index][NAME] = new_customer_data(ui.get_inputs(["Name: "])[0])
+    while True:
+        new_email = ui.get_inputs(["E-mail: "], "")[0]
+        if common.validate_email(email):
+            table[index][EMAIL] = email
+            break
+    while True:
+        new_boolean = ui.get_inputs(["Is he subscribed?: "])[0]
+        if common.validate_boolean(boolean):
+            table[index][SUBSCRIBED] = new_boolean
+            break
 
     return table
 
@@ -131,16 +169,17 @@ def update(table, id_):
 # the question: What is the id of the customer with the longest name ?
 # return type: string (id) - if there are more than one longest name, return the first by descending alphabetical order
 def get_longest_name_id(table):
+    """Returns the ID of the person who has the longest name. If there are more people it returns the first in
+       descending alphabetical order"""
+    names_lengths = [(line[ID], len(line[NAME], line[NAME])) for line in table]
+    max_length = max(names_lengths, key=itemgetter(1))[1]
+    max_length_names = [(name[0], name[2]) for name in names_lengths if name[1] == max_length]
 
-    # your code
-
-    pass
+    return common.qsort(max_length_names, key=itemgetter(1), reversed=True)[0]
 
 
 # the question: Which customers has subscribed to the newsletter?
 # return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
-
-    # your code
-
-    pass
+    """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
+    return ["; ".join(line[NAME], line[EMAIL]) for line in table if line[SUBSCRIBED] == 1]

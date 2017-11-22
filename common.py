@@ -159,14 +159,11 @@ def generate_random(table):
 def validate_byear(year):
     "Check if parameter is an integer and whether it's less or equal than the current year."
 
-    try:
+    if validate_int(year):
         year = int(year)
-    except ValueError:
+    elif year > datetime.now().year:
         return False
-    else:
-        if year > datetime.now().year:
-            return False
-        return True
+    return True
 
 
 def validate_type(tp):
@@ -188,18 +185,22 @@ def validate_boolean(boolean):
 def validate_month(month):
     """Check if parameter is a valid month by number (1-12), returns false otherwise"""
 
-    if month not in tuple(range(1, 13)):
+    if validate_int(month):
+        month = int(month)
+    elif month not in tuple(range(1, 13)):
         return False
     return True
 
 
 def validate_day(day):
     """
-    Check if parameter is a valid month by number (1-31), returns false otherwise
+    Check if parameter is a valid day by number (1-31), returns false otherwise
     Does not differentiate between months, so february 31 is possible.
     """
 
-    if month not in tuple(range(1, 31)):
+    if validate_int(day):
+        day = int(day)
+    elif day not in tuple(range(1, 32)):
         return False
     return True
 
@@ -216,3 +217,14 @@ def validate_email(email):
         True, if email is a valid email address
     '''
     return re.match(r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", email) is not None
+
+
+def validate_int(integer):
+    '''
+    Checks if the parameter is a valid integer, returns false otherwise.
+    '''
+    try:
+        integer = int(integer)
+    except ValueError:
+        return False
+    return True

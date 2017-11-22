@@ -115,7 +115,7 @@ def remove(table, id_):
         ui.print_error_message("Wrong ID!")
         return table  # That was the most ridiculous mistake ever, period.
 
-    del table[common.index_of_id(table, id_)]
+    del table[index]
     return table
 
 
@@ -133,9 +133,9 @@ def update(table, id_):
     index = common.index_of_id(table, id_)
     if index == -1:
         ui.print_error_message("Wrong ID!")
-        return
+        return table
 
-    table[index][1] = ui.get_inputs(["Name: "], "")[0]
+    table[index][NAME] = ui.get_inputs(["Name: "], "")[0]
 
     while True:
         b_year = ui.get_inputs(["Birth Year: "], "")[0]
