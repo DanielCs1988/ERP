@@ -1,5 +1,6 @@
 from random import choice
 from datetime import datetime
+from sys import exit
 import string
 import copy
 import inspect
@@ -136,13 +137,10 @@ def get_longest(table, column):
 
 def get_sum(table, column):
     """ Returns the sum of the data of the given column."""
-    summary = 0
-    for row in range(len(table)):
-        summary += table[row][column]
-    return summary
+    return get_sum_list([row[column] for row in table])
 
 
-def get_sum_list(list):
+def get_sum_list(collection):
     '''
     A very basic replacement for sum().
 
@@ -151,8 +149,10 @@ def get_sum_list(list):
     Returns an integer.
     '''
     summary = 0
-    for item in list:
+
+    for item in collection:
         summary += int(item)
+
     return summary
 
 
@@ -176,7 +176,7 @@ def validate_byear(year):
 
     if not validate_int(year):
         return False
-    if year > datetime.now().year:
+    if int(year) > datetime.now().year:
         return False
     return True
 
@@ -192,7 +192,9 @@ def validate_type(tp):
 def validate_boolean(boolean):
     """Check if parameter is 1 or 0, returns false otherwise."""
 
-    if boolean not in (0, 1):
+    if not validate_int(boolean):
+        return False
+    if int(boolean) not in (0, 1):
         return False
     return True
 
@@ -202,7 +204,7 @@ def validate_month(month):
 
     if not validate_int(month):
         return False
-    if not (0 < month < 13):
+    if not (0 < int(month) < 13):
         return False
     return True
 
@@ -215,7 +217,7 @@ def validate_day(day):
 
     if not validate_int(day):
         return False
-    if not (0 < month < 32):
+    if not (0 < int(month) < 32):
         return False
     return True
 
