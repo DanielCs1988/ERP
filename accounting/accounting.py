@@ -237,6 +237,7 @@ def update(table, id_):
 # the question: Which year has the highest profit? (profit=in-out)
 # return the answer (number)
 def which_year_max(table):
+<<<<<<< HEAD
     '''
     Goes through each unique year, counting the sum of the profits.
     Then subtracts the 'out' values.
@@ -252,10 +253,17 @@ def which_year_max(table):
             max_profit, current_year = temp_sum, year
 
     return current_year
+=======
+    years = [table[x][3] for x in range(len(table))]
+
+    for year in set(years):
+        pass
+>>>>>>> root
 
 
 # the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
 # return the answer (number)
+<<<<<<< HEAD
 def avg_amount(table, input_year):
     profit = []
     current_year = 0
@@ -268,6 +276,12 @@ def avg_amount(table, input_year):
         [1 for row in table if row[__YEAR] == input_year])
 
     return temp_sum / temp_count
+=======
+def avg_amount(table, year):
+    pass
+    # your code
+
+>>>>>>> root
 
 if __name__ == '__main__':
     start_module()

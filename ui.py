@@ -5,7 +5,7 @@ import os
 
 def clear_scr():
     """
-    Cross platform clear screen. 
+    Cross platform clear screen.
     Source: https://stackoverflow.com/questions/2084508/clear-terminal-in-python
     """
     os.system('cls' if os.name == 'nt' else 'clear')

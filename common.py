@@ -223,7 +223,7 @@ def validate_day(day):
 
 def validate_email(email):
     '''
-    Validates e-mail address using a simplified version of the RFC 5322 standard. \
+    Validates e-mail address using a simplified version of the RFC 5322 standard. \t
     cf. http://www.regular-expressions.info/email.html
 
     Args:

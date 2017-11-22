@@ -33,7 +33,7 @@ def start_module():
                "Show Oldest Person",
                "Show Persons Closest to Average Age"]
 
-    hr_data = data_manager.get_table_from_file("persons.csv")
+    hr_data = data_manager.get_table_from_file("hr/persons.csv")
     for person in hr_data:
         person[B_YEAR] = int(person[B_YEAR])
 
@@ -57,7 +57,9 @@ def start_module():
         elif option == "6":
             ui.print_result(get_persons_closest_to_average(hr_data))
         elif option == "0":
-            data_manager.write_table_to_file("persons.csv", hr_data)
+            for person in hr_data:
+                person[B_YEAR] = str(person[B_YEAR])
+            data_manager.write_table_to_file("hr/persons.csv", hr_data)
             break
         else:
             ui.print_error_message(err)
@@ -133,9 +135,9 @@ def update(table, id_):
     index = common.index_of_id(table, id_)
     if index == -1:
         ui.print_error_message("Wrong ID!")
-        return
+        return table
 
-    table[index][1] = ui.get_inputs(["Name: "], "")[0]
+    table[index][NAME] = ui.get_inputs(["Name: "], "")[0]
 
     while True:
         b_year = ui.get_inputs(["Birth Year: "], "")[0]
