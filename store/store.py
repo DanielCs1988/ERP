@@ -63,7 +63,8 @@ def start_module():
             count_by_manufacturer_table = [(manufacturer, num) for manufacturer, num in count_by_manufacturer_dict.items()]
             ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
         elif option == "6":
-            ui.print_result(get_average_by_manufacturer(store_data))
+            manufacturer = ui.get_inputs(["Please a manufacturer: "], "")[0]
+            ui.print_result(get_average_by_manufacturer(store_data, manufacturer))
         elif option == "0":
             for game in store_data:
                 game[PRICE] = str(game[PRICE])
@@ -228,5 +229,10 @@ def get_counts_by_manufacturers(table):
 def get_average_by_manufacturer(table, manufacturer):
     """Returns average value of a manufacturer's items in stock."""
 
-    summed = common.get_sum([item for item in table if item[MANUFACTURER] == manufacturer], IN_STOCK)
-    return summed / len(summed)
+    items_for_manufacturer = [item for item in table if item[MANUFACTURER] == manufacturer]
+
+    if len(items_for_manufacturer) == 0:
+        return 0
+
+    summed = common.get_sum(items_for_manufacturer, IN_STOCK)
+    return summed / len(items_for_manufacturer)
