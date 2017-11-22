@@ -63,7 +63,7 @@ def start_module():
         elif option == "6":
             ui.print_result(get_average_by_manufacturer(store_data))
         elif option == "0":
-            data_manager.write_table_to_file("games.csv", store_data)
+            data_manager.write_table_to_file("store/games.csv", store_data)
             break
         else:
             ui.print_error_message(err)
