@@ -88,11 +88,11 @@ def add(table):
         Table with a new record
     """
     new_person = [common.generate_random(table)]
-    new_person.append(ui.get_inputs(["Name: "], "New Person's Information"))
+    new_person.append(ui.get_inputs(["Name: "], "New Person's Information")[0])
     while True:
         b_year = ui.get_inputs(["Birth Year: "], "")[0]
         if common.validate_byear(b_year):
-            new_person.append(b_year)
+            new_person.append(int(b_year))
             break
 
     table.append(new_person)
@@ -140,7 +140,7 @@ def update(table, id_):
     while True:
         b_year = ui.get_inputs(["Birth Year: "], "")[0]
         if common.validate_byear(b_year):
-            table[index][B_YEAR] = b_year
+            table[index][B_YEAR] = int(b_year)
             break
 
     return table
