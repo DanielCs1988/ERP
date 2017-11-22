@@ -106,7 +106,7 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    idx = common.index_of_id(id_)
+    idx = common.index_of_id(table, id_)
 
     if idx >= 0:
         del table[idx]
