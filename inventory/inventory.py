@@ -42,9 +42,11 @@ def start_module():
         None
     """
 
-    # you code
+    table = data_manager.get_table_from_file("inventory/inventory.csv")
 
-    pass
+    ui.print_menu("Inventory",
+                  ["Add item", "Display item", "Update item", "Delete item"],
+                  "Back to main menu")
 
 
 def show_table(table):
@@ -73,21 +75,23 @@ def add(table):
     """
 
     new_item = [common.generate_random(table)]
-    new_item.extend(ui.get_inputs(["Name", "Manufacturer"], "Please enter item details"))
+    new_item.extend(ui.get_inputs(["Name:", "Manufacturer:"], "Please enter item details"))
 
-    year_valid = False
+    while True:
+        value = ui.get_inputs(["Purchase date:"], "")[0]
+        if not common.validate_byear(value):
+            continue  # validation comes here
+        new_item.append(value)
+        break
 
-    while not year_valid:
-        values = ui.get_inputs(["Purchase date"], None)
-        year_valid = True  # validation comes here
-        new_item.append(values[0])
-
-    durability_valid = False
-
-    while not durability_valid:
-        values = ui.get_inputs(["Durability"], None)
-        durability_valid = True  # validation comes here
-        new_item.append(values[0])
+    while True:
+        value = ui.get_inputs(["Durability:"], "")[0]
+        try:
+            new_durability = int(value)  # validation comes here
+        except ValueError:
+            continue
+        new_item.append(new_durability)
+        break
 
     table.append(new_item)
 
