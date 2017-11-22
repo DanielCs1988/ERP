@@ -63,6 +63,9 @@ def start_module():
         elif option == "6":
             ui.print_result(get_average_by_manufacturer(store_data))
         elif option == "0":
+            for game in store_data:
+                game[PRICE] = str(game[PRICE])
+                game[IN_STOCK] = str(game[IN_STOCK])
             data_manager.write_table_to_file("games.csv", store_data)
             break
         else:
