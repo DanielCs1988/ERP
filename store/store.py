@@ -15,6 +15,12 @@ import data_manager
 # common module
 import common
 
+ID = 0
+TITLE = 1
+MANUFACTURER = 2
+PRICE = 3
+IN_STOCK = 4
+
 
 def start_module():
     """
@@ -112,7 +118,4 @@ def get_counts_by_manufacturers(table):
 # the question: What is the average amount of games in stock of a given manufacturer?
 # return type: number
 def get_average_by_manufacturer(table, manufacturer):
-
-    # your code
-
-    pass
+    summed = sum([])
