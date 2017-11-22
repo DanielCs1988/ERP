@@ -17,6 +17,10 @@ import data_manager
 # common module
 import common
 
+ID = 0
+TITLE = 1
+PRICE = 2
+
 
 def start_module():
     """
@@ -106,10 +110,12 @@ def update(table, id_):
 # return type: string (id)
 # if there are more than one with the lowest price, return the first by descending alphabetical order
 def get_lowest_price_item_id(table):
+    """
+    prices = [(line[ID], line[TITLE] line[PRICE]) for line in table]
+    max_price = max(prices, key=itemgetter(1))[1]
+    max_price_items = [(item[ID], item[TITLE]) for item in prices if item[1] == max_price]
 
-    # your code
-
-    pass
+    return common.qsort(max_price_items, key=itemgetter(1), reversed=True)[0]
 
 
 # the question: Which items are sold between two given dates ? (from_date < sale_date < to_date)
