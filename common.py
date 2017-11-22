@@ -193,6 +193,16 @@ def validate_month(month):
     return True
 
 
+def validate_day(day):
+    """
+    Check if parameter is a valid month by number (1-31), returns false otherwise
+    Does not differentiate between months, so february 31 is possible.
+    """
+
+    if month not in tuple(range(1, 31)):
+        return False
+    return True
+
 def validate_email(email):
     '''
     Validates e-mail address using a simplified version of the RFC 5322 standard. \
