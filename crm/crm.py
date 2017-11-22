@@ -39,7 +39,7 @@ def start_module():
                    "Who has the longest name?",
                    "Subscribed emails"]
 
-    crm_data = data_manager.get_table_from_file("customers.csv")
+    crm_data = data_manager.get_table_from_file("crm/customers.csv")
 
     while True:
         ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
@@ -49,18 +49,19 @@ def start_module():
         if option == "1":
             show_table(crm_data)
         elif option == "2":
-            add(crm_data)
+            crm_data = add(crm_data)
         elif option == "3":
             remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "])
-            remove(crm_data, remove_id)
+            crm_data = remove(crm_data, remove_id)
         elif option == "4":
             update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "])
-            update(crm_data, update_id)
+            crm_data = update(crm_data, update_id)
         elif option == "5":
-            get_longest_name_id(crm_data)
+            ui.print_result(get_longest_name_id(crm_data))
         elif option == "6":
-            get_subscribed_emails(crm_data)
+            ui.print_result(get_subscribed_emails(crm_data))
         elif option == "0":
+            data_manager.write_table_to_file("crm/customers.csv", hr_data)
             break
         else:
             ui.print_error_message(err)
@@ -77,7 +78,7 @@ def show_table(table):
         None
     """
 
-    ui.print_table(table)
+    ui.print_table(table, ["ID", "Name", "E-mail", "Subscribed"])
 
 
 def add(table):
