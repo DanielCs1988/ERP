@@ -1,5 +1,16 @@
 from common import *
 import platform
+import os
+
+
+def clear_scr():
+    """
+    Cross platform clear screen. 
+    Source: https://stackoverflow.com/questions/2084508/clear-terminal-in-python
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 # cross-platform getch https://gist.github.com/jfktrey/8928865
 if platform.system() == "Windows":
     import msvcrt
