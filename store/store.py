@@ -178,11 +178,10 @@ def update(table, id_):
     price_str = ui.get_inputs(["Price:"], "")[0]
 
     if len(price_str) > 0:
-        try:
-            int(price_str)
-            table[index][PRICE] = price_str
-        except ValueError:
+        if not common.validate_int(price_str):
             ui.print_error_message("{} is not a valid integer. Price not changed.".format(price_str))
+        else:
+            table[index][PRICE] = price_str
     else:
         ui.print_result("Price not changed.")
 
@@ -192,11 +191,10 @@ def update(table, id_):
     in_stock_str = ui.get_inputs(["In stock:"], "")[0]
 
     if len(in_stock_str) > 0:
-        try:
-            int(in_stock_str)
-            table[index][IN_STOCK] = in_stock_str
-        except ValueError:
+        if not common.validate_int(in_stock_str):
             ui.print_error_message("{} is not a valid integer. In stock not changed.".format(in_stock_str))
+        else:
+            table[index][IN_STOCK] = in_stock_str
     else:
         ui.print_result("In stock not changed.")
 
