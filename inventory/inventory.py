@@ -106,7 +106,15 @@ def add(table):
     """
 
     new_item = [common.generate_random(table)]
-    new_item.extend(ui.get_inputs(["Name:", "Manufacturer:"], "Please enter item details"))
+    new_item.extend(ui.get_inputs(["Name:"], "Please enter item details. Type ESC to cancel."))
+
+    if "ESC" in new_item:
+        return table
+
+    new_item.extend(ui.get_inputs(["Manufacturer:"], ""))
+
+    if "ESC" in new_item:
+        return table
 
     while True:
         value = ui.get_inputs(["Purchase date:"], "")[0]
@@ -115,13 +123,16 @@ def add(table):
         new_item.append(value)
         break
 
+    if "ESC" in new_item:
+        return table
+
     while True:
         value = ui.get_inputs(["Durability:"], "")[0]
         try:
             new_durability = int(value)  # validation comes here
         except ValueError:
             continue
-        new_item.append(new_durability)
+        new_item.append(value)
         break
 
     table.append(new_item)
