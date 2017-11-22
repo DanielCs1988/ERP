@@ -39,7 +39,7 @@ def start_module():
                    "Who has the longest name?",
                    "Subscribed emails"]
 
-    crm_data = data_manager.get_table_from_file("customers.csv")
+    crm_data = data_manager.get_table_from_file("crm/customers.csv")
 
     while True:
         ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
@@ -77,7 +77,7 @@ def show_table(table):
         None
     """
 
-    ui.print_table(table)
+    ui.print_table(table, ["ID", "Name", "E-mail", "Subscribed"])
 
 
 def add(table):
