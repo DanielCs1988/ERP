@@ -115,7 +115,7 @@ def remove(table, id_):
         ui.print_error_message("Wrong ID!")
         return table  # That was the most ridiculous mistake ever, period.
 
-    del table[common.index_of_id(table, id_)]
+    del table[index]
     return table
 
 
