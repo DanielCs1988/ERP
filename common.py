@@ -3,6 +3,7 @@ from datetime import datetime
 import string
 import copy
 import inspect
+import re
 
 CHR_TYPES = {"uppercase": string.ascii_uppercase,
              "lowercase": string.ascii_lowercase,
@@ -190,3 +191,17 @@ def validate_month(month):
     if month not in tuple(range(1, 13)):
         return False
     return True
+
+
+def validate_email(email):
+    '''
+    Validates e-mail address using a simplified version of the RFC 5322 standard. \
+    cf. http://www.regular-expressions.info/email.html
+
+    Args:
+        email: The email address to validate.
+
+    Returns:
+        True, if email is a valid email address
+    '''
+    return re.match(r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", email) is not None
