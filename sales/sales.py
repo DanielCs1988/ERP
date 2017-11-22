@@ -39,7 +39,7 @@ def start_module():
                "Show Lowest Price ID",
                "Show Sold Items Between Dates"]
 
-    sales_data = data_manager.get_table_from_file("sales.csv")
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
     for sale in sales_data:
         sale[PRICE] = int(sale[PRICE])
         sale[MONTH] = int(sale[MONTH])
@@ -66,7 +66,12 @@ def start_module():
         elif option == "6":
             ui.print_result(get_items_sold_between(sales_data))
         elif option == "0":
-            data_manager.write_table_to_file("sales.csv", sales_data)
+            for sale in sales_data:
+                sale[PRICE] = str(sale[PRICE])
+                sale[MONTH] = str(sale[MONTH])
+                sale[DAY] = str(sale[DAY])
+                sale[YEAR] = str(sale[YEAR])
+            data_manager.write_table_to_file("sales/sales.csv", sales_data)
             break
         else:
             ui.print_error_message(err)
