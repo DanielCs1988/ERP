@@ -64,7 +64,8 @@ def qsort_table(table, col, **kwargs):
             of the table.
     """
     return qsort(table,
-                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs and inspect.isfunction(kwargs["key"]) else row[col],
+                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs and inspect.isfunction(
+                     kwargs["key"]) else row[col],
                  reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
 
 
@@ -87,7 +88,7 @@ def qsort(array, **kwargs):
 
     __qsort(array_copy, 0, len(array) - 1, key)
 
-    return array_copy if not ("reversed" in kwargs and kwargs["reversed"]) else array_copy[::-1] 
+    return array_copy if not ("reversed" in kwargs and kwargs["reversed"]) else array_copy[::-1]
 
 
 def __qsort(array, lo, hi, key):
@@ -171,5 +172,21 @@ def validate_type(tp):
     """Check if parameter is 'in' or 'out', returns false otherwise."""
 
     if tp not in ("in", "out"):
+        return False
+    return True
+
+
+def validate_boolean(boolean):
+    """Check if parameter is 1 or 0, returns false otherwise."""
+
+    if boolean not in (0, 1):
+        return False
+    return True
+
+
+def validate_month(month):
+    """Check if parameter is a valid month by number (1-12), returns false otherwise"""
+
+    if month not in tuple(range(1, 13)):
         return False
     return True
