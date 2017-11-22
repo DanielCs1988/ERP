@@ -80,7 +80,7 @@ def show_table(table):
         None
     """
 
-    ui.print_table(table)
+    ui.print_table(table, ["ID", "Title", "Manufacturer", "Price", "In Stock"])
 
 
 def add(table):
@@ -125,7 +125,7 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
-    
+
     index = common.index_of_id(table, id_)
     if index == -1:
         ui.print_error_message("Wrong ID!")
@@ -186,7 +186,6 @@ def update(table, id_):
     else:
         ui.print_result("Price not changed.")
 
-    
     # price
 
     in_stock_str = ui.get_inputs(["In stock:"], "")[0]
