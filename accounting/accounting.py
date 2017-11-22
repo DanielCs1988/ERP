@@ -6,17 +6,18 @@
 # year: number
 # type: string (in = income, out = outcome)
 # amount: number (dollar)
-import sys
-sys.path.append("/home/leblayd/python/TW3/pbwp-3rd-tw-lightweight-erp-enterprise_coffee_planner")
 
-# importing everything you need
 import os
-# User interface module
 import ui
-# data manager module
 import data_manager
-# common module
 import common
+
+__ID = 0
+__MONTH = 1
+__DAY = 2
+__YEAR = 3
+__TYPE = 4
+__AMOUNT = 5
 
 
 def start_module():
@@ -32,26 +33,51 @@ def start_module():
     table = data_manager.get_table_from_file("accounting/items.csv")
     paid_version = True    # an easter-egg, leave it True and it should (hopefully) cause no problems
     if paid_version:    # uses the options based on the easter-egg
-        options = ["Add entry",
-                   "Remove entry",
-                   "Update",
-                   "Display table",
-                   "Which year has the highest profit?",
-                   "What is the average (per item) profit in a given year?"]
+        menu_options = ["Add entry",
+                        "Remove entry",
+                        "Update",
+                        "Display table",
+                        "Which year has the highest profit?",
+                        "What is the average (per item) profit in a given year?"]
     else:
-        options = ["Add entry",
-                   "Remove entry",
-                   "Update",
-                   "Display table",
-                   "Buy the full version of the software to unlock more options"]
+        menu_options = ["Add entry",
+                        "Remove entry",
+                        "Update",
+                        "Display table",
+                        "Buy the full version of the software to unlock more options"]
 
     while True:
-        ui.print_menu("Accounting module", options, "Back to main menu")
+        ui.print_menu("Accounting", menu_options, "Back to main menu")
+        inputs = ui.get_inputs(["Please enter a number: "], "")
+        option = inputs[0]
 
-        try:
-            choose(table)
-        except KeyError as err:
-            ui.print_error_message(err)
+        if option == "1":
+            add(table)
+        elif option == "2":
+            input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
+            remove(table, input_id)
+        elif option == "3":
+            input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
+            update(table, input_id)
+        elif option == "4":
+            show_table(table)
+        elif option == "5":
+            ui.print_result(which_year_max(table))
+        elif option == "6":
+            while True:
+                input_year = ui.get_inputs(["Which year do you want to know about: "], "")[0]
+                if not common.validate_byear(input_year):
+                    continue
+                elif common.index_of_value(table, __YEAR, input_year) == -1:
+                    continue
+                break
+            ui.print_result(avg_amount(table, input_year),
+                            "The average amount of profit per game in {0}".format(input_year))
+        elif option == "0":
+            data_manager.write_table_to_file("accounting/items.csv", table)
+            break
+        else:
+            ui.print_error_message("There is no such option.")
 
 
 def show_table(table):
@@ -64,35 +90,10 @@ def show_table(table):
     Returns:
         None
     """
-    titles = ["id", "month", "day", "year", "type", "amount"]
+    titles = ["ID", "Month", "Day", "Year", "Type", "Amount"]
     ui.print_table(table, titles)
 
     pass
-
-
-def choose(table):    # still needs error checking as well
-    inputs = ui.get_inputs(["Please enter a number: "], "")
-    option = inputs[0]
-    if option == "1":
-        add(table)
-    elif option == "2":
-        input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
-        remove(table, input_id)
-    elif option == "3":
-        input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
-        update(table, input_id)
-    elif option == "4":
-        show_table(table)
-    elif option == "5":
-        which_year_max(table)        
-    elif option == "6":
-        # sales.start_module()    # TO DO
-        pass
-    elif option == "0":
-        data_manager.write_table_to_file("accounting/items.csv", table)
-        
-    else:
-        raise KeyError("There is no such option.")
 
 
 def add(table):
@@ -236,22 +237,37 @@ def update(table, id_):
 # the question: Which year has the highest profit? (profit=in-out)
 # return the answer (number)
 def which_year_max(table):
-    years = [table[x][3] for x in range(len(table))]
+    '''
+    Goes through each unique year, counting the sum of the profits.
+    Then subtracts the 'out' values.
+    Compares and returns the year with the highest profit.
+    '''
+    max_profit, current_year = 0, 0
+    for year in {row[__YEAR] for row in table}:
+        temp_sum = common.get_sum_list(
+            [int(row[__AMOUNT]) for row in table if row[__YEAR] == year and row[__TYPE] == 'in'])
+        temp_sum -= common.get_sum_list(
+            [int(row[__AMOUNT]) for row in table if row[__YEAR] == year and row[__TYPE] == 'out'])
+        if temp_sum > max_profit:
+            max_profit, current_year = temp_sum, year
 
-    for year in set(years):
-        
-
-
+    return current_year
 
 
 # the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
 # return the answer (number)
-def avg_amount(table, year):
+def avg_amount(table, input_year):
+    profit = []
+    current_year = 0
 
-    # your code
+    temp_sum = common.get_sum_list(
+        [int(row[__AMOUNT]) for row in table if row[__YEAR] == input_year and row[__TYPE] == 'in'])
+    temp_sum -= common.get_sum_list(
+        [int(row[__AMOUNT]) for row in table if row[__YEAR] == input_year and row[__TYPE] == 'out'])
+    temp_count = common.get_sum_list(
+        [1 for row in table if row[__YEAR] == input_year])
 
-    pass
-
+    return temp_sum / temp_count
 
 if __name__ == '__main__':
     start_module()
