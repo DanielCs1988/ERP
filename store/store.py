@@ -31,10 +31,42 @@ def start_module():
     Returns:
         None
     """
+    options = ["Show Table",
+               "Add Game",
+               "Remove Game",
+               "Update Game",
+               "Show Game Count Per Manufacturer",
+               "Show Average Game Count of a Manufacturer"]
 
-    # your code
+    store_data = data_manager.get_table_from_file("games.csv")
+    for game in store_data:
+        game[PRICE] = int(game[PRICE])
+        game[IN_STOCK] = int(game[IN_STOCK])
 
-    pass
+    while True:
+        ui.print_menu("Store: Main menu", options, "Exit program")
+        inputs = ui.get_inputs(["Please enter a number: "], "")
+        option = inputs[0]
+
+        if option == "1":
+            show_table(store_data)
+        elif option == "2":
+            store_data = add(store_data)
+        elif option == "3":
+            to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
+            store_data = remove(store_data, to_remove[0])
+        elif option == "4":
+            to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
+            store_data = update(store_data, to_update[0])
+        elif option == "5":
+            ui.print_result(get_counts_by_manufacturers(store_data))
+        elif option == "6":
+            ui.print_result(get_average_by_manufacturer(store_data))
+        elif option == "0":
+            data_manager.write_table_to_file("games.csv", store_data)
+            break
+        else:
+            ui.print_error_message(err)
 
 
 def show_table(table):
@@ -48,9 +80,7 @@ def show_table(table):
         None
     """
 
-    # your code
-
-    pass
+    ui.print_table(table)
 
 
 def add(table):
@@ -64,7 +94,22 @@ def add(table):
         Table with a new record
     """
 
-    # your code
+    new_store = [common.generate_random(table)]
+    new_store.extend(ui.get_inputs(["Title: ", "Manufacturer: "], "New Store Information"))
+
+    while True:
+        price = ui.get_inputs(["Price: "], "")[0]
+        if common.validate_int(price):
+            new_store.append(int(price))
+            break
+
+    while True:
+        in_stock = ui.get_inputs(["In Stock: "], "")[0]
+        if common.validate_int(in_stock):
+            new_store.append(int(in_stock))
+            break
+
+    table.append(new_store)
 
     return table
 
@@ -80,8 +125,13 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
+    
+    index = common.index_of_id(table, id_)
+    if index == -1:
+        ui.print_error_message("Wrong ID!")
+        return table
 
-    # your code
+    del table[index]
 
     return table
 
