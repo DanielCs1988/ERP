@@ -158,9 +158,6 @@ def get_inputs(list_labels, title):
     return [input(label) for label in list_labels]
 
 
-# This function displays an error message. (example: Error: @message)
-#
-# @message: string - the error message
 def print_error_message(message):
     """
     Displays an error message
@@ -173,3 +170,13 @@ def print_error_message(message):
     """
 
     print('[\033[1;31m{}\033[1;m]'.format(message))
+
+
+def valid_input(msg, validator):
+    """Keeps prompting the user with msg to input a value, until the validator returns true on it.
+       Returns the accepted string."""
+    while True:
+        prompt = input(msg)
+        if validator(prompt):
+            return prompt
+        print_error_message("Incorrect input!")
