@@ -18,6 +18,8 @@ import common
 
 import enum
 
+from datetime import datetime
+
 from statistics import mean
 from copy import deepcopy
 
@@ -138,9 +140,10 @@ def update(table, id_):
 # @table: list of lists
 def get_available_items(table):
 
-    # your code
+    now = datetime.now()
+    current_year = now.year
 
-    pass
+    return [row for row in table if current_year - int(row[InvCols.PURCHASE_DATE]) < int(row[InvCols.DURABILITY])]
 
 
 # the question: What are the average durability times for each manufacturer?
