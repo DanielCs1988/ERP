@@ -142,6 +142,20 @@ def get_sum(table, column):
     return summary
 
 
+def get_sum_list(list):
+    '''
+    A very basic replacement for sum().
+
+    Crashes if any list item is not an integer.
+
+    Returns an integer.
+    '''
+    summary = 0
+    for item in list:
+        summary += int(item)
+    return summary
+
+
 def generate_random(table):
     """Generates a random ID with a length of 8.
        It contains 2 number, 2 special, 2 lower- and 2 uppercase characters."""
@@ -162,9 +176,10 @@ def validate_byear(year):
 
     if validate_int(year):
         year = int(year)
-    elif int(year) > datetime.now().year:
-        return False
-    return True
+        if year > datetime.now().year:
+            return False
+        return True
+    return False
 
 
 def validate_type(tp):
