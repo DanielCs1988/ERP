@@ -159,10 +159,11 @@ def generate_random(table):
 def validate_byear(year):
     "Check if parameter is an integer and whether it's less or equal than the current year."
 
-    if validate_int(month):
-        month = int(month)
-    elif year > datetime.now().year:
-        return True
+    if validate_int(year):
+        year = int(year)
+    elif int(year) > datetime.now().year:
+        return False
+    return True
 
 
 def validate_type(tp):
@@ -193,13 +194,13 @@ def validate_month(month):
 
 def validate_day(day):
     """
-    Check if parameter is a valid month by number (1-31), returns false otherwise
+    Check if parameter is a valid day by number (1-31), returns false otherwise
     Does not differentiate between months, so february 31 is possible.
     """
 
-    if validate_int(month):
-        month = int(month)
-    elif month not in tuple(range(1, 32)):
+    if validate_int(day):
+        day = int(day)
+    elif day not in tuple(range(1, 32)):
         return False
     return True
 
