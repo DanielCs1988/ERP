@@ -1,4 +1,5 @@
 from random import choice
+from datetime import datetime
 import string
 import copy
 import inspect
@@ -63,7 +64,8 @@ def qsort_table(table, col, **kwargs):
             of the table.
     """
     return qsort(table,
-                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs and inspect.isfunction(kwargs["key"]) else row[col],
+                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs and inspect.isfunction(
+                     kwargs["key"]) else row[col],
                  reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
 
 
@@ -86,7 +88,7 @@ def qsort(array, **kwargs):
 
     __qsort(array_copy, 0, len(array) - 1, key)
 
-    return array_copy if not ("reversed" in kwargs and kwargs["reversed"]) else array_copy[::-1] 
+    return array_copy if not ("reversed" in kwargs and kwargs["reversed"]) else array_copy[::-1]
 
 
 def __qsort(array, lo, hi, key):
@@ -127,7 +129,7 @@ def __qsort_partition(array, lo, hi, key):
 
 def get_longest(table, column):
     """Returns the length of the longest item in a given column as integer."""
-    return max([len(row[column]) for row in table])
+    return max([len(str(row[column])) for row in table])
 
 
 def get_sum(table, column):
@@ -151,3 +153,40 @@ def generate_random(table):
         if id_exists(table, temp_str):
             continue
         return temp_str
+
+
+def validate_byear(year):
+    "Check if parameter is an integer and whether it's less or equal than the current year."
+
+    try:
+        year = int(year)
+    except ValueError:
+        return False
+    else:
+        if year > datetime.now().year:
+            return False
+        return True
+
+
+def validate_type(tp):
+    """Check if parameter is 'in' or 'out', returns false otherwise."""
+
+    if tp not in ("in", "out"):
+        return False
+    return True
+
+
+def validate_boolean(boolean):
+    """Check if parameter is 1 or 0, returns false otherwise."""
+
+    if boolean not in (0, 1):
+        return False
+    return True
+
+
+def validate_month(month):
+    """Check if parameter is a valid month by number (1-12), returns false otherwise"""
+
+    if month not in tuple(range(1, 13)):
+        return False
+    return True

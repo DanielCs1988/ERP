@@ -25,10 +25,38 @@ def start_module():
     Returns:
         None
     """
+    crm_options = ["Show table",
+                   "Add",
+                   "Remove",
+                   "Update",
+                   "Who has the longest name?",
+                   "Subscribed emails"]
 
-    # your code
+    crm_data = data_manager.get_table_from_file("customers.csv")
 
-    pass
+    while True:
+        ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
+        inputs = ui.get_inputs(["Please enter a number: "], "")
+        option = inputs[0]
+
+        if option == "1":
+            show_table(crm_data)
+        elif option == "2":
+            add(crm_data)
+        elif option == "3":
+            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "])
+            remove(crm_data, remove_id)
+        elif option == "4":
+            update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "])
+            update(crm_data, update_id)
+        elif option == "5":
+            get_longest_name_id(crm_data)
+        elif option == "6":
+            get_subscribed_emails(crm_data)
+        elif option == "0":
+            break
+        else:
+            ui.print_error_message(err)
 
 
 def show_table(table):
@@ -42,9 +70,7 @@ def show_table(table):
         None
     """
 
-    # your code
-
-    pass
+    ui.print_table(table)
 
 
 def add(table):
@@ -57,8 +83,9 @@ def add(table):
     Returns:
         Table with a new record
     """
-
-    # your code
+    new_customer_data = [common.generate_random(table)]
+    new_#continuefromhere
+    ui.get_inputs(["Name: ", "E-mail: ", "Is the person subscribed?(1 for yes, 0 for no)"])
 
     return table
 
