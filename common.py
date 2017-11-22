@@ -197,9 +197,9 @@ def validate_day(day):
     Does not differentiate between months, so february 31 is possible.
     """
 
-    if validate_int(month):
-        month = int(month)
-    elif month not in tuple(range(1, 32)):
+    if validate_int(day):
+        day = int(day)
+    elif day not in tuple(range(1, 32)):
         return False
     return True
 
