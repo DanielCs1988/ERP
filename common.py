@@ -18,6 +18,7 @@ def random_char(chr_type):
 
 
 def index_of(item, in_list):
+    '''Finds the index of the item parameter in the list.'''
     for index in range(len(in_list)):
         if in_list[index] == item:
             return index
@@ -141,6 +142,20 @@ def get_sum(table, column):
     return summary
 
 
+def get_sum_list(list):
+    '''
+    A very basic replacement for sum().
+
+    Crashes if any list item is not an integer.
+
+    Returns an integer.
+    '''
+    summary = 0
+    for item in list:
+        summary += int(item)
+    return summary
+
+
 def generate_random(table):
     """Generates a random ID with a length of 8.
        It contains 2 number, 2 special, 2 lower- and 2 uppercase characters."""
@@ -207,7 +222,7 @@ def validate_day(day):
 
 def validate_email(email):
     '''
-    Validates e-mail address using a simplified version of the RFC 5322 standard. \
+    Validates e-mail address using a simplified version of the RFC 5322 standard. \t
     cf. http://www.regular-expressions.info/email.html
 
     Args:
@@ -228,3 +243,12 @@ def validate_int(integer):
     except ValueError:
         return False
     return True
+
+
+def validate_empty(userinput):
+    '''
+    Checks if the given parameter is an empty string. If so, returns true.
+    '''
+    if userinput is '':
+        return True
+    return False
