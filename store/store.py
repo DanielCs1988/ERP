@@ -142,9 +142,15 @@ def update(table, id_):
 # return type: a dictionary with this structure: { [manufacturer] : [count] }
 def get_counts_by_manufacturers(table):
 
-    # your code
+    manufacturers = {row[MANUFACTURER] for row in table}
 
-    pass
+    count_by_manufacturers = {}
+
+    for manufacturer in manufacturers:
+        num_games = len([row for row in table if row[MANUFACTURER] == manufacturer])
+        count_by_manufacturers[manufacturer] = num_games
+
+    return count_by_manufacturers
 
 
 # the question: What is the average amount of games in stock of a given manufacturer?
