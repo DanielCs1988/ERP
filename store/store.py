@@ -95,7 +95,7 @@ def add(table):
     """
 
     new_store = [common.generate_random(table)]
-    new_store.extend(ui.get_inputs(["Title: ", "Manufacturer"], "New Sale Information"))
+    new_store.extend(ui.get_inputs(["Title: ", "Manufacturer: "], "New Store Information"))
 
     while True:
         price = ui.get_inputs(["Price: "], "")[0]
