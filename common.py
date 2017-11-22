@@ -128,7 +128,7 @@ def __qsort_partition(array, lo, hi, key):
 
 def get_longest(table, column):
     """Returns the length of the longest item in a given column as integer."""
-    return max([len(row[column]) for row in table])
+    return max([len(str(row[column])) for row in table])
 
 
 def get_sum(table, column):
