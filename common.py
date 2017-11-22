@@ -18,6 +18,7 @@ def random_char(chr_type):
 
 
 def index_of(item, in_list):
+    '''Finds the index of the item parameter in the list.'''
     for index in range(len(in_list)):
         if in_list[index] == item:
             return index
@@ -228,3 +229,12 @@ def validate_int(integer):
     except ValueError:
         return False
     return True
+
+
+def validate_empty(userinput):
+    '''
+    Checks if the given parameter is an empty string. If so, returns true.
+    '''
+    if userinput is '':
+        return True
+    return False
