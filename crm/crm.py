@@ -125,7 +125,7 @@ def remove(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    del table(index)
+    del table[index]
 
     return table
 
