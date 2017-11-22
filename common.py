@@ -1,4 +1,5 @@
 from random import choice
+from datetime import datetime
 import string
 import copy
 import inspect
@@ -127,7 +128,7 @@ def __qsort_partition(array, lo, hi, key):
 
 def get_longest(table, column):
     """Returns the length of the longest item in a given column as integer."""
-    return max([len(row[column]) for row in table])
+    return max([len(str(row[column])) for row in table])
 
 
 def get_sum(table, column):
@@ -151,3 +152,24 @@ def generate_random(table):
         if id_exists(table, temp_str):
             continue
         return temp_str
+
+
+def validate_byear(year):
+    "Check if parameter is an integer and whether it's less or equal than the current year."
+
+    try:
+        year = int(year)
+    except ValueError:
+        return False
+    else:
+        if year > datetime.now().year:
+            return False
+        return True
+
+
+def validate_type(tp):
+    """Check if parameter is 'in' or 'out', returns false otherwise."""
+
+    if tp not in ("in", "out"):
+        return False
+    return True
