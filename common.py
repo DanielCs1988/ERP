@@ -203,6 +203,7 @@ def validate_day(day):
         return False
     return True
 
+
 def validate_email(email):
     '''
     Validates e-mail address using a simplified version of the RFC 5322 standard. \
