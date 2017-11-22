@@ -44,9 +44,21 @@ def start_module():
 
     table = data_manager.get_table_from_file("inventory/inventory.csv")
 
-    ui.print_menu("Inventory",
-                  ["Add item", "Display item", "Update item", "Delete item"],
-                  "Back to main menu")
+    menuitem = -1
+    while menuitem != "0":
+        ui.print_menu("Inventory",
+                      ["Add item", "Display item", "Update item", "Delete item", "Show table"],
+                      "Back to main menu")
+
+        menuitem = ui.getch()
+
+        if(menuitem == "1"):
+            add(table)
+        elif(menuitem == "4"):
+            id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
+            remove(table, id_to_remove)
+        elif(menuitem == "5"):
+            show_table(table)
 
 
 def show_table(table):
