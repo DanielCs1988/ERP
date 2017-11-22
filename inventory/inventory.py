@@ -16,6 +16,22 @@ import data_manager
 # common module
 import common
 
+import enum
+
+from datetime import datetime
+
+from statistics import mean
+from copy import deepcopy
+
+
+class InvCols(enum.IntEnum):
+    __order__ = "ID NAME MANUFACTURER PURCHASE_DATE DURABILITY"
+    ID = 0,
+    NAME = 1,
+    MANUFACTURER = 2,
+    PURCHASE_DATE = 3,
+    DURABILITY = 4
+
 
 def start_module():
     """
@@ -26,10 +42,42 @@ def start_module():
     Returns:
         None
     """
+    inv_file = "inventory/inventory.csv"
+    table = data_manager.get_table_from_file(inv_file)
 
-    # you code
+    menuitem = -1
+    try:
+        while menuitem != "0":
+            ui.print_menu("Inventory",
+                          ["Add item", "Update item", "Remove item", "Show table", "Available item",
+                           "Durability/manufacturer"], "Back to main menu")
 
-    pass
+            menuitem = ui.getch()
+            ui.clear_scr()
+            if(menuitem == "1"):
+                add(table)
+            elif(menuitem == "2"):
+                id_to_remove = ui.get_inputs(["Enter ID of item to update:"], "")[0]
+                update(table, id_to_remove)
+            elif(menuitem == "3"):
+                id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
+                remove(table, id_to_remove)
+            elif(menuitem == "4"):
+                show_table(table)
+            elif menuitem == "5":
+                availables = get_available_items(table)
+                if len(availables) == 0:
+                    ui.print_result("No available items found.")
+                else:
+                    show_table(availables)
+            elif menuitem == "6":
+                avg_durabilities = get_average_durability_by_manufacturers(table)
+                avg_durabilities = [(manufacturer, avg_dur) for manufacturer, avg_dur in avg_durabilities.items()]
+                ui.print_table(avg_durabilities, ["Manufacturer", "Durability"])
+    except (KeyboardInterrupt, EOFError):  # Ctrl-C, Ctrl-D
+        pass
+    finally:
+        data_manager.write_table_to_file(inv_file, table)
 
 
 def show_table(table):
@@ -43,9 +91,7 @@ def show_table(table):
         None
     """
 
-    # your code
-
-    pass
+    ui.print_table(table, ["ID", "Name", "Manufacturer", "Purchase date", "Durability"])
 
 
 def add(table):
@@ -59,7 +105,26 @@ def add(table):
         Table with a new record
     """
 
-    # your code
+    new_item = [common.generate_random(table)]
+    new_item.extend(ui.get_inputs(["Name:", "Manufacturer:"], "Please enter item details"))
+
+    while True:
+        value = ui.get_inputs(["Purchase date:"], "")[0]
+        if not common.validate_byear(value):
+            continue  # validation comes here
+        new_item.append(value)
+        break
+
+    while True:
+        value = ui.get_inputs(["Durability:"], "")[0]
+        try:
+            new_durability = int(value)  # validation comes here
+        except ValueError:
+            continue
+        new_item.append(new_durability)
+        break
+
+    table.append(new_item)
 
     return table
 
@@ -76,7 +141,10 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    # your code
+    idx = common.index_of_id(table, id_)
+
+    if idx >= 0:
+        del table[idx]
 
     return table
 
@@ -92,8 +160,43 @@ def update(table, id_):
     Returns:
         table with updated record
     """
+    ui.clear_scr()
+    index = common.index_of_id(table, id_)
+    if index < 0:
+        ui.print_error_message("Invalid ID: {}.".format(id_))
+        return table
 
-    # your code
+    itemname = table[index][1]
+    ui.print_result("Enter new data for {} ({}). Leave input empty to keep existing values.".format(itemname, id_))
+
+    for col in InvCols:
+        colname = col.name
+        colindex = col.value
+
+        if colindex == 0:
+            continue
+
+        current_input = ui.get_inputs([colname+":"], "")[0]
+
+        if len(current_input) == 0:
+            ui.print_result("{} not changed.".format(colname))
+        elif col == InvCols.PURCHASE_DATE:
+            year_valid = common.validate_byear(current_input)
+            if not year_valid:
+                ui.print_error_message("Invalid value '{}' for {}".format(current_input, colname))
+                continue
+            table[index][colindex] = current_input
+
+        elif col == InvCols.DURABILITY:
+            try:
+                int(current_input)
+            except ValueError:
+                ui.print_error_message("Invalid value '{}' for {}".format(current_input, colname))
+                continue
+            table[index][colindex] = current_input
+
+        else:
+            table[index][colindex] = current_input
 
     return table
 
@@ -107,9 +210,10 @@ def update(table, id_):
 # @table: list of lists
 def get_available_items(table):
 
-    # your code
+    now = datetime.now()
+    current_year = now.year
 
-    pass
+    return [row for row in table if current_year - int(row[InvCols.PURCHASE_DATE]) < int(row[InvCols.DURABILITY])]
 
 
 # the question: What are the average durability times for each manufacturer?
@@ -118,6 +222,12 @@ def get_available_items(table):
 # @table: list of lists
 def get_average_durability_by_manufacturers(table):
 
-    # your code
+    manufacturers = {row[InvCols.MANUFACTURER] for row in table}
 
-    pass
+    durability_by_manufacturers = {}
+
+    for manufacturer in manufacturers:
+        durabilities = [int(row[InvCols.DURABILITY]) for row in table if row[InvCols.MANUFACTURER] == manufacturer]
+        durability_by_manufacturers[manufacturer] = mean(durabilities)
+
+    return durability_by_manufacturers
