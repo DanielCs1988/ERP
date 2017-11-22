@@ -38,7 +38,7 @@ def start_module():
                "Show Game Count Per Manufacturer",
                "Show Average Game Count of a Manufacturer"]
 
-    store_data = data_manager.get_table_from_file("games.csv")
+    store_data = data_manager.get_table_from_file("store/games.csv")
     for game in store_data:
         game[PRICE] = int(game[PRICE])
         game[IN_STOCK] = int(game[IN_STOCK])
