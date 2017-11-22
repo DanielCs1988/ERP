@@ -59,7 +59,9 @@ def start_module():
             to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
             store_data = update(store_data, to_update[0])
         elif option == "5":
-            ui.print_result(get_counts_by_manufacturers(store_data))
+            count_by_manufacturer_dict = get_counts_by_manufacturers(store_data)
+            count_by_manufacturer_table = [(manufacturer, num) for manufacturer, num in count_by_manufacturer_dict.items()]
+            ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
         elif option == "6":
             ui.print_result(get_average_by_manufacturer(store_data))
         elif option == "0":
