@@ -57,10 +57,10 @@ def start_module():
         elif option == "6":
             ui.print_result(get_persons_closest_to_average(hr_data))
         elif option == "0":
+            data_manager.write_table_to_file("persons.csv", hr_data)
             break
         else:
             ui.print_error_message(err)
-            # Wait here
 
 
 def show_table(table):
