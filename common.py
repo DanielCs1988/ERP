@@ -217,7 +217,7 @@ def validate_day(day):
 
     if not validate_int(day):
         return False
-    if not (0 < int(month) < 32):
+    if not (0 < int(day) < 32):
         return False
     return True
 
