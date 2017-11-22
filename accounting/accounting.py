@@ -60,7 +60,7 @@ def show_table(table):
     Returns:
         None
     """
-    
+
     ui.print_table(table)
 
     pass
@@ -99,9 +99,43 @@ def add(table):
     Returns:
         Table with a new record
     """
+    while True:
+        input_month = ui.get_inputs(["Please enter the month: "], "")[0]
+        if not common.validate_month(input_month):
+            continue
+        break
 
-    # your code
+    while True:
+        input_day = ui.get_inputs(["Please enter the day: "], "")[0]
+        if not common.validate_day(input_day):
+            continue
+        break
 
+    while True:
+        input_year = ui.get_inputs(["Please enter the year: "], "")[0]
+        if not common.validate_byear(input_year):
+            continue
+        break
+
+    while True:
+        input_type = ui.get_inputs(["Please enter the type (in or out): "], "")[0]
+        if not common.validate_type(input_type):
+            continue
+        break
+
+    while True:
+        input_amount = ui.get_inputs(["Please enter the amount (in US dollars): "], "")[0]
+        if not common.validate_int(input_amount):
+            continue
+        break
+
+    while True:
+        random_id = common.generate_random(table)
+        if common.id_exists(table, random_id):
+            continue
+        break
+
+    table.append([random_id, input_month, input_day, input_year, input_type, input_amount])
     return table
 
 
@@ -117,7 +151,11 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    # your code
+    while True:
+        input_amount = ui.get_inputs(["Please enter the amount (in US dollars): "], "")[0]
+        if not common.validate_int(input_amount):
+            continue
+        break
 
     return table
 
