@@ -28,9 +28,26 @@ def start_module():
         None
     """
 
-    # you code
+    table = data_manager.get_table_from_file("accounting/items.csv")
+    paid_version = True    # an easter-egg, leave it True and it should (hopefully) cause no problems
+    if paid_version:    # uses the options based on the easter-egg
+        options = ["Add entry",
+                   "Remove entry",
+                   "Update",
+                   "Which year has the highest profit?",
+                   "What is the average (per item) profit in a given year?"]
+    else:
+        options = ["Add entry",
+                   "Remove entry",
+                   "Update",
+                   "Buy the full version of the software to unlock more options"]
+    ui.print_menu("Accounting module", options, "Back to main menu")
 
-    pass
+    while True:
+        try:
+            choose(table)
+        except KeyError as err:
+            ui.print_error_message(err)
 
 
 def show_table(table):
@@ -43,10 +60,33 @@ def show_table(table):
     Returns:
         None
     """
-
-    # your code
+    
+    ui.print_table(table)
 
     pass
+
+
+def choose(table):    # still needs error checking as well
+    inputs = ui.get_inputs(["Please enter a number: "], "")
+    option = inputs[0]
+    if option == "1":
+        add(table)
+    elif option == "2":
+        input_id = inputs[1]
+        remove(table, input_id)
+    elif option == "3":
+        input_id = inputs[1]
+        update(table, input_id)
+    elif option == "4":
+        # which_year_max()    # TO DO
+        pass
+    elif option == "5":
+        # sales.start_module()    # TO DO
+        pass
+    elif option == "0":
+        handle_menu()
+    else:
+        raise KeyError("There is no such option.")
 
 
 def add(table):
