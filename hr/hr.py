@@ -34,12 +34,15 @@ def start_module():
                "Show Persons Closest to Average Age"]
 
     hr_data = data_manager.get_table_from_file("hr/persons.csv")
-    for person in hr_data:
-        person[B_YEAR] = int(person[B_YEAR])
 
     while True:
         ui.print_menu("HR Department: Main menu", options, "Exit program")
-        inputs = ui.get_inputs(["Please enter a number: "], "")
+        try:
+            inputs = ui.get_inputs(["Please enter a number: "], "")
+        except (KeyboardInterrupt, EOFError):
+            data_manager.write_table_to_file("hr/persons.csv", hr_data)
+            common.exit()
+
         option = inputs[0]
 
         if option == "1":
@@ -57,8 +60,6 @@ def start_module():
         elif option == "6":
             ui.print_result(get_persons_closest_to_average(hr_data))
         elif option == "0":
-            for person in hr_data:
-                person[B_YEAR] = str(person[B_YEAR])
             data_manager.write_table_to_file("hr/persons.csv", hr_data)
             break
         else:
@@ -94,7 +95,7 @@ def add(table):
     while True:
         b_year = ui.get_inputs(["Birth Year: "], "")[0]
         if common.validate_byear(b_year):
-            new_person.append(int(b_year))
+            new_person.append(b_year)
             break
 
     table.append(new_person)
@@ -115,7 +116,7 @@ def remove(table, id_):
     index = common.index_of_id(table, id_)
     if index == -1:
         ui.print_error_message("Wrong ID!")
-        return table  # That was the most ridiculous mistake ever, period.
+        return table
 
     del table[index]
     return table
@@ -142,7 +143,7 @@ def update(table, id_):
     while True:
         b_year = ui.get_inputs(["Birth Year: "], "")[0]
         if common.validate_byear(b_year):
-            table[index][B_YEAR] = int(b_year)
+            table[index][B_YEAR] = b_year
             break
 
     return table
@@ -151,13 +152,13 @@ def update(table, id_):
 def get_oldest_person(table):
     """Return a list of the oldest people in the group."""
 
-    max_age = min([person[B_YEAR] for person in table])
-    return [person[NAME] for person in table if person[B_YEAR] == max_age]
+    max_age = min([int(person[B_YEAR]) for person in table])
+    return [person[NAME] for person in table if int(person[B_YEAR]) == max_age]
 
 
 def get_persons_closest_to_average(table):
     """Returns a list of the people closest to the average age in the group."""
 
     average_age = common.get_sum(table, B_YEAR) // len(table)
-    closest_age = min([abs(average_age-person[B_YEAR]) for person in table])
-    return [person[NAME] for person in table if abs(average_age-person[B_YEAR]) == closest_age]
+    closest_age = min([abs(average_age - int(person[B_YEAR])) for person in table])
+    return [person[NAME] for person in table if abs(average_age - int(person[B_YEAR])) == closest_age]
