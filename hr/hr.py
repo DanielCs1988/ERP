@@ -12,6 +12,10 @@ import data_manager
 import common
 import datetime
 
+ID = 0
+NAME = 1
+B_YEAR = 2
+
 
 def start_module():
     """
@@ -31,7 +35,7 @@ def start_module():
 
     hr_data = data_manager.get_table_from_file("persons.csv")
     for person in hr_data:
-        person[2] = int(person[2])
+        person[B_YEAR] = int(person[B_YEAR])
 
     while True:
         ui.print_menu("HR Department: Main menu", options, "Exit program")
@@ -136,25 +140,22 @@ def update(table, id_):
     while True:
         b_year = ui.get_inputs(["Birth Year: "], "")[0]
         if common.validate_byear(b_year):
-            table[index][2] = b_year
+            table[index][B_YEAR] = b_year
             break
 
     return table
 
 
-# special functions:
-# ------------------
-
-# the question: Who is the oldest person ?
-# return type: list of strings (name or names if there are two more with the same value)
 def get_oldest_person(table):
-    max_age = min([person[2] for person in table])
-    return [person[1] for person in table if person[2] == max_age]
+    """Return a list of the oldest people in the group."""
+
+    max_age = min([person[B_YEAR] for person in table])
+    return [person[NAME] for person in table if person[B_YEAR] == max_age]
 
 
-# the question: Who is the closest to the average age ?
-# return type: list of strings (name or names if there are two more with the same value)
 def get_persons_closest_to_average(table):
-    average_age = common.get_sum(table, 2) // len(table)
-    closest_age = min([abs(average_age-person[2]) for person in table])
-    return [person[1] for person in table if abs(average_age-person[2]) == closest_age]
+    """Returns a list of the people closest to the average age in the group."""
+
+    average_age = common.get_sum(table, B_YEAR) // len(table)
+    closest_age = min([abs(average_age-person[B_YEAR]) for person in table])
+    return [person[NAME] for person in table if abs(average_age-person[B_YEAR]) == closest_age]
