@@ -12,12 +12,12 @@ import ui
 import data_manager
 import common
 
-__ID = 0
-__MONTH = 1
-__DAY = 2
-__YEAR = 3
-__TYPE = 4
-__AMOUNT = 5
+ID = 0
+MONTH = 1
+DAY = 2
+YEAR = 3
+TYPE = 4
+AMOUNT = 5
 
 
 def start_module():
@@ -48,7 +48,12 @@ def start_module():
 
     while True:
         ui.print_menu("Accounting", menu_options, "Back to main menu")
-        inputs = ui.get_inputs(["Please enter a number: "], "")
+        try:
+            inputs = ui.get_inputs(["Please enter a number: "], "")
+        except (KeyboardInterrupt, EOFError):
+            data_manager.write_table_to_file("accounting/items.csv", table)
+            common.exit()
+
         option = inputs[0]
 
         if option == "1":
@@ -68,7 +73,7 @@ def start_module():
                 input_year = ui.get_inputs(["Which year do you want to know about: "], "")[0]
                 if not common.validate_byear(input_year):
                     continue
-                elif common.index_of_value(table, __YEAR, input_year) == -1:
+                if common.index_of_value(table, YEAR, input_year) == -1:
                     continue
                 break
             ui.print_result(avg_amount(table, input_year),
@@ -92,8 +97,6 @@ def show_table(table):
     """
     titles = ["ID", "Month", "Day", "Year", "Type", "Amount"]
     ui.print_table(table, titles)
-
-    pass
 
 
 def add(table):
@@ -136,11 +139,7 @@ def add(table):
             continue
         break
 
-    while True:
-        random_id = common.generate_random(table)
-        if common.id_exists(table, random_id):
-            continue
-        break
+    random_id = common.generate_random(table)
 
     table.append([random_id, input_month, input_day, input_year, input_type, input_amount])
 
@@ -169,7 +168,7 @@ def remove(table, id_):
     return table
 
 
-def update(table, id_):
+def update(table, id_):  # Constants could be used here, also needs a bit of reviewing.
     """
     Updates specified record in the table. Ask users for new data.
 
@@ -184,7 +183,7 @@ def update(table, id_):
     id_to_change = common.index_of_id(table, id_)
 
     if id_to_change < 0:
-        return
+        return  # These function must have a return value and please give that value to the table at the menu.
 
     while True:
         input_month = ui.get_inputs(["Please enter the new month: "], "")[0]
@@ -226,6 +225,7 @@ def update(table, id_):
             continue
         break
 
+    # Can be update dinamically at the input points.
     table[id_to_change] = [id_, input_month, input_day, input_year, input_type, input_amount]
     show_table(table)
     return table
@@ -243,11 +243,11 @@ def which_year_max(table):
     Compares and returns the year with the highest profit.
     '''
     max_profit, current_year = 0, 0
-    for year in {row[__YEAR] for row in table}:
+    for year in {row[YEAR] for row in table}:
         temp_sum = common.get_sum_list(
-            [int(row[__AMOUNT]) for row in table if row[__YEAR] == year and row[__TYPE] == 'in'])
+            [int(row[AMOUNT]) for row in table if row[YEAR] == year and row[TYPE] == 'in'])
         temp_sum -= common.get_sum_list(
-            [int(row[__AMOUNT]) for row in table if row[__YEAR] == year and row[__TYPE] == 'out'])
+            [int(row[AMOUNT]) for row in table if row[YEAR] == year and row[TYPE] == 'out'])
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
 
@@ -261,11 +261,11 @@ def avg_amount(table, input_year):
     current_year = 0
 
     temp_sum = common.get_sum_list(
-        [int(row[__AMOUNT]) for row in table if row[__YEAR] == input_year and row[__TYPE] == 'in'])
+        [int(row[AMOUNT]) for row in table if row[YEAR] == input_year and row[TYPE] == 'in'])
     temp_sum -= common.get_sum_list(
-        [int(row[__AMOUNT]) for row in table if row[__YEAR] == input_year and row[__TYPE] == 'out'])
+        [int(row[AMOUNT]) for row in table if row[YEAR] == input_year and row[TYPE] == 'out'])
     temp_count = common.get_sum_list(
-        [1 for row in table if row[__YEAR] == input_year])
+        [1 for row in table if row[YEAR] == input_year])
 
     return temp_sum / temp_count
 
