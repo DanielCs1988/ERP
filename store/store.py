@@ -15,6 +15,12 @@ import data_manager
 # common module
 import common
 
+ID = 0
+TITLE = 1
+MANUFACTURER = 2
+PRICE = 3
+IN_STOCK = 4
+
 
 def start_module():
     """
@@ -25,10 +31,42 @@ def start_module():
     Returns:
         None
     """
+    options = ["Show Table",
+               "Add Game",
+               "Remove Game",
+               "Update Game",
+               "Show Game Count Per Manufacturer",
+               "Show Average Game Count of a Manufacturer"]
 
-    # your code
+    store_data = data_manager.get_table_from_file("games.csv")
+    for game in store_data:
+        game[PRICE] = int(game[PRICE])
+        game[IN_STOCK] = int(game[IN_STOCK])
 
-    pass
+    while True:
+        ui.print_menu("Store: Main menu", options, "Exit program")
+        inputs = ui.get_inputs(["Please enter a number: "], "")
+        option = inputs[0]
+
+        if option == "1":
+            show_table(store_data)
+        elif option == "2":
+            store_data = add(store_data)
+        elif option == "3":
+            to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
+            store_data = remove(store_data, to_remove[0])
+        elif option == "4":
+            to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
+            store_data = update(store_data, to_update[0])
+        elif option == "5":
+            ui.print_result(get_counts_by_manufacturers(store_data))
+        elif option == "6":
+            ui.print_result(get_average_by_manufacturer(store_data))
+        elif option == "0":
+            data_manager.write_table_to_file("games.csv", store_data)
+            break
+        else:
+            ui.print_error_message(err)
 
 
 def show_table(table):
@@ -122,15 +160,21 @@ def update(table, id_):
 # return type: a dictionary with this structure: { [manufacturer] : [count] }
 def get_counts_by_manufacturers(table):
 
-    # your code
+    manufacturers = {row[MANUFACTURER] for row in table}
 
-    pass
+    count_by_manufacturers = {}
+
+    for manufacturer in manufacturers:
+        num_games = len([row for row in table if row[MANUFACTURER] == manufacturer])
+        count_by_manufacturers[manufacturer] = num_games
+
+    return count_by_manufacturers
 
 
 # the question: What is the average amount of games in stock of a given manufacturer?
 # return type: number
 def get_average_by_manufacturer(table, manufacturer):
+    """Returns average value of a manufacturer's items in stock."""
 
-    # your code
-
-    pass
+    summed = common.get_sum([item for item in table if item[MANUFACTURER] == manufacturer], IN_STOCK)
+    return summed / len(summed)
