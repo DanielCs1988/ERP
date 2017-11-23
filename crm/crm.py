@@ -37,7 +37,7 @@ def start_module():
                    "Add entry",
                    "Update entry",
                    "Remove entry",
-                   "Who has the longest name?",
+                   "What is the ID of the longest name person?",
                    "Subscribed emails"]
 
     crm_data = data_manager.get_table_from_file("crm/customers.csv")
@@ -63,7 +63,9 @@ def start_module():
         elif option == "5":
             ui.print_result(get_longest_name_id(crm_data))
         elif option == "6":
-            ui.print_result(get_subscribed_emails(crm_data))
+            temp_crm_data = get_subscribed_emails(crm_data)
+            temp_crm_data = [line.split(";") for line in temp_crm_data]
+            ui.print_table(temp_crm_data, ["Name", "E-mail"])
         elif option == "0":
             data_manager.write_table_to_file("crm/customers.csv", crm_data)
             ui.clear_scr()
@@ -170,4 +172,4 @@ def get_longest_name_id(table):
 # return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
     """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
-    return ["; ".join((line[NAME], line[EMAIL])) for line in table if line[SUBSCRIBED] == '1']
+    return [";".join((line[NAME], line[EMAIL])) for line in table if line[SUBSCRIBED] == '1']
