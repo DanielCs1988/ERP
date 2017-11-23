@@ -21,7 +21,6 @@ import enum
 from datetime import datetime
 
 from statistics import mean
-from copy import deepcopy
 
 
 class InvCols(enum.IntEnum):
