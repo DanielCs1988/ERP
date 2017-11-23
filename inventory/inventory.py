@@ -49,20 +49,20 @@ def start_module():
     try:
         while menuitem != "0":
             ui.print_menu("Inventory",
-                          ["Add item", "Update item", "Remove item", "Show table", "Available item",
+                          ["Show table", "Add entry", "Update entry", "Delete entry", "Available items",
                            "Durability/manufacturer"], "Back to main menu")
 
             menuitem = ui.getch()
             ui.clear_scr()
-            if(menuitem == "1"):
+            if(menuitem == "2"):
                 add(table)
-            elif(menuitem == "2"):
+            elif(menuitem == "3"):
                 id_to_remove = ui.get_inputs(["Enter ID of item to update:"], "")[0]
                 update(table, id_to_remove)
-            elif(menuitem == "3"):
+            elif(menuitem == "4"):
                 id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
                 remove(table, id_to_remove)
-            elif(menuitem == "4"):
+            elif(menuitem == "1"):
                 show_table(table)
             elif menuitem == "5":
                 availables = get_available_items(table)
@@ -160,7 +160,6 @@ def update(table, id_):
                                       ("Durability: ", common.validate_int)], True)
 
     common.apply_update_to_line(table[index], user_input)
-    # col_idx + 1 because the first item is always the ID that is not changed
 
     return table
 
