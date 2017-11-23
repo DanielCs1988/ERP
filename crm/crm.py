@@ -32,44 +32,51 @@ def start_module():
     Returns:
         None
     """
+    ui.clear_scr()
     crm_options = ["Show table",
-                   "Add",
-                   "Remove",
-                   "Update",
-                   "Who has the longest name?",
+                   "Add entry",
+                   "Update entry",
+                   "Remove entry",
+                   "What is the ID of the longest name person?",
                    "Subscribed emails"]
 
     crm_data = data_manager.get_table_from_file("crm/customers.csv")
 
     while True:
         ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
+
         try:
-            inputs = ui.get_inputs(["Please enter a number: "], "")
+            option = ui.valid_in("Please enter a number: ", common.validate_string)
         except (KeyboardInterrupt, EOFError):
             data_manager.write_table_to_file("crm/customers.csv", crm_data)
-            common.exit()
-
-        option = inputs[0]
+            ui.clear_scr()
+            exit()
 
         if option == "1":
             show_table(crm_data)
         elif option == "2":
             crm_data = add(crm_data)
+            ui.clear_scr()
         elif option == "3":
-            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
-            crm_data = remove(crm_data, remove_id)
-        elif option == "4":
-            update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "], "")[0]
+            update_id = ui.valid_in(["Please enter the ID of the person you want to update: "], "")[0]
             crm_data = update(crm_data, update_id)
+            ui.clear_scr()
+        elif option == "4":
+            remove_id = ui.valid_in(["Please enter the ID of the person you want to delete: "], "")[0]
+            crm_data = remove(crm_data, remove_id)
+            ui.clear_scr()
         elif option == "5":
             ui.print_result(get_longest_name_id(crm_data))
         elif option == "6":
-            ui.print_result(get_subscribed_emails(crm_data))
+            temp_crm_data = get_subscribed_emails(crm_data)
+            temp_crm_data = [line.split(";") for line in temp_crm_data]
+            ui.print_table(temp_crm_data, ["E-mail", "Name"])
         elif option == "0":
             data_manager.write_table_to_file("crm/customers.csv", crm_data)
+            ui.clear_scr()
             break
         else:
-            ui.print_error_message(err)
+            ui.clear_scr()
 
 
 def show_table(table):
@@ -82,6 +89,7 @@ def show_table(table):
     Returns:
         None
     """
+    ui.clear_scr()
     ui.print_table(table, ["ID", "Name", "E-mail", "Subscribed"])
 
 
@@ -93,20 +101,15 @@ def add(table):
         table: table to add new record to
 
     Returns:
-        Table with a new record
-    """
+    #    Table with a new record
+    #"""
     new_customer_data = [common.generate_random(table)]
-    new_customer_data.append(ui.get_inputs(["Name: "], "")[0])
-    while True:
-        email = ui.get_inputs(["E-mail: "], "")[0]
-        if common.validate_email(email):
-            new_customer_data.append(email)
-            break
-    while True:
-        boolean = ui.get_inputs(["Is he subscribed?: "], "")[0]
-        if common.validate_boolean(boolean):
-            new_customer_data.append(boolean)
-            break
+
+    new_customer_data.extend(ui.mass_valid_in([("Name: ", common.validate_string),
+                                                  ("E-mail: ", common.validate_email),
+                                                  ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
+    if new_customer_data is None:
+        return table
 
     table.append(new_customer_data)
 
@@ -125,14 +128,7 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    index = common.index_of_id(table, id_)
-    if index == -1:
-        ui.print_error_message("Wrong ID!")
-        return table
-
-    del table[index]
-
-    return table
+    return common.remove_line(table, id_)
 
 
 def update(table, id_):
@@ -152,19 +148,11 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    table[index][NAME] = ui.get_inputs(["Name: "], "")[0]
+    update_input = ui.mass_valid_in([("Name: ", common.validate_string),
+                                        ("E-mail: ", common.validate_email),
+                                        ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
 
-    while True:
-        email = ui.get_inputs(["E-mail: "], "")[0]
-        if common.validate_email(email):
-            table[index][EMAIL] = email
-            break
-
-    while True:
-        boolean = ui.get_inputs(["Is he subscribed?: "], "")[0]
-        if common.validate_boolean(boolean):
-            table[index][SUBSCRIBED] = boolean
-            break
+    table[index] = common.apply_update_to_line(table[index], update_input)
 
     return table
 
@@ -174,19 +162,19 @@ def update(table, id_):
 
 
 # the question: What is the id of the customer with the longest name ?
-# return type: string (id) - if there are more than one longest name, return the first by descending alphabetical order
+# return type: string (id) - if there are more than one longest name, return the first by ascending alphabetical order
 def get_longest_name_id(table):
     """Returns the ID of the person who has the longest name. If there are more people it returns the first in
-       descending alphabetical order"""
+       ascending alphabetical order"""
     names_lengths = [(line[ID], len(line[NAME]), line[NAME]) for line in table]
     max_length = max(names_lengths, key=itemgetter(1))[1]
     max_length_names = [(name[0], name[2]) for name in names_lengths if name[1] == max_length]
 
-    return common.qsort(max_length_names, key=itemgetter(1), reversed=True)[0][0]
+    return common.srt(max_length_names, key=itemgetter(1))[0][0]
 
 
 # the question: Which customers has subscribed to the newsletter?
 # return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
     """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
-    return ["; ".join((line[NAME], line[EMAIL])) for line in table if line[SUBSCRIBED] == '1']
+    return [";".join((line[EMAIL], line[NAME])) for line in table if line[SUBSCRIBED] == '1']

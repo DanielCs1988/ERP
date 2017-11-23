@@ -31,10 +31,11 @@ def start_module():
     Returns:
         None
     """
+    ui.clear_scr()
     options = ["Show Table",
-               "Add Game",
-               "Remove Game",
-               "Update Game",
+               "Add Entry",
+               "Update Entry",
+               "Remove Entry",
                "Show Game Count Per Manufacturer",
                "Show Average Game Count of a Manufacturer"]
 
@@ -45,22 +46,25 @@ def start_module():
 
     while True:
         ui.print_menu("Store: Main menu", options, "Exit program")
-        inputs = ui.get_inputs(["Please enter a number: "], "")
-        option = inputs[0]
+        option = ui.getch()
 
         if option == "1":
             show_table(store_data)
         elif option == "2":
             store_data = add(store_data)
+            ui.clear_scr()
         elif option == "3":
-            to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
-            store_data = remove(store_data, to_remove[0])
-        elif option == "4":
             to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
             store_data = update(store_data, to_update[0])
+            ui.clear_scr()
+        elif option == "4":
+            to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
+            store_data = remove(store_data, to_remove[0])
+            ui.clear_scr()
         elif option == "5":
             count_by_manufacturer_dict = get_counts_by_manufacturers(store_data)
-            count_by_manufacturer_table = [(manufacturer, num) for manufacturer, num in count_by_manufacturer_dict.items()]
+            count_by_manufacturer_table = [(manufacturer, num)
+                                           for manufacturer, num in count_by_manufacturer_dict.items()]
             ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
         elif option == "6":
             manufacturer = ui.get_inputs(["Please a manufacturer: "], "")[0]
@@ -70,9 +74,10 @@ def start_module():
                 game[PRICE] = str(game[PRICE])
                 game[IN_STOCK] = str(game[IN_STOCK])
             data_manager.write_table_to_file("store/games.csv", store_data)
+            ui.clear_scr()
             break
         else:
-            ui.print_error_message(err)
+            ui.clear_scr()
 
 
 def show_table(table):
@@ -85,7 +90,7 @@ def show_table(table):
     Returns:
         None
     """
-
+    ui.clear_scr()
     ui.print_table(table, ["ID", "Title", "Manufacturer", "Price", "In Stock"])
 
 
@@ -101,19 +106,13 @@ def add(table):
     """
 
     new_store = [common.generate_random(table)]
-    new_store.extend(ui.get_inputs(["Title: ", "Manufacturer: "], "New Store Information"))
 
-    while True:
-        price = ui.get_inputs(["Price: "], "")[0]
-        if common.validate_int(price):
-            new_store.append(int(price))
-            break
-
-    while True:
-        in_stock = ui.get_inputs(["In Stock: "], "")[0]
-        if common.validate_int(in_stock):
-            new_store.append(int(in_stock))
-            break
+    new_store.extend(ui.mass_valid_in([("Title: ", common.validate_string),
+                                       ("Manufacturer: ", common.validate_string)
+                                       ("Price: ", common.validate_int),
+                                       ("In Stock: ", common.validate_int)]))
+    if new_store is None:
+        return table
 
     table.append(new_store)
 
@@ -132,14 +131,7 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    index = common.index_of_id(table, id_)
-    if index == -1:
-        ui.print_error_message("Wrong ID!")
-        return table
-
-    del table[index]
-
-    return table
+    return common.remove_line(table, id_)
 
 
 def update(table, id_):
@@ -153,55 +145,17 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-
-    ui.clear_scr()
     index = common.index_of_id(table, id_)
     if index < 0:
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    itemname = table[index][TITLE]
-    ui.print_result("Enter new data for {} ({}). Leave input empty to keep existing values.".format(itemname, id_))
+    update_input = ui.mass_valid_in([("Title: ", common.validate_string),
+                                     ("Manufacturer: ", common.validate_string)
+                                     ("Price: ", common.validate_int),
+                                     ("In Stock: ", common.validate_int)])
 
-    #  gametitle
-    gametitle = ui.get_inputs(["Game title:"], "")[0]
-
-    if len(gametitle) > 0:
-        table[index][TITLE] = gametitle
-    else:
-        ui.print_result("Title not changed.")
-
-    #  manufacturer
-    manufacturer = ui.get_inputs(["Game manufacturer:"], "")[0]
-
-    if len(manufacturer) > 0:
-        table[index][MANUFACTURER] = manufacturer
-    else:
-        ui.print_result("Manufacturer not changed.")
-
-    #  price
-
-    price_str = ui.get_inputs(["Price:"], "")[0]
-
-    if len(price_str) > 0:
-        if not common.validate_int(price_str):
-            ui.print_error_message("{} is not a valid integer. Price not changed.".format(price_str))
-        else:
-            table[index][PRICE] = price_str
-    else:
-        ui.print_result("Price not changed.")
-
-    # price
-
-    in_stock_str = ui.get_inputs(["In stock:"], "")[0]
-
-    if len(in_stock_str) > 0:
-        if not common.validate_int(in_stock_str):
-            ui.print_error_message("{} is not a valid integer. In stock not changed.".format(in_stock_str))
-        else:
-            table[index][IN_STOCK] = in_stock_str
-    else:
-        ui.print_result("In stock not changed.")
+    table[index] = common.apply_update_to_line(table[index], update_input)
 
     return table
 
@@ -234,5 +188,5 @@ def get_average_by_manufacturer(table, manufacturer):
     if len(items_for_manufacturer) == 0:
         return 0
 
-    summed = common.get_sum(items_for_manufacturer, IN_STOCK)
+    summed = common.szum(items_for_manufacturer, IN_STOCK)
     return summed / len(items_for_manufacturer)

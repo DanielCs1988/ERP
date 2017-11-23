@@ -11,28 +11,6 @@ def clear_scr():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-# cross-platform getch https://gist.github.com/jfktrey/8928865
-if platform.system() == "Windows":
-    import msvcrt
-
-    def getch():
-        return msvcrt.getch()
-else:
-    import tty
-    import termios
-    import sys
-
-    def getch():
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-
-
 def print_table(table, title_list):
     """
     Prints table with data. Sample output:
@@ -60,7 +38,7 @@ def print_table(table, title_list):
         lenghts[x] += 4
     # if the title bar is longer, then it uses its lenght instead
     # then, it adds four to make it pretty
-    table_width = sum(lenghts) + len(lenghts) - 1    # the lenght of the whole table
+    table_width = szum_list(lenghts) + len(lenghts) - 1    # the lenght of the whole table
 
     print("/{0}\\".format("-"*table_width, end=""))    # the topmost row, which is just a graphic
 
@@ -172,11 +150,51 @@ def print_error_message(message):
     print('[\033[1;31m{}\033[1;m]'.format(message))
 
 
-def valid_input(msg, validator):
+def valid_in(msg, validator, allow_empty=False, exit_string=("esc", "quit", "bye", "exit")):
     """Keeps prompting the user with msg to input a value, until the validator returns true on it.
-       Returns the accepted string."""
+       Returns the accepted string.
+
+       Args:
+            msg: The message to be displayed to the user.
+            validator: A validator function. Must return true if the input is valid.
+            allow_empty: Whether empty input is allowed or not.
+
+        Returns:
+            A valid input result (string). Returns None, if allow_empty is True and an empty string is entered.
+       """
     while True:
         prompt = input(msg)
-        if validator(prompt):
+        if prompt.lower() in exit_string:
+            return "__exit__"
+        if allow_empty and validate_empty(prompt):
+            return None
+        if not validator or validator(prompt):
             return prompt
         print_error_message("Incorrect input!")
+
+
+def mass_valid_in(input_requests, update_mode=False, exit_string=("esc", "quit", "bye", "exit")):
+    """
+    Requests multiple valid inputs.
+
+    Args:
+        input_requests: A list of tuples containing request message-validator function pairs.
+        update_mode: Whether in update mode. Update mode allows empty input (=current value not changed)
+    Returns:
+        A list valid input values. \
+            The input value may be None in update mode, indicating that the value must not be changed. \
+            The ouput list retains the order of the input list.
+    """
+    results = []
+    print_result("Please enter item details. Type any of the following strings to cancel: {}"
+                 .format(", ".join(exit_string)))
+
+    for msg, validator in input_requests:
+        user_input = valid_in(msg, validator, update_mode)
+        if user_input == "__exit__":
+            return None
+        if update_mode and user_input is None:
+            print_result("Value not changed.")
+        results.append(user_input)
+
+    return results

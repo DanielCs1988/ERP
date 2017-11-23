@@ -1,17 +1,13 @@
 from random import choice
-from datetime import datetime
-from sys import exit
-import string
-import copy
-import inspect
-import re
+import ui
 
-CHR_TYPES = {"uppercase": string.ascii_uppercase,
-             "lowercase": string.ascii_lowercase,
-             "digit": string.digits,
-             "symbol": "!@#$%^&*()?",
-             "char": string.ascii_letters
+CHR_TYPES = {"uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+             "lowercase": "abcdefghijklmnopqrstuvwxyz",
+             "digit": "0123456789",
+             "symbol": "!@#$%^&*()?"
              }
+
+CURRENT_YEAR = 2017
 
 
 def random_char(chr_type):
@@ -66,13 +62,26 @@ def qsort_table(table, col, **kwargs):
             Note that the value passed to the key function will be the value of the given cell (row, column)\
             of the table.
     """
-    return qsort(table,
-                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs and inspect.isfunction(
-                     kwargs["key"]) else row[col],
-                 reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
+    return srt(table,
+               key=lambda row: kwargs["key"](row[col]) if "key" in kwargs else row[col],
+               reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
 
 
-def qsort(array, **kwargs):
+def deepcopy(array):
+    """
+    Our humble imitation of deepcopy.
+    """
+    retval = []
+    for item in array:
+        if isinstance(item, (list, set, tuple)):
+            retval.append(deepcopy(item))
+        else:
+            retval.append(item)
+
+    return retval
+
+
+def srt(array, **kwargs):
     """
     Sorts the array using the Quicksort algorithm (with Hoare partition scheme). \
     The original array will not be modified.
@@ -85,27 +94,27 @@ def qsort(array, **kwargs):
     Returns:
         The sorted array (list).
     """
-    array_copy = list(copy.deepcopy(array))
+    array_copy = deepcopy(array)
 
     key = kwargs["key"] if "key" in kwargs else None
 
-    __qsort(array_copy, 0, len(array) - 1, key)
+    __qsrt(array_copy, 0, len(array) - 1, key)
 
     return array_copy if not ("reversed" in kwargs and kwargs["reversed"]) else array_copy[::-1]
 
 
-def __qsort(array, lo, hi, key):
+def __qsrt(array, lo, hi, key):
     if lo < hi:
-        p = __qsort_partition(array, lo, hi, key)
-        __qsort(array, lo, p, key)
-        __qsort(array, p + 1, hi, key)
+        p = __qsrt_partition(array, lo, hi, key)
+        __qsrt(array, lo, p, key)
+        __qsrt(array, p + 1, hi, key)
 
 
-def __qsort_keyed_value(value, key):
-    return key(value) if inspect.isfunction(key) else value
+def __qsrt_keyed_value(value, key):
+    return key(value) if key else value
 
 
-def __qsort_partition(array, lo, hi, key):
+def __qsrt_partition(array, lo, hi, key):
     pivot = array[lo]
     i = lo - 1
     j = hi + 1
@@ -113,12 +122,12 @@ def __qsort_partition(array, lo, hi, key):
 
         while True:
             i = i + 1
-            if not __qsort_keyed_value(array[i], key) < __qsort_keyed_value(pivot, key):
+            if not __qsrt_keyed_value(array[i], key) < __qsrt_keyed_value(pivot, key):
                 break
 
         while True:
             j = j - 1
-            if not __qsort_keyed_value(array[j], key) > __qsort_keyed_value(pivot, key):
+            if not __qsrt_keyed_value(array[j], key) > __qsrt_keyed_value(pivot, key):
                 break
 
         if i >= j:
@@ -135,14 +144,14 @@ def get_longest(table, column):
     return max([len(str(row[column])) for row in table])
 
 
-def get_sum(table, column):
+def szum(table, column):
     """ Returns the sum of the data of the given column."""
-    return get_sum_list([row[column] for row in table])
+    return szum_list([row[column] for row in table])
 
 
-def get_sum_list(collection):
+def szum_list(collection):
     '''
-    A very basic replacement for sum().
+    A very basic replacement for summary function.
 
     Crashes if any list item is not an integer.
 
@@ -176,7 +185,7 @@ def validate_byear(year):
 
     if not validate_int(year):
         return False
-    if int(year) > datetime.now().year:
+    if int(year) > CURRENT_YEAR:
         return False
     return True
 
@@ -224,16 +233,29 @@ def validate_day(day):
 
 def validate_email(email):
     '''
-    Validates e-mail address using a simplified version of the RFC 5322 standard. \t
-    cf. http://www.regular-expressions.info/email.html
-
+    Validates e-mail address using.
     Args:
         email: The email address to validate.
 
     Returns:
         True, if email is a valid email address
     '''
-    return re.match(r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", email) is not None
+    is_valid = True
+
+    at_index = index_of("@", email)
+
+    if at_index == 0 or at_index < 0 or at_index == len(email) - 1:
+        return False
+    if len([char for char in email if char == "@"]) > 1:
+        return False
+
+    email_split = email.split("@")
+    dot_index = index_of(".", email_split[1])
+
+    if dot_index == 0 or dot_index < 0 or dot_index == len(email_split[1]) - 1:
+        return False
+
+    return is_valid
 
 
 def validate_int(integer):
@@ -254,3 +276,93 @@ def validate_empty(userinput):
     if userinput is '':
         return True
     return False
+
+
+def remove_line(table, id):
+    """Takes the table given as a parameter, seeks the line with the given ID and removes it."""
+
+    index = index_of_id(table, id)
+    if index == -1:
+        ui.print_error_message("Wrong ID!")
+        return table
+
+    del table[index]
+    return table
+
+
+def apply_update_to_line(original_line, user_input):
+    """
+    Applies data received from mass_valid_update to the original table line.
+    Don't add the original ID to user_input.
+    """
+    if user_input is None:
+        return original_line
+
+    for col_idx in range(len(user_input)):
+        if user_input[col_idx]:
+            original_line[col_idx + 1] = user_input[col_idx]
+        # col_idx + 1 because the first item is always the ID that is not changed
+
+    return original_line
+
+
+def validate_string(text):
+    if text == "":
+        return False
+    return True
+
+
+def get_item(index):
+    def func(row):
+        return row[index]
+    return func
+
+
+class dtime:
+
+    def __init__(self, year, month, day):
+        if not validate_byear(year):
+            raise ValueError("Invalid year parameter!")
+        if not validate_month(month):
+            raise ValueError("Invalid month parameter!")
+        if not validate_day(day):
+            raise ValueError("Invalid day parameter!")
+
+        self.year = int(year)
+        self.month = int(month)
+        self.day = int(day)
+
+    def __str__(self):
+        return "{}/{}/{}".format(self.year, self.month, self.day)
+
+    def __eq__(self, other):
+        if not isinstance(other, dtime):
+            raise TypeError("Can only compare dtime object to other dtime objects!")
+        if self.year == other.year and self.month == other.month and self.day == other.day:
+            return True
+        return False
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __gt__(self, other):
+        if not isinstance(other, dtime):
+            raise TypeError("Can only compare dtime object to other dtime objects!")
+        if self.year > other.year:
+            return True
+        elif self.year == other.year:
+            if self.month > other.month:
+                return True
+            elif self.month == other.month:
+                if self.day > other.day:
+                    return True
+        return False
+
+    def __le__(self, other):
+        return not self > other
+
+    def __ge__(self, other):
+        return self > other or self == other
+
+    def __lt__(self, other):
+        return not self >= other
