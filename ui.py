@@ -172,7 +172,7 @@ def print_error_message(message):
     print('[\033[1;31m{}\033[1;m]'.format(message))
 
 
-def valid_input(msg, validator, allow_empty=False):
+def valid_input(msg, validator, allow_empty=False, exit_string=("esc", "quit", "cancel", "exit")):
     """Keeps prompting the user with msg to input a value, until the validator returns true on it.
        Returns the accepted string.
 
@@ -186,6 +186,8 @@ def valid_input(msg, validator, allow_empty=False):
        """
     while True:
         prompt = input(msg)
+        if prompt.lower() in exit_string:
+            return "__exit__"
         if allow_empty and validate_empty(prompt):
             return None
         if not inspect.isfunction(validator) or validator(prompt):
@@ -193,7 +195,7 @@ def valid_input(msg, validator, allow_empty=False):
         print_error_message("Incorrect input!")
 
 
-def mass_valid_input(input_requests, update_mode=False):
+def mass_valid_input(input_requests, update_mode=False, exit_string=("esc", "quit", "cancel", "exit")):
     """
     Requests multiple valid inputs.
 
@@ -206,8 +208,13 @@ def mass_valid_input(input_requests, update_mode=False):
             The ouput list retains the order of the input list.
     """
     results = []
+    print_result("Please enter item details. Type any of the following strings to cancel: {}"
+                 .format(", ".join(exit_string)))
+
     for msg, validator in input_requests:
         user_input = valid_input(msg, validator, update_mode)
+        if user_input == "__exit__":
+            return None
         if update_mode and user_input is None:
             print_result("Value not changed.")
         results.append((msg, user_input))
