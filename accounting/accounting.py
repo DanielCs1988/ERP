@@ -183,7 +183,8 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
     id_to_change = common.index_of_id(table, id_)
 
     if id_to_change < 0:
-        return  # These function must have a return value and please give that value to the table at the menu.
+        ui.print_error_message("The given ID doesn't exist.")
+        return
 
     while True:
         input_month = ui.get_inputs(["Please enter the new month: "], "")[0]
@@ -225,7 +226,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
             continue
         break
 
-    # Can be update dinamically at the input points.
+    # Could be updated dinamically at the input points, but I decided not to.
     table[id_to_change] = [id_, input_month, input_day, input_year, input_type, input_amount]
     show_table(table)
     return table
@@ -251,7 +252,7 @@ def which_year_max(table):
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
 
-    return current_year
+    return current_year, max_profit
 
 
 # the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
