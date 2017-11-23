@@ -87,6 +87,7 @@ def print_result(result, label=None):
         print("\n"+"\n".join("{} = {}".format(name, value) for name, value in result.items()))
     else:
         print(result)
+    print("")
 
 
 def print_menu(title, list_options, exit_message):
