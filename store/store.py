@@ -150,10 +150,10 @@ def update(table, id_):
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    update_input = ui.mass_valid_input([("Title: ", common.validate_string),
-                                        ("Manufacturer: ", common.validate_string)
-                                        ("Price: ", common.validate_int),
-                                        ("In Stock: ", common.validate_int)])
+    update_input = ui.mass_valid_in([("Title: ", common.validate_string),
+                                     ("Manufacturer: ", common.validate_string)
+                                     ("Price: ", common.validate_int),
+                                     ("In Stock: ", common.validate_int)])
 
     table[index] = common.apply_update_to_line(table[index], update_input)
 
