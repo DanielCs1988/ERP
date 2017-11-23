@@ -332,7 +332,7 @@ class dtime:
         self.month = int(month)
         self.day = int(day)
 
-    def __str__(self):
+    def __repr__(self):
         return "{}/{}/{}".format(self.year, self.month, self.day)
 
     def __eq__(self, other):
@@ -366,3 +366,9 @@ class dtime:
 
     def __lt__(self, other):
         return not self >= other
+
+    def __len__(self):
+        return len(str(self))
+
+    def __format__(self, f_arg):
+        return str(self).__format__(f_arg)
