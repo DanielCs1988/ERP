@@ -143,14 +143,8 @@ def update(table, id_):
     update_input = ui.mass_valid_input([("Name: ", None),
                                         ("E-mail: ", common.validate_email),
                                         ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
-    
-    if update_input is None:
-        return table
 
-    for item in range(len(update_input)):
-        if update_input[input] is None:
-            continue
-        table[index][item+1] = update_input[item]
+    table[index] = common.apply_update_to_line(table[index], update_input)
 
     return table
 
