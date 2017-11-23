@@ -106,34 +106,16 @@ def add(table):
     """
 
     new_item = [common.generate_random(table)]
-    new_item.extend(ui.get_inputs(["Name:"], "Please enter item details. Type ESC to cancel."))
 
-    if "ESC" in new_item:
+    user_input = ui.mass_valid_input([("Name:", None),
+                                      ("Manufacturer:", None),
+                                      ("Purchase year: ", common.validate_byear),
+                                      ("Durability: ", common.validate_int)])
+
+    if user_input is None:
         return table
 
-    new_item.extend(ui.get_inputs(["Manufacturer:"], ""))
-
-    if "ESC" in new_item:
-        return table
-
-    while True:
-        value = ui.get_inputs(["Purchase date:"], "")[0]
-        if not common.validate_byear(value):
-            continue  # validation comes here
-        new_item.append(value)
-        break
-
-    if "ESC" in new_item:
-        return table
-
-    while True:
-        value = ui.get_inputs(["Durability:"], "")[0]
-        try:
-            new_durability = int(value)  # validation comes here
-        except ValueError:
-            continue
-        new_item.append(value)
-        break
+    new_item.extend(user_input)
 
     table.append(new_item)
 
