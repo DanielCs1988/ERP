@@ -11,28 +11,6 @@ def clear_scr():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-# cross-platform getch https://gist.github.com/jfktrey/8928865
-if platform.system() == "Windows":
-    import msvcrt
-
-    def getch():
-        return msvcrt.getch()
-else:
-    import tty
-    import termios
-    import sys
-
-    def getch():
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-
-
 def print_table(table, title_list):
     """
     Prints table with data. Sample output:
