@@ -44,29 +44,37 @@ def start_module():
                            "Durability/manufacturer"], "Back to main menu")
 
             menuitem = ui.get_inputs(["Please choose an option:"], "")[0]
-            ui.clear_scr()
+            
             if(menuitem == "1"):
+                ui.clear_scr()
                 show_table(table)
             elif(menuitem == "2"):
                 add(table)
+                ui.clear_scr()
             elif(menuitem == "3"):
                 id_to_update = ui.get_inputs(["Enter ID of item to update:"], "")[0]
                 if id_to_update:
                     update(table, id_to_update)
+                ui.clear_scr()
             elif(menuitem == "4"):
                 id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
                 if id_to_remove:
                     remove(table, id_to_remove)
+                ui.clear_scr()
             elif menuitem == "5":
+                ui.clear_scr()
                 availables = get_available_items(table)
                 if len(availables) == 0:
                     ui.print_result("No available items found.")
                 else:
                     show_table(availables)
             elif menuitem == "6":
+                ui.clear_scr()
                 avg_durabilities = get_average_durability_by_manufacturers(table)
                 avg_durabilities = [(manufacturer, avg_dur) for manufacturer, avg_dur in avg_durabilities.items()]
                 ui.print_table(avg_durabilities, ["Manufacturer", "Durability"])
+            else:
+                ui.clear_scr()
     except (KeyboardInterrupt, EOFError):  # Ctrl-C, Ctrl-D
         ui.clear_scr()
         data_manager.write_table_to_file("store/games.csv", table)
@@ -144,7 +152,6 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-    ui.clear_scr()
     index = common.index_of_id(table, id_)
     if index < 0:
         ui.print_error_message("Invalid ID: {}.".format(id_))
