@@ -65,7 +65,7 @@ def start_module():
         elif option == "6":
             temp_crm_data = get_subscribed_emails(crm_data)
             temp_crm_data = [line.split(";") for line in temp_crm_data]
-            ui.print_table(temp_crm_data, ["Name", "E-mail"])
+            ui.print_table(temp_crm_data, ["E-mail", "Name"])
         elif option == "0":
             data_manager.write_table_to_file("crm/customers.csv", crm_data)
             ui.clear_scr()
@@ -172,4 +172,4 @@ def get_longest_name_id(table):
 # return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
     """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
-    return [";".join((line[NAME], line[EMAIL])) for line in table if line[SUBSCRIBED] == '1']
+    return [";".join((line[EMAIL], line[NAME])) for line in table if line[SUBSCRIBED] == '1']
