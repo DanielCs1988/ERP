@@ -1,7 +1,6 @@
 from random import choice
 import string
 import copy
-import inspect
 import re
 import ui
 
@@ -68,8 +67,7 @@ def qsort_table(table, col, **kwargs):
             of the table.
     """
     return qsort(table,
-                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs and inspect.isfunction(
-                     kwargs["key"]) else row[col],
+                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs else row[col],
                  reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
 
 
@@ -103,7 +101,7 @@ def __qsort(array, lo, hi, key):
 
 
 def __qsort_keyed_value(value, key):
-    return key(value) if inspect.isfunction(key) else value
+    return key(value) if key else value
 
 
 def __qsort_partition(array, lo, hi, key):
