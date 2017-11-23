@@ -70,9 +70,13 @@ def start_module():
             order_data = remove(order_data, to_remove)
             ui.clear_scr()
         elif option == "5":
+            ui.clear_scr()
             payments = [item for item in get_price_total_per_retailer(order_data).items()]
+            ui.print_result("Payments due for individual retailers:")
             ui.print_table(payments, ["Retailer", "Total Payment"])
         elif option == "6":
+            ui.clear_scr()
+            ui.print_result("Payments due in a timely order:")
             ui.print_table(date_ordered_payments(order_data),
                            ["ID", "Title", "Amount", "Price per Item", "Retailer", "Date"])
         elif option == "0":
@@ -116,7 +120,7 @@ def add(table):
                                    ("Amount: ", common.validate_int),
                                    ("Price per Item: ", common.validate_int),
                                    ("Retailer: ", common.validate_string),
-                                   ("Year of arrival: ", common.validate_byear),
+                                   ("Year of arrival: ", common.validate_fyear),
                                    ("Month of arrival: ", common.validate_month),
                                    ("Day of arrival: ", common.validate_day)
                                    ])
@@ -164,7 +168,7 @@ def update(table, id_):
                                    ("Amount: ", common.validate_int),
                                    ("Price per Item: ", common.validate_int),
                                    ("Retailer: ", common.validate_string),
-                                   ("Year of arrival: ", common.validate_byear),
+                                   ("Year of arrival: ", common.validate_fyear),
                                    ("Month of arrival: ", common.validate_month),
                                    ("Day of arrival: ", common.validate_day)
                                    ], update_mode=True)

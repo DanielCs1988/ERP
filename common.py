@@ -235,11 +235,21 @@ def generate_random(table):
 
 
 def validate_byear(year):
-    "Check if parameter is an integer and whether it's less or equal than the current year."
+    "Check if parameter is an integer and whether it's less or equal to the current year."
 
     if not validate_int(year):
         return False
     if int(year) > CURRENT_YEAR:
+        return False
+    return True
+
+
+def validate_fyear(year):
+    "Check if parameter is integer and whether it's more or equal to the current year."
+
+    if not validate_int(year):
+        return False
+    if int(year) < CURRENT_YEAR:
         return False
     return True
 
