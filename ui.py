@@ -75,6 +75,9 @@ def print_result(result, label=None):
         This function doesn't return anything it only prints to console.
     """
 
+    if not result:
+        return
+
     if label:
         print("\n{}: ".format(label), end='')
 
