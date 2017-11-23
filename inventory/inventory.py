@@ -16,21 +16,14 @@ import data_manager
 # common module
 import common
 
-import enum
-
 from datetime import datetime
 
-from statistics import mean
-from copy import deepcopy
 
-
-class InvCols(enum.IntEnum):
-    __order__ = "ID NAME MANUFACTURER PURCHASE_DATE DURABILITY"
-    ID = 0,
-    NAME = 1,
-    MANUFACTURER = 2,
-    PURCHASE_DATE = 3,
-    DURABILITY = 4
+ID = 0
+NAME = 1
+MANUFACTURER = 2
+PURCHASE_DATE = 3
+DURABILITY = 4
 
 
 def start_module():
@@ -54,16 +47,18 @@ def start_module():
 
             menuitem = ui.getch()
             ui.clear_scr()
-            if(menuitem == "2"):
+            if(menuitem == "1"):
+                show_table(table)
+            elif(menuitem == "2"):
                 add(table)
             elif(menuitem == "3"):
-                id_to_remove = ui.get_inputs(["Enter ID of item to update:"], "")[0]
-                update(table, id_to_remove)
+                id_to_update = ui.get_inputs(["Enter ID of item to update:"], "")[0]
+                if id_to_update:
+                    update(table, id_to_update)
             elif(menuitem == "4"):
                 id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
-                remove(table, id_to_remove)
-            elif(menuitem == "1"):
-                show_table(table)
+                if id_to_remove:
+                    remove(table, id_to_remove)
             elif menuitem == "5":
                 availables = get_available_items(table)
                 if len(availables) == 0:
@@ -107,8 +102,8 @@ def add(table):
 
     new_item = [common.generate_random(table)]
 
-    user_input = ui.mass_valid_input([("Name:", None),
-                                      ("Manufacturer:", None),
+    user_input = ui.mass_valid_input([("Name:", common.validate_string),
+                                      ("Manufacturer:", common.validate_string),
                                       ("Purchase year: ", common.validate_byear),
                                       ("Durability: ", common.validate_int)])
 
@@ -154,8 +149,8 @@ def update(table, id_):
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    user_input = ui.mass_valid_input([("Name:", None),
-                                      ("Manufacturer:", None),
+    user_input = ui.mass_valid_input([("Name:", common.validate_string),
+                                      ("Manufacturer:", common.validate_string),
                                       ("Purchase year: ", common.validate_byear),
                                       ("Durability: ", common.validate_int)], True)
 
@@ -176,7 +171,7 @@ def get_available_items(table):
     now = datetime.now()
     current_year = now.year
 
-    return [row for row in table if current_year - int(row[InvCols.PURCHASE_DATE]) < int(row[InvCols.DURABILITY])]
+    return [row for row in table if current_year - int(row[PURCHASE_DATE]) < int(row[DURABILITY])]
 
 
 # the question: What are the average durability times for each manufacturer?
@@ -185,12 +180,12 @@ def get_available_items(table):
 # @table: list of lists
 def get_average_durability_by_manufacturers(table):
 
-    manufacturers = {row[InvCols.MANUFACTURER] for row in table}
+    manufacturers = {row[MANUFACTURER] for row in table}
 
     durability_by_manufacturers = {}
 
     for manufacturer in manufacturers:
-        durabilities = [int(row[InvCols.DURABILITY]) for row in table if row[InvCols.MANUFACTURER] == manufacturer]
-        durability_by_manufacturers[manufacturer] = mean(durabilities)
+        durabilities = [int(row[DURABILITY]) for row in table if row[MANUFACTURER] == manufacturer]
+        durability_by_manufacturers[manufacturer] = common.get_sum_list(durabilities) / len(durabilities)
 
     return durability_by_manufacturers

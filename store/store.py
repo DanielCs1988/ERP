@@ -31,6 +31,7 @@ def start_module():
     Returns:
         None
     """
+    ui.clear_scr()
     options = ["Show Table",
                "Add Entry",
                "Update Entry",
@@ -51,12 +52,15 @@ def start_module():
             show_table(store_data)
         elif option == "2":
             store_data = add(store_data)
+            ui.clear_scr()
         elif option == "3":
             to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
             store_data = update(store_data, to_update[0])
+            ui.clear_scr()
         elif option == "4":
             to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
             store_data = remove(store_data, to_remove[0])
+            ui.clear_scr()
         elif option == "5":
             count_by_manufacturer_dict = get_counts_by_manufacturers(store_data)
             count_by_manufacturer_table = [(manufacturer, num)
@@ -70,7 +74,10 @@ def start_module():
                 game[PRICE] = str(game[PRICE])
                 game[IN_STOCK] = str(game[IN_STOCK])
             data_manager.write_table_to_file("store/games.csv", store_data)
+            ui.clear_scr()
             break
+        else:
+            ui.clear_scr()
 
 
 def show_table(table):
@@ -83,7 +90,7 @@ def show_table(table):
     Returns:
         None
     """
-
+    ui.clear_scr()
     ui.print_table(table, ["ID", "Title", "Manufacturer", "Price", "In Stock"])
 
 
@@ -100,8 +107,8 @@ def add(table):
 
     new_store = [common.generate_random(table)]
 
-    new_store.extend(ui.mass_valid_input([("Title: ", None),
-                                          ("Manufacturer: ", None)
+    new_store.extend(ui.mass_valid_input([("Title: ", common.validate_string),
+                                          ("Manufacturer: ", common.validate_string)
                                           ("Price: ", common.validate_int),
                                           ("In Stock: ", common.validate_int)]))
     if new_store is None:
@@ -138,15 +145,13 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-
-    ui.clear_scr()
     index = common.index_of_id(table, id_)
     if index < 0:
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    update_input = ui.mass_valid_input([("Title: ", None),
-                                        ("Manufacturer: ", None)
+    update_input = ui.mass_valid_input([("Title: ", common.validate_string),
+                                        ("Manufacturer: ", common.validate_string)
                                         ("Price: ", common.validate_int),
                                         ("In Stock: ", common.validate_int)])
 
