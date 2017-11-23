@@ -61,7 +61,7 @@ def start_module():
             elif(menuitem == "3"):
                 id_to_update = ui.get_inputs(["Enter ID of item to update:"], "")[0]
                 if id_to_update:
-                    update(table, id_to_remove)
+                    update(table, id_to_update)
             elif(menuitem == "4"):
                 id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
                 if id_to_remove:
@@ -109,8 +109,8 @@ def add(table):
 
     new_item = [common.generate_random(table)]
 
-    user_input = ui.mass_valid_input([("Name:", None),
-                                      ("Manufacturer:", None),
+    user_input = ui.mass_valid_input([("Name:", common.validate_string),
+                                      ("Manufacturer:", common.validate_string),
                                       ("Purchase year: ", common.validate_byear),
                                       ("Durability: ", common.validate_int)])
 
@@ -156,8 +156,8 @@ def update(table, id_):
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    user_input = ui.mass_valid_input([("Name:", None),
-                                      ("Manufacturer:", None),
+    user_input = ui.mass_valid_input([("Name:", common.validate_string),
+                                      ("Manufacturer:", common.validate_string),
                                       ("Purchase year: ", common.validate_byear),
                                       ("Durability: ", common.validate_int)], True)
 
