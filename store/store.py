@@ -171,10 +171,16 @@ def update(table, id_):
 # special functions:
 # ------------------
 
-# the question: How many different kinds of game are available of each manufacturer?
-# return type: a dictionary with this structure: { [manufacturer] : [count] }
 def get_counts_by_manufacturers(table):
+    """
+    Get number of games per manufacturer.
 
+    Args:
+        table: The input data table.
+
+    Returns:
+        A dictionary of manufacturer name / item count table.
+    """
     manufacturers = {row[MANUFACTURER] for row in table}
 
     count_by_manufacturers = {}
@@ -186,10 +192,13 @@ def get_counts_by_manufacturers(table):
     return count_by_manufacturers
 
 
-# the question: What is the average amount of games in stock of a given manufacturer?
-# return type: number
 def get_average_by_manufacturer(table, manufacturer):
-    """Returns average value of a manufacturer's items in stock."""
+    """Returns average number of a manufacturer's items in stock.
+
+        Args:
+            table: The input data table.
+            manufacturer: The manufacturer name.
+    """
 
     if manufacturer == '':
         return None
