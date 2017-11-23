@@ -54,16 +54,18 @@ def start_module():
 
             menuitem = ui.getch()
             ui.clear_scr()
-            if(menuitem == "2"):
+            if(menuitem == "1"):
+                show_table(table)
+            elif(menuitem == "2"):
                 add(table)
             elif(menuitem == "3"):
-                id_to_remove = ui.get_inputs(["Enter ID of item to update:"], "")[0]
-                update(table, id_to_remove)
+                id_to_update = ui.get_inputs(["Enter ID of item to update:"], "")[0]
+                if id_to_update:
+                    update(table, id_to_remove)
             elif(menuitem == "4"):
                 id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
-                remove(table, id_to_remove)
-            elif(menuitem == "1"):
-                show_table(table)
+                if id_to_remove:
+                    remove(table, id_to_remove)
             elif menuitem == "5":
                 availables = get_available_items(table)
                 if len(availables) == 0:
