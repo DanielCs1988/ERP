@@ -65,6 +65,9 @@ def start_module():
         elif option == "5":
             ui.print_result(get_lowest_price_item_id(sales_data))
         elif option == "6":
+            params = ui.mass_valid_input([
+                
+            ])
             ui.print_table(get_items_sold_between(sales_data, 12, 4, 2015, 2, 7, 2016), ["1", "2", "3", "4", "5", "6"])
         elif option == "0":
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
@@ -100,33 +103,20 @@ def add(table):
         Table with a new record
     """
     new_sale = [common.generate_random(table)]
-    new_sale.append(ui.get_inputs(["Title: "], "New Sale Information")[0])
 
-    while True:
-        price = ui.get_inputs(["Price: "], "")[0]
-        if common.validate_int(price):
-            new_sale.append(price)
-            break
+    input_list = ui.mass_valid_input([("Title: ", None),
+                                      ("Price: ", common.validate_int),
+                                      ("Month of sale: ", common.validate_month),
+                                      ("Day of sale: ", common.validate_day),
+                                      ("Year of sale: ", common.validate_byear)
+                                      ])
 
-    while True:
-        month = ui.get_inputs(["Month of sale: "], "")[0]
-        if common.validate_month(month):
-            new_sale.append(month)
-            break
+    if input_list is None:
+        return table
 
-    while True:
-        day = ui.get_inputs(["Day of sale: "], "")[0]
-        if common.validate_day(day):
-            new_sale.append(day)
-            break
-
-    while True:
-        year = ui.get_inputs(["Year of sale: "], "")[0]
-        if common.validate_byear(year):
-            new_sale.append(year)
-            break
-
+    new_sale.extend(input_list)
     table.append(new_sale)
+
     return table
 
 
@@ -160,31 +150,19 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    table[index][TITLE] = ui.get_inputs(["Title: "], "")[0]
+    input_list = ui.mass_valid_input([("Title: ", None),
+                                      ("Price: ", common.validate_int),
+                                      ("Month of sale: ", common.validate_month),
+                                      ("Day of sale: ", common.validate_day),
+                                      ("Year of sale: ", common.validate_byear)
+                                      ], update_mode=True)
 
-    while True:
-        price = ui.get_inputs(["Price: "], "")[0]
-        if common.validate_int(price):
-            table[index][PRICE] = price
-            break
+    if input_list is None:
+        return table
 
-    while True:
-        year = ui.get_inputs(["Year of sale: "], "")[0]
-        if common.validate_byear(year):
-            table[index][YEAR] = year
-            break
-
-    while True:
-        month = ui.get_inputs(["Month of sale: "], "")[0]
-        if common.validate_month(month):
-            table[index][MONTH] = month
-            break
-
-    while True:
-        day = ui.get_inputs(["Day of sale: "], "")[0]
-        if common.validate_day(day):
-            table[index][DAY] = day
-            break
+    for new_item in range(len(input_list)):
+        if input_list[new_item]:
+            table[index][new_item+1] = input_list[new_item]
 
     return table
 
