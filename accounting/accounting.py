@@ -66,7 +66,7 @@ def start_module():
                 while True:
                     years = {line[YEAR] for line in table}
                     input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
-                                            "Which year do you want to know about?")[0]
+                                               "Which year do you want to know about?")[0]
                     if not common.validate_byear(input_year):
                         continue
                     if common.index_of_value(table, YEAR, input_year) == -1:
@@ -109,11 +109,11 @@ def add(table):
     """
 
     new_data = ui.mass_valid_in([("Please enter the month: ", common.validate_month),
-                                    ("Please enter the day: ", common.validate_day),
-                                    ("Please enter the year: ", common.validate_byear),
-                                    ("Please enter the type (in or out): ", common.validate_type),
-                                    ("Please enter the amount (in US dollars): ", common.validate_int)
-                                    ])
+                                 ("Please enter the day: ", common.validate_day),
+                                 ("Please enter the year: ", common.validate_byear),
+                                 ("Please enter the type (in or out): ", common.validate_type),
+                                 ("Please enter the amount (in US dollars): ", common.validate_int)
+                                 ])
 
     if new_data is None:
         return table
@@ -166,11 +166,11 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
         return table
 
     new_data = ui.mass_valid_in([("Please enter the new month: ", common.validate_month),
-                                    ("Please enter the new day: ", common.validate_day),
-                                    ("Please enter the new year: ", common.validate_byear),
-                                    ("Please enter the new type (in or out): ", common.validate_type),
-                                    ("Please enter the new amount (in US dollars): ", common.validate_int)
-                                    ], True)
+                                 ("Please enter the new day: ", common.validate_day),
+                                 ("Please enter the new year: ", common.validate_byear),
+                                 ("Please enter the new type (in or out): ", common.validate_type),
+                                 ("Please enter the new amount (in US dollars): ", common.validate_int)
+                                 ], True)
 
     common.apply_update_to_line(table[index], new_data)
     show_table(table)
