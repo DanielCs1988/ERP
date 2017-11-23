@@ -282,3 +282,9 @@ def apply_update_to_line(original_line, user_input):
         # col_idx + 1 because the first item is always the ID that is not changed
 
     return original_line
+
+
+def validate_string(text):
+    if text == "":
+        return False
+    return True
