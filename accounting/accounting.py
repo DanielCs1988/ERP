@@ -120,12 +120,12 @@ def add(table):
     if new_data is None:
         return table
 
-    random_id = common.generate_random(table)
+    new_line = [common.generate_random(table)]
+    new_line.extend(new_data)
 
-    new_data = [random_id].extend(new_data)
-    table.append(new_data)
+    table.append(new_line)
 
-    # show_table(table)
+    show_table(table)
 
     return table
 
