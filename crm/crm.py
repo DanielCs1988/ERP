@@ -93,22 +93,17 @@ def add(table):
         table: table to add new record to
 
     Returns:
-        Table with a new record
-    """
+    #    Table with a new record
+    #"""
     new_customer_data = [common.generate_random(table)]
-    new_customer_data.append(ui.get_inputs(["Name: "], "")[0])
-    while True:
-        email = ui.get_inputs(["E-mail: "], "")[0]
-        if common.validate_email(email):
-            new_customer_data.append(email)
-            break
-    while True:
-        boolean = ui.get_inputs(["Is he subscribed?: "], "")[0]
-        if common.validate_boolean(boolean):
-            new_customer_data.append(boolean)
-            break
 
-    table.append(new_customer_data)
+    new_customer_data.extend(ui.mass_valid_input([("Name: ", None),
+                                                  ("E-mail: ", common.validate_email)
+                                                  ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
+    if new_customer_data is None:
+        return table
+
+    table.extend(new_customer_data)
 
     return table
 
@@ -125,14 +120,7 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    index = common.index_of_id(table, id_)
-    if index == -1:
-        ui.print_error_message("Wrong ID!")
-        return table
-
-    del table[index]
-
-    return table
+    return common.remove_line(table, id_)
 
 
 def update(table, id_):
@@ -152,19 +140,17 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    table[index][NAME] = ui.get_inputs(["Name: "], "")[0]
+    update_input = ui.mass_valid_input([("Name: ", None),
+                                        ("E-mail: ", common.validate_email),
+                                        ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
+    
+    if update_input is None:
+        return table
 
-    while True:
-        email = ui.get_inputs(["E-mail: "], "")[0]
-        if common.validate_email(email):
-            table[index][EMAIL] = email
-            break
-
-    while True:
-        boolean = ui.get_inputs(["Is he subscribed?: "], "")[0]
-        if common.validate_boolean(boolean):
-            table[index][SUBSCRIBED] = boolean
-            break
+    for item in range(len(update_input)):
+        if update_input[input] is None:
+            continue
+        table[index][item+1] = update_input[item]
 
     return table
 
