@@ -57,17 +57,19 @@ def start_module():
             ui.clear_scr()
         elif option == "3":
             to_update = ui.valid_in(
-                "What is the ID of the item that you would like to update? ", common.validate_string)
+                "What is the ID of the entry that you would like to update? ", common.validate_string)
             sales_data = update(sales_data, to_update)
             ui.clear_scr()
         elif option == "4":
             to_remove = ui.valid_in(
-                "What is the ID of the item that you would like to remove? ", common.validate_string)
+                "What is the ID of the entry that you would like to remove? ", common.validate_string)
             sales_data = remove(sales_data, to_remove)
             ui.clear_scr()
         elif option == "5":
-            ui.print_result(get_lowest_price_item_id(sales_data))
+            ui.clear_scr()
+            ui.print_result(get_lowest_price_item_id(sales_data), "ID of the item with the lowest price: ")
         elif option == "6":
+            ui.clear_scr()
             params = ui.mass_valid_in([("Month from:", common.validate_month),
                                        ("Day from: ", common.validate_day),
                                        ("Year from: ", common.validate_byear),
@@ -77,6 +79,9 @@ def start_module():
                                        ])
             if params:
                 show_table(get_items_sold_between(sales_data, *params))
+                ui.print_result("Table: items sold between specified dates")
+            else:
+                ui.print_result("No items found between specified dates.")
         elif option == "0":
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
