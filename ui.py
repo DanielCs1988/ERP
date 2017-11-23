@@ -168,7 +168,7 @@ def valid_input(msg, validator, allow_empty=False, exit_string=("esc", "quit", "
             return "__exit__"
         if allow_empty and validate_empty(prompt):
             return None
-        if not inspect.isfunction(validator) or validator(prompt):
+        if not validator or validator(prompt):
             return prompt
         print_error_message("Incorrect input!")
 
