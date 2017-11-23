@@ -172,7 +172,7 @@ def print_error_message(message):
     print('[\033[1;31m{}\033[1;m]'.format(message))
 
 
-def valid_input(msg, validator, allow_empty=False, exit_string=("esc", "quit", "cancel", "exit")):
+def valid_input(msg, validator, allow_empty=False, exit_string=("esc", "quit", "bye", "exit")):
     """Keeps prompting the user with msg to input a value, until the validator returns true on it.
        Returns the accepted string.
 
@@ -195,7 +195,7 @@ def valid_input(msg, validator, allow_empty=False, exit_string=("esc", "quit", "
         print_error_message("Incorrect input!")
 
 
-def mass_valid_input(input_requests, update_mode=False, exit_string=("esc", "quit", "cancel", "exit")):
+def mass_valid_input(input_requests, update_mode=False, exit_string=("esc", "quit", "bye", "exit")):
     """
     Requests multiple valid inputs.
 
