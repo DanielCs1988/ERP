@@ -165,7 +165,7 @@ def valid_in(msg, validator, allow_empty=False, exit_string=("esc", "quit", "bye
 
         Returns:
             A valid input result (string). Returns None, if allow_empty is True and an empty string is entered.
-       """
+    """
     while True:
         prompt = input(msg)
         if prompt.lower() in exit_string:

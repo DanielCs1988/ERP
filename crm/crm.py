@@ -53,11 +53,11 @@ def start_module():
             crm_data = add(crm_data)
             ui.clear_scr()
         elif option == "3":
-            update_id = ui.valid_in(["Please enter the ID of the person you want to update: "], "")[0]
+            update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "], "")[0]
             crm_data = update(crm_data, update_id)
             ui.clear_scr()
         elif option == "4":
-            remove_id = ui.valid_in(["Please enter the ID of the person you want to delete: "], "")[0]
+            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
             crm_data = remove(crm_data, remove_id)
             ui.clear_scr()
         elif option == "5":
@@ -106,7 +106,7 @@ def add(table):
 
     new_customer_data.extend(ui.mass_valid_in([("Name: ", common.validate_string),
                                                ("E-mail: ", common.validate_email),
-                                               ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
+                                               ("Subscribed? (1 for yes, 0 for no): ", common.validate_boolean)]))
     if new_customer_data is None:
         return table
 
@@ -149,7 +149,8 @@ def update(table, id_):
 
     update_input = ui.mass_valid_in([("Name: ", common.validate_string),
                                      ("E-mail: ", common.validate_email),
-                                     ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
+                                     ("Subscribed? (1 for yes, 0 for no)", common.validate_boolean)],
+                                    True)
 
     table[index] = common.apply_update_to_line(table[index], update_input)
 
