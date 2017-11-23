@@ -186,7 +186,6 @@ def which_year_max(table):
     Then subtracts the 'out' values.
     Compares and returns the year with the highest profit.
     '''
-
     max_profit, current_year = 0, 0
     for year in {row[YEAR] for row in table}:
         temp_sum = common.get_sum_list(
@@ -196,6 +195,7 @@ def which_year_max(table):
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
 
+    current_year = int(current_year)    # F*CK THE TEST
     return current_year
 
 
@@ -208,7 +208,11 @@ def avg_amount(table, input_year):
     Divides that by the number of lines
     and returns the year with the average profit. (float)
     '''
-
+    input_year = str(input_year)    # F*CK THE TEST
+    years = {line[YEAR] for line in table}
+    if input_year not in years:
+        ui.print_error_message("Not a valid year.")
+        return
     profit = []
     current_year = 0
 
