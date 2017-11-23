@@ -45,7 +45,12 @@ def start_module():
     while True:
         ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
 
-        option = ui.getch()
+        try:
+            option = ui.valid_input("Please enter a number: ", common.validate_string)
+        except (KeyboardInterrupt, EOFError):
+            data_manager.write_table_to_file("crm/customers.csv", crm_data)
+            ui.clear_scr()
+            exit()
 
         if option == "1":
             show_table(crm_data)
