@@ -11,11 +11,21 @@ CURRENT_YEAR = 2017
 
 
 def random_char(chr_type):
+    '''Generates a random character based on dictionary key given in the parameter.'''
     return choice(CHR_TYPES[chr_type])
 
 
 def index_of(item, in_list):
-    '''Finds the index of the item parameter in the list.'''
+    '''
+    Finds the index of the item parameter in the list.
+
+    Args:
+        item: the item to find in the list
+
+        in_list: the list to find it in
+    Returns:
+        The index of item in list, or -1 if not found.
+    '''
     for index in range(len(in_list)):
         if in_list[index] == item:
             return index
@@ -37,7 +47,19 @@ def id_exists(table, id_to_find):
 
 
 def index_of_value(table, col, value):
+    '''
+    Finds the index of a specific value in a specific column.
 
+    Args:
+        table: a list in a list
+
+        col: the column to check
+
+        value: the value it needs to find
+
+    Returns:
+        The index of the value, or -1 if not found.
+    '''
     for index in range(len(table)):
         if table[index][col] == value:
             return index
@@ -46,6 +68,17 @@ def index_of_value(table, col, value):
 
 
 def index_of_id(table, id_to_find):
+    '''
+    Finds the index of the id in a table.
+
+    Args:
+        table: a list in a list
+
+        id_to_find: the value it needs to find
+
+    Returns:
+        The index of the id, or -1 if not found.
+    '''
     return index_of_value(table, 0, id_to_find)
 
 
@@ -133,29 +166,45 @@ def __qsrt_partition(array, lo, hi, key):
         if i >= j:
             return j
 
-        # swap A[i] with A[j]
         temp = array[i]
         array[i] = array[j]
         array[j] = temp
 
 
 def get_longest(table, column):
-    """Returns the length of the longest item in a given column as integer."""
+    """
+    Returns the length of the longest item in a given column as integer.
+
+    Args:
+
+    """
     return max([len(str(row[column])) for row in table])
 
 
 def szum(table, column):
-    """ Returns the sum of the data of the given column."""
+    """ Returns the sum of the data of the given column.
+
+    Args:
+        table: a list in a list
+
+        column: the column, that will be summed.
+
+    Returns:
+        the sum of the values, integer type
+    """
     return szum_list([row[column] for row in table])
 
 
 def szum_list(collection):
     '''
     A very basic replacement for summary function.
-
     Crashes if any list item is not an integer.
 
-    Returns an integer.
+    Args:
+        a list of integers and/or floats
+
+    Returns:
+        the sum of the values, integer type
     '''
     summary = 0
 
@@ -166,8 +215,13 @@ def szum_list(collection):
 
 
 def generate_random(table):
-    """Generates a random ID with a length of 8.
-       It contains 2 number, 2 special, 2 lower- and 2 uppercase characters."""
+    """
+    Generates a random ID with a length of 8.
+    It contains 2 numbers, 2 special characters, 2 lower- and 2 uppercase letters in random order.
+
+    Args:
+        table
+    """
     while True:
         hat = ["uppercase", "lowercase", "digit", "symbol"] * 2
         temp_str = ""
@@ -307,12 +361,20 @@ def apply_update_to_line(original_line, user_input):
 
 
 def validate_string(text):
+    '''
+    Checks if the given parameter is an empty string. If so, returns false.
+    '''
     if text == "":
         return False
     return True
 
 
 def get_item(index):
+    '''
+    Our own original idea that has absolutely nothing to do with itemgetter.
+
+    © 2017 Enterprise Coffe Planner All Rights Reserved
+    '''
     def func(row):
         return row[index]
     return func
