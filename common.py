@@ -137,6 +137,7 @@ def srt(array, **kwargs):
 
 
 def __qsrt(array, lo, hi, key):
+    """The core qsort algorithm, see https://en.wikipedia.org/wiki/Quicksort#Algorithm"""
     if lo < hi:
         p = __qsrt_partition(array, lo, hi, key)
         __qsrt(array, lo, p, key)
@@ -144,10 +145,12 @@ def __qsrt(array, lo, hi, key):
 
 
 def __qsrt_keyed_value(value, key):
+    """Helper function to key values if needed."""
     return key(value) if key else value
 
 
 def __qsrt_partition(array, lo, hi, key):
+    """Hoare partition scheme, see https://en.wikipedia.org/wiki/Quicksort#Hoare_partition_scheme"""
     pivot = array[lo]
     i = lo - 1
     j = hi + 1
@@ -391,7 +394,7 @@ def get_item(index):
 
 
 class dtime:
-
+    """A lightweight date management class."""
     def __init__(self, year, month, day):
         if not validate_byear(year):
             raise ValueError("Invalid year parameter!")
