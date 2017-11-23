@@ -69,12 +69,12 @@ def start_module():
             ui.print_result(get_lowest_price_item_id(sales_data))
         elif option == "6":
             params = ui.mass_valid_in([("Month from:", common.validate_month),
-                                          ("Day from: ", common.validate_day),
-                                          ("Year from: ", common.validate_byear),
-                                          ("Month to:", common.validate_month),
-                                          ("Day to: ", common.validate_day),
-                                          ("Year to: ", common.validate_byear)
-                                          ])
+                                       ("Day from: ", common.validate_day),
+                                       ("Year from: ", common.validate_byear),
+                                       ("Month to:", common.validate_month),
+                                       ("Day to: ", common.validate_day),
+                                       ("Year to: ", common.validate_byear)
+                                       ])
             if params:
                 show_table(get_items_sold_between(sales_data, *params))
         elif option == "0":
@@ -97,7 +97,7 @@ def show_table(table):
     """
     titles = ["ID", "Title", "Price", "Date"]
     output_table = [[row[ID], row[TITLE], row[PRICE],
-                     '/'.join((row[YEAR], row[MONTH], row[DAY]))] for row in table]
+                     '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY])))] for row in table]
     ui.clear_scr()
     ui.print_table(output_table, titles)
 
@@ -115,11 +115,11 @@ def add(table):
     new_sale = [common.generate_random(table)]
 
     input_list = ui.mass_valid_in([("Title: ", common.validate_string),
-                                      ("Price: ", common.validate_int),
-                                      ("Month of sale: ", common.validate_month),
-                                      ("Day of sale: ", common.validate_day),
-                                      ("Year of sale: ", common.validate_byear)
-                                      ])
+                                   ("Price: ", common.validate_int),
+                                   ("Month of sale: ", common.validate_month),
+                                   ("Day of sale: ", common.validate_day),
+                                   ("Year of sale: ", common.validate_byear)
+                                   ])
 
     if input_list is None:
         return table
@@ -161,11 +161,11 @@ def update(table, id_):
         return table
 
     input_list = ui.mass_valid_in([("Title: ", None),
-                                      ("Price: ", common.validate_int),
-                                      ("Month of sale: ", common.validate_month),
-                                      ("Day of sale: ", common.validate_day),
-                                      ("Year of sale: ", common.validate_byear)
-                                      ], update_mode=True)
+                                   ("Price: ", common.validate_int),
+                                   ("Month of sale: ", common.validate_month),
+                                   ("Day of sale: ", common.validate_day),
+                                   ("Year of sale: ", common.validate_byear)
+                                   ], update_mode=True)
 
     table[index] = common.apply_update_to_line(table[index], input_list)
     return table
@@ -193,4 +193,5 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
     min_date = common.dtime(year_from, month_from, day_from)
     max_date = common.dtime(year_to, month_to, day_to)
 
-    return [line for line in table if min_date < common.dtime(line[YEAR], line[MONTH], line[DAY]) < max_date]
+    return [[line[ID], line[TITLE], int(line[PRICE]), int(line[MONTH]), int(line[DAY]), int(line[YEAR])]
+            for line in table if min_date < common.dtime(line[YEAR], line[MONTH], line[DAY]) < max_date]
