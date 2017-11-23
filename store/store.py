@@ -49,6 +49,7 @@ def start_module():
         option = ui.getch()
 
         if option == "1":
+            ui.clear_scr()
             show_table(store_data)
         elif option == "2":
             store_data = add(store_data)
