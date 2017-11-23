@@ -29,6 +29,7 @@ def start_module():
     Returns:
         None
     """
+    ui.clear_scr()
 
     table = data_manager.get_table_from_file("accounting/items.csv")
     paid_version = True    # an easter-egg, leave it True and it should (hopefully) cause no problems
@@ -54,12 +55,15 @@ def start_module():
                 show_table(table)
             elif option == "2":
                 add(table)
+                ui.clear_scr()
             elif option == "3":
                 input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
                 update(table, input_id)
+                ui.clear_scr()
             elif option == "4":
                 input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
                 remove(table, input_id)
+                ui.clear_scr()
             elif option == "5":
                 ui.print_result(which_year_max(table))
             elif option == "6":
@@ -77,7 +81,10 @@ def start_module():
 
             elif option == "0":
                 data_manager.write_table_to_file("accounting/items.csv", table)
+                ui.clear_scr()
                 break
+            else:
+                ui.clear_scr()
     except (KeyboardInterrupt, EOFError):
         ui.print_error_message("\nKeyboard interrupt cancelled.\nIf you want to exit, use the menu.")
 
