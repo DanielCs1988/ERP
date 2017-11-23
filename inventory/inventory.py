@@ -18,8 +18,6 @@ import common
 
 from datetime import datetime
 
-from statistics import mean
-
 
 ID = 0
 NAME = 1
@@ -188,6 +186,6 @@ def get_average_durability_by_manufacturers(table):
 
     for manufacturer in manufacturers:
         durabilities = [int(row[DURABILITY]) for row in table if row[MANUFACTURER] == manufacturer]
-        durability_by_manufacturers[manufacturer] = mean(durabilities)
+        durability_by_manufacturers[manufacturer] = common.get_sum_list(durabilities) / len(durabilities)
 
     return durability_by_manufacturers
