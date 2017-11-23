@@ -155,7 +155,7 @@ def remove(table, id_):
     return table
 
 
-def update(table, id_):  # Constants could be used here, also needs a bit of reviewing.
+def update(table, id_):
     """
     Updates specified record in the table. Ask users for new data.
 
