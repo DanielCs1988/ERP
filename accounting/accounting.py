@@ -189,7 +189,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
     while True:
         input_month = ui.get_inputs(["Please enter the new month: "], "")[0]
         if common.validate_empty(input_month):
-            input_month = table[id_to_change][1]
+            input_month = table[id_to_change][MONTH]
         elif not common.validate_month(input_month):
             continue
         break
@@ -197,7 +197,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
     while True:
         input_day = ui.get_inputs(["Please enter the new day: "], "")[0]
         if common.validate_empty(input_day):
-            input_day = table[id_to_change][2]
+            input_day = table[id_to_change][DAY]
         elif not common.validate_day(input_day):
             continue
         break
@@ -205,7 +205,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
     while True:
         input_year = ui.get_inputs(["Please enter the new year: "], "")[0]
         if common.validate_empty(input_year):
-            input_year = table[id_to_change][3]
+            input_year = table[id_to_change][YEAR]
         elif not common.validate_byear(input_year):
             continue
         break
@@ -213,7 +213,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
     while True:
         input_type = ui.get_inputs(["Please enter the new type (in or out): "], "")[0]
         if common.validate_empty(input_type):
-            input_type = table[id_to_change][4]
+            input_type = table[id_to_change][TYPE]
         elif not common.validate_type(input_type):
             continue
         break
@@ -221,7 +221,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
     while True:
         input_amount = ui.get_inputs(["Please enter the new amount (in US dollars): "], "")[0]
         if common.validate_empty(input_amount):
-            input_amount = table[id_to_change][5]
+            input_amount = table[id_to_change][AMOUNT]
         elif not common.validate_int(input_amount):
             continue
         break
