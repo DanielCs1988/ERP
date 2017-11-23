@@ -54,8 +54,8 @@ def start_module():
             if option == "1":
                 show_table(table)
             elif option == "2":
-                add(table)
                 ui.clear_scr()
+                add(table)
             elif option == "3":
                 input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
                 update(table, input_id)
@@ -67,7 +67,7 @@ def start_module():
             elif option == "5":
                 ui.print_result(which_year_max(table))
             elif option == "6":
-                while True:
+                while True:    # checks if the year exists in the table at all
                     years = {line[YEAR] for line in table}
                     input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
                                                "Which year do you want to know about?")[0]
@@ -86,7 +86,7 @@ def start_module():
             else:
                 ui.clear_scr()
     except (KeyboardInterrupt, EOFError):
-        ui.print_error_message("\nKeyboard interrupt cancelled.\nIf you want to exit, use the menu.")
+        ui.print_error_message('''\nKeyboard interrupt.\nIf you want to go back to the main menu, use the menu.''')
 
 
 def show_table(table):
@@ -128,8 +128,6 @@ def add(table):
     new_line.extend(new_data)
 
     table.append(new_line)
-
-    show_table(table)
 
     return table
 
