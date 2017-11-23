@@ -45,39 +45,42 @@ def start_module():
                         "Update entry",
                         "Remove entry",
                         "Buy the full version of the software to unlock more options"]
+    try:
+        while True:
+            ui.print_menu("Accounting", menu_options, "Back to main menu")
+            option = ui.get_inputs(["Please enter a number: "], "")[0]
 
-    while True:
-        ui.print_menu("Accounting", menu_options, "Back to main menu")
-        option = ui.getch()
+            if option == "1":
+                show_table(table)
+            elif option == "2":
+                add(table)
+            elif option == "3":
+                input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
+                update(table, input_id)
+            elif option == "4":
+                input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
+                remove(table, input_id)
+            elif option == "5":
+                ui.print_result(which_year_max(table))
+            elif option == "6":
+                while True:
+                    years = {line[YEAR] for line in table}
+                    input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
+                                            "Which year do you want to know about?")[0]
+                    if not common.validate_byear(input_year):
+                        continue
+                    if common.index_of_value(table, YEAR, input_year) == -1:
+                        continue
+                    break
+                ui.print_result(avg_amount(table, input_year),
+                                "The average amount of profit per game in {0}".format(input_year))
 
-        if option == "1":
-            show_table(table)
-        elif option == "2":
-            add(table)
-        elif option == "3":
-            input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
-            update(table, input_id)
-        elif option == "4":
-            input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
-            remove(table, input_id)
-        elif option == "5":
-            ui.print_result(which_year_max(table))
-        elif option == "6":
-            while True:
-                years = {line[YEAR] for line in table}
-                input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
-                                           "Which year do you want to know about?")[0]
-                if not common.validate_byear(input_year):
-                    continue
-                if common.index_of_value(table, YEAR, input_year) == -1:
-                    continue
+            elif option == "0":
+                data_manager.write_table_to_file("accounting/items.csv", table)
                 break
-            ui.print_result(avg_amount(table, input_year),
-                            "The average amount of profit per game in {0}".format(input_year))
+    except (KeyboardInterrupt, EOFError):
+        ui.print_error_message("\nKeyboard interrupt cancelled.\nIf you want to exit, use the menu.")
 
-        elif option == "0":
-            data_manager.write_table_to_file("accounting/items.csv", table)
-            break
 
 
 def show_table(table):
