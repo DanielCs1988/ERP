@@ -63,11 +63,18 @@ def start_module():
         elif option == "5":
             ui.print_result(which_year_max(table))
         elif option == "6":
-            years = {line[YEAR] for line in table}
-            input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
-                                       "Which year do you want to know about?")[0]
+            while True:
+                years = {line[YEAR] for line in table}
+                input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
+                                           "Which year do you want to know about?")[0]
+                if not common.validate_byear(input_year):
+                    continue
+                if common.index_of_value(table, YEAR, input_year) == -1:
+                    continue
+                break
             ui.print_result(avg_amount(table, input_year),
                             "The average amount of profit per game in {0}".format(input_year))
+
         elif option == "0":
             data_manager.write_table_to_file("accounting/items.csv", table)
             break
@@ -180,8 +187,6 @@ def which_year_max(table):
     Compares and returns the year with the highest profit.
     '''
 
-
-
     max_profit, current_year = 0, 0
     for year in {row[YEAR] for row in table}:
         temp_sum = common.get_sum_list(
@@ -203,17 +208,6 @@ def avg_amount(table, input_year):
     Divides that by the number of lines
     and returns the year with the average profit. (float)
     '''
-
-    while True:
-        years = {line[YEAR] for line in table}
-        input_year = ui.get_inputs(['''Which year do you want to know about?
-                                    The options are {0}'''.format(", ".join(years))], "")[0]
-
-        if not common.validate_byear(input_year):
-            continue
-        if common.index_of_value(table, YEAR, input_year) == -1:
-            continue
-        break
 
     profit = []
     current_year = 0
