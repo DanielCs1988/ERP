@@ -43,7 +43,7 @@ def start_module():
                           ["Show table", "Add entry", "Update entry", "Delete entry", "Available items",
                            "Durability/manufacturer"], "Back to main menu")
 
-            menuitem = ui.getch()
+            menuitem = ui.get_inputs(["Please choose an option:"], "")[0]
             ui.clear_scr()
             if(menuitem == "1"):
                 show_table(table)
@@ -100,10 +100,10 @@ def add(table):
 
     new_item = [common.generate_random(table)]
 
-    user_input = ui.mass_valid_input([("Name:", common.validate_string),
-                                      ("Manufacturer:", common.validate_string),
-                                      ("Purchase year: ", common.validate_byear),
-                                      ("Durability: ", common.validate_int)])
+    user_input = ui.mass_valid_in([("Name:", common.validate_string),
+                                   ("Manufacturer:", common.validate_string),
+                                   ("Purchase year: ", common.validate_byear),
+                                   ("Durability: ", common.validate_int)])
 
     if user_input is None:
         return table
@@ -147,10 +147,10 @@ def update(table, id_):
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    user_input = ui.mass_valid_input([("Name:", common.validate_string),
-                                      ("Manufacturer:", common.validate_string),
-                                      ("Purchase year: ", common.validate_byear),
-                                      ("Durability: ", common.validate_int)], True)
+    user_input = ui.mass_valid_in([("Name:", common.validate_string),
+                                   ("Manufacturer:", common.validate_string),
+                                   ("Purchase year: ", common.validate_byear),
+                                   ("Durability: ", common.validate_int)], True)
 
     common.apply_update_to_line(table[index], user_input)
 
@@ -183,6 +183,6 @@ def get_average_durability_by_manufacturers(table):
 
     for manufacturer in manufacturers:
         durabilities = [int(row[DURABILITY]) for row in table if row[MANUFACTURER] == manufacturer]
-        durability_by_manufacturers[manufacturer] = common.get_sum_list(durabilities) / len(durabilities)
+        durability_by_manufacturers[manufacturer] = common.szum_list(durabilities) / len(durabilities)
 
     return durability_by_manufacturers

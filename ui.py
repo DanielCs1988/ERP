@@ -11,28 +11,6 @@ def clear_scr():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-# cross-platform getch https://gist.github.com/jfktrey/8928865
-if platform.system() == "Windows":
-    import msvcrt
-
-    def getch():
-        return msvcrt.getch()
-else:
-    import tty
-    import termios
-    import sys
-
-    def getch():
-        fd = sys.stdin.fileno()
-        old_settings = termios.tcgetattr(fd)
-        try:
-            tty.setraw(sys.stdin.fileno())
-            ch = sys.stdin.read(1)
-        finally:
-            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return ch
-
-
 def print_table(table, title_list):
     """
     Prints table with data. Sample output:
@@ -172,7 +150,7 @@ def print_error_message(message):
     print('[\033[1;31m{}\033[1;m]'.format(message))
 
 
-def valid_input(msg, validator, allow_empty=False, exit_string=("esc", "quit", "bye", "exit")):
+def valid_in(msg, validator, allow_empty=False, exit_string=("esc", "quit", "bye", "exit")):
     """Keeps prompting the user with msg to input a value, until the validator returns true on it.
        Returns the accepted string.
 
@@ -190,12 +168,12 @@ def valid_input(msg, validator, allow_empty=False, exit_string=("esc", "quit", "
             return "__exit__"
         if allow_empty and validate_empty(prompt):
             return None
-        if not inspect.isfunction(validator) or validator(prompt):
+        if not validator or validator(prompt):
             return prompt
         print_error_message("Incorrect input!")
 
 
-def mass_valid_input(input_requests, update_mode=False, exit_string=("esc", "quit", "bye", "exit")):
+def mass_valid_in(input_requests, update_mode=False, exit_string=("esc", "quit", "bye", "exit")):
     """
     Requests multiple valid inputs.
 
@@ -212,7 +190,7 @@ def mass_valid_input(input_requests, update_mode=False, exit_string=("esc", "qui
                  .format(", ".join(exit_string)))
 
     for msg, validator in input_requests:
-        user_input = valid_input(msg, validator, update_mode)
+        user_input = valid_in(msg, validator, update_mode)
         if user_input == "__exit__":
             return None
         if update_mode and user_input is None:

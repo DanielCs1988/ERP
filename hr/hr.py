@@ -37,7 +37,12 @@ def start_module():
 
     while True:
         ui.print_menu("HR Department: Main menu", options, "Exit program")
-        option = ui.getch()
+        try:
+            option = ui.valid_input("Please enter a number: ", common.validate_string)
+        except (KeyboardInterrupt, EOFError):
+            data_manager.write_table_to_file("sales/sales.csv", sales_data)
+            ui.clear_scr()
+            exit()
 
         if option == "1":
             show_table(hr_data)
@@ -154,6 +159,6 @@ def get_oldest_person(table):
 def get_persons_closest_to_average(table):
     """Returns a list of the people closest to the average age in the group."""
 
-    average_age = common.get_sum(table, B_YEAR) // len(table)
+    average_age = common.szum(table, B_YEAR) // len(table)
     closest_age = min([abs(average_age - int(person[B_YEAR])) for person in table])
     return [person[NAME] for person in table if abs(average_age - int(person[B_YEAR])) == closest_age]
