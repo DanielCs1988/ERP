@@ -62,9 +62,9 @@ def qsort_table(table, col, **kwargs):
             Note that the value passed to the key function will be the value of the given cell (row, column)\
             of the table.
     """
-    return qsort(table,
-                 key=lambda row: kwargs["key"](row[col]) if "key" in kwargs else row[col],
-                 reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
+    return srt(table,
+               key=lambda row: kwargs["key"](row[col]) if "key" in kwargs else row[col],
+               reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
 
 
 def deepcopy(array):
@@ -81,7 +81,7 @@ def deepcopy(array):
     return retval
 
 
-def qsort(array, **kwargs):
+def srt(array, **kwargs):
     """
     Sorts the array using the Quicksort algorithm (with Hoare partition scheme). \
     The original array will not be modified.
@@ -98,23 +98,23 @@ def qsort(array, **kwargs):
 
     key = kwargs["key"] if "key" in kwargs else None
 
-    __qsort(array_copy, 0, len(array) - 1, key)
+    __qsrt(array_copy, 0, len(array) - 1, key)
 
     return array_copy if not ("reversed" in kwargs and kwargs["reversed"]) else array_copy[::-1]
 
 
-def __qsort(array, lo, hi, key):
+def __qsrt(array, lo, hi, key):
     if lo < hi:
-        p = __qsort_partition(array, lo, hi, key)
-        __qsort(array, lo, p, key)
-        __qsort(array, p + 1, hi, key)
+        p = __qsrt_partition(array, lo, hi, key)
+        __qsrt(array, lo, p, key)
+        __qsrt(array, p + 1, hi, key)
 
 
-def __qsort_keyed_value(value, key):
+def __qsrt_keyed_value(value, key):
     return key(value) if key else value
 
 
-def __qsort_partition(array, lo, hi, key):
+def __qsrt_partition(array, lo, hi, key):
     pivot = array[lo]
     i = lo - 1
     j = hi + 1
@@ -122,12 +122,12 @@ def __qsort_partition(array, lo, hi, key):
 
         while True:
             i = i + 1
-            if not __qsort_keyed_value(array[i], key) < __qsort_keyed_value(pivot, key):
+            if not __qsrt_keyed_value(array[i], key) < __qsrt_keyed_value(pivot, key):
                 break
 
         while True:
             j = j - 1
-            if not __qsort_keyed_value(array[j], key) > __qsort_keyed_value(pivot, key):
+            if not __qsrt_keyed_value(array[j], key) > __qsrt_keyed_value(pivot, key):
                 break
 
         if i >= j:
@@ -144,14 +144,14 @@ def get_longest(table, column):
     return max([len(str(row[column])) for row in table])
 
 
-def get_sum(table, column):
+def szum(table, column):
     """ Returns the sum of the data of the given column."""
-    return get_sum_list([row[column] for row in table])
+    return szum_list([row[column] for row in table])
 
 
-def get_sum_list(collection):
+def szum_list(collection):
     '''
-    A very basic replacement for sum().
+    A very basic replacement for summary function.
 
     Crashes if any list item is not an integer.
 
