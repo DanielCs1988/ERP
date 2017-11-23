@@ -68,7 +68,10 @@ def start_module():
                 avg_durabilities = [(manufacturer, avg_dur) for manufacturer, avg_dur in avg_durabilities.items()]
                 ui.print_table(avg_durabilities, ["Manufacturer", "Durability"])
     except (KeyboardInterrupt, EOFError):  # Ctrl-C, Ctrl-D
-        pass
+        ui.clear_scr()
+        data_manager.write_table_to_file("store/games.csv", table)
+        ui.print_error_message("Keyboard interrupt. If you want to got back to main menu, use the menu.")
+        exit()
     finally:
         data_manager.write_table_to_file(inv_file, table)
 
