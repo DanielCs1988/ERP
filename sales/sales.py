@@ -32,9 +32,9 @@ def start_module():
     """
 
     options = ["Show Table",
-               "Add Sale",
-               "Remove Sale",
-               "Update Sale",
+               "Add Entry",
+               "Update Entry",
+               "Remove Entry",
                "Show Lowest Price ID",
                "Show Sold Items Between Dates"]
 

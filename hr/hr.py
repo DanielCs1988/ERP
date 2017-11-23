@@ -26,9 +26,9 @@ def start_module():
         None
     """
     options = ["Show Table",
-               "Add Person",
-               "Remove Person",
-               "Update Person",
+               "Add Entry",
+               "Update Entry",
+               "Remove Entry",
                "Show Oldest Person",
                "Show Persons Closest to Average Age"]
 
