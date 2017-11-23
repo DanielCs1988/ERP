@@ -272,6 +272,7 @@ def remove_line(table, id):
 def apply_update_to_line(original_line, user_input):
     """
     Applies data received from mass_valid_update to the original table line.
+    Don't add the original ID to user_input.
     """
     if user_input is None:
         return original_line
