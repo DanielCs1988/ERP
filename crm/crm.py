@@ -91,12 +91,12 @@ def add(table):
     new_customer_data = [common.generate_random(table)]
 
     new_customer_data.extend(ui.mass_valid_input([("Name: ", None),
-                                                  ("E-mail: ", common.validate_email)
+                                                  ("E-mail: ", common.validate_email),
                                                   ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
     if new_customer_data is None:
         return table
 
-    table.extend(new_customer_data)
+    table.append(new_customer_data)
 
     return table
 

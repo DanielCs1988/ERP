@@ -107,7 +107,7 @@ def add(table):
     if new_store is None:
         return table
 
-    table.extend(new_store)
+    table.append(new_store)
 
     return table
 
