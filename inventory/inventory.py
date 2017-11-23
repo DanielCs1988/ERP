@@ -38,6 +38,7 @@ def start_module():
 
     menuitem = -1
     try:
+        ui.clear_scr()
         while menuitem != "0":
             ui.print_menu("Inventory",
                           ["Show table", "Add entry", "Update entry", "Delete entry", "Available items",
@@ -67,11 +68,13 @@ def start_module():
                 if len(availables) == 0:
                     ui.print_result("No available items found.")
                 else:
+                    ui.print_result("Available items")
                     show_table(availables)
             elif menuitem == "6":
                 ui.clear_scr()
                 avg_durabilities = get_average_durability_by_manufacturers(table)
                 avg_durabilities = [(manufacturer, avg_dur) for manufacturer, avg_dur in avg_durabilities.items()]
+                ui.print_result("Average durability per manufacturer")
                 ui.print_table(avg_durabilities, ["Manufacturer", "Durability"])
             else:
                 ui.clear_scr()
