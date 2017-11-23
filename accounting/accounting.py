@@ -119,7 +119,6 @@ def add(table):
 
     if new_data is None:
         return table
-
     new_line = [common.generate_random(table)]
     new_line.extend(new_data)
 
@@ -166,7 +165,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
     index = common.index_of_id(table, id_)
     if index < 0:
         ui.print_error_message("The ID doesn't exist.")
-        return
+        return table
 
     new_data = ui.mass_valid_input([("Please enter the new month: ", common.validate_month),
                                     ("Please enter the new day: ", common.validate_day),
@@ -175,11 +174,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
                                     ("Please enter the new amount (in US dollars): ", common.validate_int)
                                     ], True)
 
-    new_line = [index]
-    new_line.extend(new_data)
-
-    common.apply_update_to_line(table[index], new_line)
-
+    common.apply_update_to_line(table[index], new_data)
     show_table(table)
     return table
 
