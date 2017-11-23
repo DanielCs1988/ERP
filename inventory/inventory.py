@@ -173,23 +173,30 @@ def update(table, id_):
 # special functions:
 # ------------------
 
-# the question: Which items have not exceeded their durability yet?
-# return type: list of lists (the inner list contains the whole row with their actual data types)
-#
-# @table: list of lists
 def get_available_items(table):
+    """Gets the table for items that have not exceeded their durability.
 
+    Args:
+        table: The input table.
+
+    Returns:
+        table: The filtered table.
+    """
     current_year = common.CURRENT_YEAR
 
     return [row for row in table if current_year - int(row[PURCHASE_DATE]) < int(row[DURABILITY])]
 
 
-# the question: What are the average durability times for each manufacturer?
-# return type: a dictionary with this structure: { [manufacturer] : [avg] }
-#
-# @table: list of lists
 def get_average_durability_by_manufacturers(table):
+    """
+    Gets the average durability for each manufacturer.
 
+    Args:
+        table: The input table.
+
+    Returns:
+        A dictionary of manufacturer name / average durability pairs.
+    """
     manufacturers = {row[MANUFACTURER] for row in table}
 
     durability_by_manufacturers = {}
