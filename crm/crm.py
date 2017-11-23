@@ -32,6 +32,7 @@ def start_module():
     Returns:
         None
     """
+    ui.clear_scr()
     crm_options = ["Show table",
                    "Add entry",
                    "Update entry",
@@ -50,19 +51,25 @@ def start_module():
             show_table(crm_data)
         elif option == "2":
             crm_data = add(crm_data)
+            ui.clear_scr()
         elif option == "3":
             update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "], "")[0]
             crm_data = update(crm_data, update_id)
+            ui.clear_scr()
         elif option == "4":
             remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
             crm_data = remove(crm_data, remove_id)
+            ui.clear_scr()
         elif option == "5":
             ui.print_result(get_longest_name_id(crm_data))
         elif option == "6":
             ui.print_result(get_subscribed_emails(crm_data))
         elif option == "0":
             data_manager.write_table_to_file("crm/customers.csv", crm_data)
+            ui.clear_scr()
             break
+        else:
+            ui.clear_scr()
 
 
 def show_table(table):
@@ -75,6 +82,7 @@ def show_table(table):
     Returns:
         None
     """
+    ui.clear_scr()
     ui.print_table(table, ["ID", "Name", "E-mail", "Subscribed"])
 
 
