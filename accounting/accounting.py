@@ -109,7 +109,7 @@ def add(table):
         Table with a new record
     """
 
-    new_data = ui.mass_valid_input([("Please enter the month: ", common.validate_month),
+    new_data = ui.mass_valid_in([("Please enter the month: ", common.validate_month),
                                     ("Please enter the day: ", common.validate_day),
                                     ("Please enter the year: ", common.validate_byear),
                                     ("Please enter the type (in or out): ", common.validate_type),
@@ -166,7 +166,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
         ui.print_error_message("The ID doesn't exist.")
         return table
 
-    new_data = ui.mass_valid_input([("Please enter the new month: ", common.validate_month),
+    new_data = ui.mass_valid_in([("Please enter the new month: ", common.validate_month),
                                     ("Please enter the new day: ", common.validate_day),
                                     ("Please enter the new year: ", common.validate_byear),
                                     ("Please enter the new type (in or out): ", common.validate_type),
@@ -191,9 +191,9 @@ def which_year_max(table):
     '''
     max_profit, current_year = 0, 0
     for year in {row[YEAR] for row in table}:
-        temp_sum = common.get_sum_list(
+        temp_sum = common.get_szum_list(
             [int(row[AMOUNT]) for row in table if row[YEAR] == year and row[TYPE] == 'in'])
-        temp_sum -= common.get_sum_list(
+        temp_sum -= common.get_szum_list(
             [int(row[AMOUNT]) for row in table if row[YEAR] == year and row[TYPE] == 'out'])
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
@@ -219,11 +219,11 @@ def avg_amount(table, input_year):
     profit = []
     current_year = 0
 
-    temp_sum = common.get_sum_list(
+    temp_sum = common.get_szum_list(
         [int(row[AMOUNT]) for row in table if row[YEAR] == input_year and row[TYPE] == 'in'])
-    temp_sum -= common.get_sum_list(
+    temp_sum -= common.get_szum_list(
         [int(row[AMOUNT]) for row in table if row[YEAR] == input_year and row[TYPE] == 'out'])
-    temp_count = common.get_sum_list(
+    temp_count = common.get_szum_list(
         [1 for row in table if row[YEAR] == input_year])
 
     return temp_sum / temp_count
