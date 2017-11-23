@@ -1,5 +1,4 @@
 from random import choice
-import re
 import ui
 
 CHR_TYPES = {"uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -234,16 +233,29 @@ def validate_day(day):
 
 def validate_email(email):
     '''
-    Validates e-mail address using a simplified version of the RFC 5322 standard. \t
-    cf. http://www.regular-expressions.info/email.html
-
+    Validates e-mail address using.
     Args:
         email: The email address to validate.
 
     Returns:
         True, if email is a valid email address
     '''
-    return re.match(r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", email) is not None
+    is_valid = True
+
+    at_index = index_of("@", email)
+
+    if at_index == 0 or at_index < 0 or at_index == len(email) - 1:
+        return False
+    if len([char for char in email if char == "@"]) > 1:
+        return False
+
+    email_split = email.split("@")
+    dot_index = index_of(".", email_split[1])
+
+    if dot_index == 0 or dot_index < 0 or dot_index == len(email_split[1]) - 1:
+        return False
+
+    return is_valid
 
 
 def validate_int(integer):
