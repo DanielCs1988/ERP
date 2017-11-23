@@ -108,9 +108,9 @@ def add(table):
     new_store = [common.generate_random(table)]
 
     new_store.extend(ui.mass_valid_in([("Title: ", common.validate_string),
-                                          ("Manufacturer: ", common.validate_string)
-                                          ("Price: ", common.validate_int),
-                                          ("In Stock: ", common.validate_int)]))
+                                       ("Manufacturer: ", common.validate_string)
+                                       ("Price: ", common.validate_int),
+                                       ("In Stock: ", common.validate_int)]))
     if new_store is None:
         return table
 
