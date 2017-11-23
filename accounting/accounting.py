@@ -190,9 +190,9 @@ def which_year_max(table):
     '''
     max_profit, current_year = 0, 0
     for year in {row[YEAR] for row in table}:
-        temp_sum = common.get_szum_list(
+        temp_sum = common.szum_list(
             [int(row[AMOUNT]) for row in table if row[YEAR] == year and row[TYPE] == 'in'])
-        temp_sum -= common.get_szum_list(
+        temp_sum -= common.szum_list(
             [int(row[AMOUNT]) for row in table if row[YEAR] == year and row[TYPE] == 'out'])
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
@@ -218,11 +218,11 @@ def avg_amount(table, input_year):
     profit = []
     current_year = 0
 
-    temp_sum = common.get_szum_list(
+    temp_sum = common.szum_list(
         [int(row[AMOUNT]) for row in table if row[YEAR] == input_year and row[TYPE] == 'in'])
-    temp_sum -= common.get_szum_list(
+    temp_sum -= common.szum_list(
         [int(row[AMOUNT]) for row in table if row[YEAR] == input_year and row[TYPE] == 'out'])
-    temp_count = common.get_szum_list(
+    temp_count = common.szum_list(
         [1 for row in table if row[YEAR] == input_year])
 
     return temp_sum / temp_count
