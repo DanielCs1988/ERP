@@ -159,14 +159,8 @@ def update(table, id_):
                                       ("Purchase year: ", common.validate_byear),
                                       ("Durability: ", common.validate_int)], True)
 
-    if user_input is None:
-        return table
-
-    for col_idx in range(len(user_input)):
-        if user_input[col_idx] is None:
-            continue
-        table[index][col_idx + 1] = user_input[col_idx]
-        # col_idx + 1 because the first item is always the ID that is not changed
+    common.apply_update_to_line(table[index], user_input)
+    # col_idx + 1 because the first item is always the ID that is not changed
 
     return table
 
