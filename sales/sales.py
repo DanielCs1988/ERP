@@ -43,7 +43,12 @@ def start_module():
 
     while True:
         ui.print_menu("Sales Department: Main menu", options, "Exit program")
-        option = ui.getch()
+        try:
+            option = ui.valid_input("Please enter a number: ", common.validate_string)
+        except (KeyboardInterrupt, EOFError):
+            data_manager.write_table_to_file("sales/sales.csv", sales_data)
+            ui.clear_scr()
+            exit()
 
         if option == "1":
             show_table(sales_data)
@@ -178,7 +183,7 @@ def get_lowest_price_item_id(table):
     min_price = min(prices, key=common.get_item(2))[2]
     min_price_items = [(item[ID], item[TITLE], item[PRICE]) for item in prices if item[2] == min_price]
     # IMPORTANT NOTE: Assignment not clear on whether we should take the alpha-order of IDs or titles.
-    return common.qsort(min_price_items, key=common.get_item(1), reversed=True)[0][ID]
+    return common.srt(min_price_items, key=common.get_item(1), reversed=True)[0][ID]
 
 
 # the question: Which items are sold between two given dates ? (from_date < sale_date < to_date)

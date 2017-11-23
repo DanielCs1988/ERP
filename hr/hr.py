@@ -37,7 +37,12 @@ def start_module():
 
     while True:
         ui.print_menu("HR Department: Main menu", options, "Exit program")
-        option = ui.getch()
+        try:
+            option = ui.valid_input("Please enter a number: ", common.validate_string)
+        except (KeyboardInterrupt, EOFError):
+            data_manager.write_table_to_file("sales/sales.csv", sales_data)
+            ui.clear_scr()
+            exit()
 
         if option == "1":
             show_table(hr_data)
