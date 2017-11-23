@@ -1,13 +1,11 @@
 from random import choice
-import string
 import re
 import ui
 
-CHR_TYPES = {"uppercase": string.ascii_uppercase,
-             "lowercase": string.ascii_lowercase,
-             "digit": string.digits,
-             "symbol": "!@#$%^&*()?",
-             "char": string.ascii_letters
+CHR_TYPES = {"uppercase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+             "lowercase": "abcdefghijklmnopqrstuvwxyz",
+             "digit": "0123456789",
+             "symbol": "!@#$%^&*()?"
              }
 
 CURRENT_YEAR = 2017
