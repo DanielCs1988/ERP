@@ -203,7 +203,7 @@ def mass_valid_input(input_requests, update_mode=False, exit_string=("esc", "qui
         input_requests: A list of tuples containing request message-validator function pairs.
         update_mode: Whether in update mode. Update mode allows empty input (=current value not changed)
     Returns:
-        A list of tuples containing request message - input value pairs. \
+        A list valid input values. \
             The input value may be None in update mode, indicating that the value must not be changed. \
             The ouput list retains the order of the input list.
     """
@@ -217,6 +217,6 @@ def mass_valid_input(input_requests, update_mode=False, exit_string=("esc", "qui
             return None
         if update_mode and user_input is None:
             print_result("Value not changed.")
-        results.append((msg, user_input))
+        results.append(user_input)
 
     return results
