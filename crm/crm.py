@@ -90,7 +90,7 @@ def add(table):
     #"""
     new_customer_data = [common.generate_random(table)]
 
-    new_customer_data.extend(ui.mass_valid_input([("Name: ", None),
+    new_customer_data.extend(ui.mass_valid_input([("Name: ", common.validate_string),
                                                   ("E-mail: ", common.validate_email),
                                                   ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
     if new_customer_data is None:
@@ -133,7 +133,7 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    update_input = ui.mass_valid_input([("Name: ", None),
+    update_input = ui.mass_valid_input([("Name: ", common.validate_string),
                                         ("E-mail: ", common.validate_email),
                                         ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
 

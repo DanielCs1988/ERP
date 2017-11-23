@@ -100,8 +100,8 @@ def add(table):
 
     new_store = [common.generate_random(table)]
 
-    new_store.extend(ui.mass_valid_input([("Title: ", None),
-                                          ("Manufacturer: ", None)
+    new_store.extend(ui.mass_valid_input([("Title: ", common.validate_string),
+                                          ("Manufacturer: ", common.validate_string)
                                           ("Price: ", common.validate_int),
                                           ("In Stock: ", common.validate_int)]))
     if new_store is None:
@@ -145,8 +145,8 @@ def update(table, id_):
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    update_input = ui.mass_valid_input([("Title: ", None),
-                                        ("Manufacturer: ", None)
+    update_input = ui.mass_valid_input([("Title: ", common.validate_string),
+                                        ("Manufacturer: ", common.validate_string)
                                         ("Price: ", common.validate_int),
                                         ("In Stock: ", common.validate_int)])
 
