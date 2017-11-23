@@ -106,34 +106,16 @@ def add(table):
     """
 
     new_item = [common.generate_random(table)]
-    new_item.extend(ui.get_inputs(["Name:"], "Please enter item details. Type ESC to cancel."))
 
-    if "ESC" in new_item:
+    user_input = ui.mass_valid_input([("Name:", None),
+                                      ("Manufacturer:", None),
+                                      ("Purchase year: ", common.validate_byear),
+                                      ("Durability: ", common.validate_int)])
+
+    if user_input is None:
         return table
 
-    new_item.extend(ui.get_inputs(["Manufacturer:"], ""))
-
-    if "ESC" in new_item:
-        return table
-
-    while True:
-        value = ui.get_inputs(["Purchase date:"], "")[0]
-        if not common.validate_byear(value):
-            continue  # validation comes here
-        new_item.append(value)
-        break
-
-    if "ESC" in new_item:
-        return table
-
-    while True:
-        value = ui.get_inputs(["Durability:"], "")[0]
-        try:
-            new_durability = int(value)  # validation comes here
-        except ValueError:
-            continue
-        new_item.append(value)
-        break
+    new_item.extend(user_input)
 
     table.append(new_item)
 
@@ -152,12 +134,7 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    idx = common.index_of_id(table, id_)
-
-    if idx >= 0:
-        del table[idx]
-
-    return table
+    return common.remove_line(table, id_)
 
 
 def update(table, id_):
@@ -177,37 +154,19 @@ def update(table, id_):
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    itemname = table[index][1]
-    ui.print_result("Enter new data for {} ({}). Leave input empty to keep existing values.".format(itemname, id_))
+    user_input = ui.mass_valid_input([("Name:", None),
+                                      ("Manufacturer:", None),
+                                      ("Purchase year: ", common.validate_byear),
+                                      ("Durability: ", common.validate_int)], True)
 
-    for col in InvCols:
-        colname = col.name
-        colindex = col.value
+    if user_input is None:
+        return table
 
-        if colindex == 0:
+    for col_idx in range(len(user_input)):
+        if user_input[col_idx] is None:
             continue
-
-        current_input = ui.get_inputs([colname+":"], "")[0]
-
-        if len(current_input) == 0:
-            ui.print_result("{} not changed.".format(colname))
-        elif col == InvCols.PURCHASE_DATE:
-            year_valid = common.validate_byear(current_input)
-            if not year_valid:
-                ui.print_error_message("Invalid value '{}' for {}".format(current_input, colname))
-                continue
-            table[index][colindex] = current_input
-
-        elif col == InvCols.DURABILITY:
-            try:
-                int(current_input)
-            except ValueError:
-                ui.print_error_message("Invalid value '{}' for {}".format(current_input, colname))
-                continue
-            table[index][colindex] = current_input
-
-        else:
-            table[index][colindex] = current_input
+        table[index][col_idx + 1] = user_input[col_idx]
+        # col_idx + 1 because the first item is always the ID that is not changed
 
     return table
 
