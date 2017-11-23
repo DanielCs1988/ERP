@@ -59,11 +59,11 @@ def start_module():
             crm_data = add(crm_data)
             ui.clear_scr()
         elif option == "3":
-            update_id = ui.valid_in(["Please enter the ID of the person you want to update: "], "")[0]
+            update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "], "")[0]
             crm_data = update(crm_data, update_id)
             ui.clear_scr()
         elif option == "4":
-            remove_id = ui.valid_in(["Please enter the ID of the person you want to delete: "], "")[0]
+            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
             crm_data = remove(crm_data, remove_id)
             ui.clear_scr()
         elif option == "5":
@@ -111,8 +111,8 @@ def add(table):
     new_customer_data = [common.generate_random(table)]
 
     new_customer_data.extend(ui.mass_valid_in([("Name: ", common.validate_string),
-                                                  ("E-mail: ", common.validate_email),
-                                                  ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
+                                               ("E-mail: ", common.validate_email),
+                                               ("Subscribed? (1 for yes, 0 for no): ", common.validate_boolean)]))
     if new_customer_data is None:
         return table
 
@@ -154,8 +154,9 @@ def update(table, id_):
         return table
 
     update_input = ui.mass_valid_in([("Name: ", common.validate_string),
-                                        ("E-mail: ", common.validate_email),
-                                        ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
+                                     ("E-mail: ", common.validate_email),
+                                     ("Subscribed? (1 for yes, 0 for no)", common.validate_boolean)],
+                                    True)
 
     table[index] = common.apply_update_to_line(table[index], update_input)
 
@@ -165,9 +166,6 @@ def update(table, id_):
 # special functions:
 # ------------------
 
-
-# the question: What is the id of the customer with the longest name ?
-# return type: string (id) - if there are more than one longest name, return the first by ascending alphabetical order
 def get_longest_name_id(table):
     """Returns the ID of the person who has the longest name. If there are more people it returns the first in
        ascending alphabetical order"""
@@ -178,8 +176,6 @@ def get_longest_name_id(table):
     return common.srt(max_length_names, key=itemgetter(1))[0][0]
 
 
-# the question: Which customers has subscribed to the newsletter?
-# return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
     """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
     return [";".join((line[EMAIL], line[NAME])) for line in table if line[SUBSCRIBED] == '1']
