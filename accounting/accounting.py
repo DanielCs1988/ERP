@@ -205,6 +205,12 @@ def which_year_max(table):
 # the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
 # return the answer (number)
 def avg_amount(table, input_year):
+    '''
+    Goes through each unique year, counting the sum of the profits.
+    Then subtracts the 'out' values.
+    Divides that by the number of lines
+    and returns the year with the average profit. (float)
+    '''
     profit = []
     current_year = 0
 
