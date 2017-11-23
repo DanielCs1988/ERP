@@ -188,5 +188,5 @@ def get_average_by_manufacturer(table, manufacturer):
     if len(items_for_manufacturer) == 0:
         return 0
 
-    summed = common.get_sum(items_for_manufacturer, IN_STOCK)
+    summed = common.szum(items_for_manufacturer, IN_STOCK)
     return summed / len(items_for_manufacturer)
