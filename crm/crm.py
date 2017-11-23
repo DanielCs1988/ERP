@@ -33,9 +33,9 @@ def start_module():
         None
     """
     crm_options = ["Show table",
-                   "Add",
-                   "Remove",
-                   "Update",
+                   "Add entry",
+                   "Update entry",
+                   "Remove entry",
                    "Who has the longest name?",
                    "Subscribed emails"]
 
@@ -43,24 +43,19 @@ def start_module():
 
     while True:
         ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
-        try:
-            inputs = ui.get_inputs(["Please enter a number: "], "")
-        except (KeyboardInterrupt, EOFError):
-            data_manager.write_table_to_file("crm/customers.csv", crm_data)
-            common.exit()
 
-        option = inputs[0]
+        option = ui.getch()
 
         if option == "1":
             show_table(crm_data)
         elif option == "2":
             crm_data = add(crm_data)
         elif option == "3":
-            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
-            crm_data = remove(crm_data, remove_id)
-        elif option == "4":
             update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "], "")[0]
             crm_data = update(crm_data, update_id)
+        elif option == "4":
+            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
+            crm_data = remove(crm_data, remove_id)
         elif option == "5":
             ui.print_result(get_longest_name_id(crm_data))
         elif option == "6":
@@ -68,8 +63,6 @@ def start_module():
         elif option == "0":
             data_manager.write_table_to_file("crm/customers.csv", crm_data)
             break
-        else:
-            ui.print_error_message(err)
 
 
 def show_table(table):
@@ -97,13 +90,13 @@ def add(table):
     #"""
     new_customer_data = [common.generate_random(table)]
 
-    new_customer_data.extend(ui.mass_valid_input([("Name: ", None),
-                                                  ("E-mail: ", common.validate_email)
+    new_customer_data.extend(ui.mass_valid_input([("Name: ", common.validate_string),
+                                                  ("E-mail: ", common.validate_email),
                                                   ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
     if new_customer_data is None:
         return table
 
-    table.extend(new_customer_data)
+    table.append(new_customer_data)
 
     return table
 
@@ -140,7 +133,7 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    update_input = ui.mass_valid_input([("Name: ", None),
+    update_input = ui.mass_valid_input([("Name: ", common.validate_string),
                                         ("E-mail: ", common.validate_email),
                                         ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
 
