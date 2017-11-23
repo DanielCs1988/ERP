@@ -1,11 +1,10 @@
-# data structure:
-# id: string
-#     Unique and randomly generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
-# month: number
-# day: number
-# year: number
-# type: string (in = income, out = outcome)
-# amount: number (dollar)
+"""
+Accounting module. Data structure:
+1. ID of transaction
+2-4. Date of transaction
+5. Type of transaction (in: income, out: outcome)
+6. Transaction amount in dollars
+"""
 
 import os
 import ui
@@ -20,18 +19,31 @@ TYPE = 4
 AMOUNT = 5
 
 
-def start_module():
+def start_module(table_file=None, table_cont=None):
     """
     Starts this module and displays its menu.
     User can access default special features from here.
     User can go back to main menu from here.
+
+    If no argument given, uses items.csv
+
+    Args:
+        table_file: use a 2d list instead, overwritten by table_cont
+        table_cont: use the previously opened table,
+            in case of keyboead interrupt
 
     Returns:
         None
     """
     ui.clear_scr()
 
-    table = data_manager.get_table_from_file("accounting/items.csv")
+    if not table_file and not table_cont:
+        table = data_manager.get_table_from_file("accounting/items.csv")
+    elif not table_cont:
+        table = table_file
+    else:
+        table = table_cont
+
     paid_version = True    # an easter-egg, leave it True and it should (hopefully) cause no problems
     if paid_version:    # uses the options based on the easter-egg
         menu_options = ["Show table",
@@ -65,9 +77,10 @@ def start_module():
                 remove(table, input_id)
                 ui.clear_scr()
             elif option == "5":
-                ui.print_result(which_year_max(table))
+                ui.print_result("The year with the highest profit is {0}".format(which_year_max(table)))
             elif option == "6":
                 while True:    # checks if the year exists in the table at all
+                    ui.clear_scr()
                     years = {line[YEAR] for line in table}
                     input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
                                                "Which year do you want to know about?")[0]
@@ -77,7 +90,7 @@ def start_module():
                         continue
                     break
                 ui.print_result(avg_amount(table, input_year),
-                                "The average amount of profit per game in {0}".format(input_year))
+                                "The average amount of USD profit per game in {0} is".format(input_year))
 
             elif option == "0":
                 data_manager.write_table_to_file("accounting/items.csv", table)
@@ -86,7 +99,13 @@ def start_module():
             else:
                 ui.clear_scr()
     except (KeyboardInterrupt, EOFError):
-        ui.print_error_message('''\nKeyboard interrupt.\nIf you want to go back to the main menu, use the menu.''')
+        ui.print_error_message('''\nKeyboard interrupt.\n\nYou will lose all changes.''')
+        while True:
+            decision = ui.get_inputs(["Are you sure you want to quit?.(Y/N)"], "")[0]
+            if decision in ['Y', 'y']:
+                break
+            elif decision in ['N', 'n']:
+                start_module(table_cont=table)
 
 
 def show_table(table):
@@ -128,6 +147,7 @@ def add(table):
     new_line.extend(new_data)
 
     table.append(new_line)
+    ui.clear_scr()
 
     return table
 
@@ -167,7 +187,6 @@ def update(table, id_):
 
     index = common.index_of_id(table, id_)
     if index < 0:
-        ui.print_error_message("The ID doesn't exist.")
         return table
 
     new_data = ui.mass_valid_in([("Please enter the new month: ", common.validate_month),
@@ -182,17 +201,13 @@ def update(table, id_):
     return table
 
 
-# special functions:
-# ------------------
-
-# the question: Which year has the highest profit? (profit=in-out)
-# return the answer (number)
 def which_year_max(table):
     '''
     Goes through each unique year, counting the sum of the profits.
     Then subtracts the 'out' values.
     Compares and returns the year with the highest profit.
     '''
+    ui.clear_scr()
     max_profit, current_year = 0, 0
     for year in {row[YEAR] for row in table}:
         temp_sum = common.szum_list(
@@ -202,12 +217,10 @@ def which_year_max(table):
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
 
-    current_year = int(current_year)    # F*CK THE TEST
+    current_year = int(current_year)
     return current_year
 
 
-# the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
-# return the answer (number)
 def avg_amount(table, input_year):
     '''
     Goes through each unique year, counting the sum of the profits.
@@ -215,7 +228,8 @@ def avg_amount(table, input_year):
     Divides that by the number of lines
     and returns the year with the average profit. (float)
     '''
-    input_year = str(input_year)    # F*CK THE TEST
+    ui.clear_scr()
+    input_year = str(input_year)
     years = {line[YEAR] for line in table}
     if input_year not in years:
         ui.print_error_message("Not a valid year.")
@@ -231,6 +245,3 @@ def avg_amount(table, input_year):
         [1 for row in table if row[YEAR] == input_year])
 
     return temp_sum / temp_count
-
-if __name__ == '__main__':
-    start_module()

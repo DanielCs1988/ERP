@@ -1,3 +1,10 @@
+"""
+Sales module. Data structure:
+1. ID of sale
+2. Name of sold item
+3. Price of sold item
+4-6. Date when the item was sold
+"""
 # data structure:
 # id: string
 #     Unique and random generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
@@ -176,24 +183,19 @@ def update(table, id_):
     return table
 
 
-# special functions:
-# ------------------
-
-# the question: What is the id of the item that was sold for the lowest price ?
-# return type: string (id)
-# if there are more than one with the lowest price, return the first by descending alphabetical order
 def get_lowest_price_item_id(table):
+    """Returns the ID of the item that was sold for the lowest price. 
+       If there are more than one with the lowest price, return the first by descending alphabetical order."""
 
     prices = [(line[ID], line[TITLE], int(line[PRICE])) for line in table]
     min_price = min(prices, key=common.get_item(2))[2]
     min_price_items = [(item[ID], item[TITLE], item[PRICE]) for item in prices if item[2] == min_price]
-    # IMPORTANT NOTE: Assignment not clear on whether we should take the alpha-order of IDs or titles.
+
     return common.srt(min_price_items, key=common.get_item(1), reversed=True)[0][ID]
 
 
-# the question: Which items are sold between two given dates ? (from_date < sale_date < to_date)
-# return type: list of lists (the filtered table)
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
+    """Returns a list of sold items (as lists) between the given date boundaries."""
 
     min_date = common.dtime(year_from, month_from, day_from)
     max_date = common.dtime(year_to, month_to, day_to)

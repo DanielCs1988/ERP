@@ -1,21 +1,16 @@
-# data structure:
-# id: string
-#     Unique and random generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
-# name: string
-# manufacturer: string
-# purchase_date: number (year)
-# durability: number (year)
+"""
+Inventory module. Data structure:
+1. ID of item
+2. Name of item
+3. Manufacturer of item
+4. Purchase year of item
+5. Durability of item in years
+"""
 
-
-# importing everything you need
 import os
-# User interface module
 import ui
-# data manager module
 import data_manager
-# common module
 import common
-
 
 ID = 0
 NAME = 1

@@ -1,14 +1,12 @@
-# data structure:
-# id: string
-#     Unique and random generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
-# title: string
-# amount: number
-# price: number (the actual sale price in $ per piece of item)
-# retailer: string
-# month: number
-# day: number
-# year: number
-# month,year and day combined gives the date the item is due to arrive
+"""
+Logistics module. Data structure:
+1. ID of order
+2. Name of ordered item
+3. Amount of ordered item
+4. Unit price of ordered item
+5. Retailer of ordered item
+6-8. Date when item is due to arrive
+"""
 
 import os
 import ui
@@ -178,6 +176,7 @@ def update(table, id_):
 
 
 def get_price_total_per_retailer(table):
+    """Returns a dictionary with retailers as keys and their due payments added up as values."""
 
     r_payments = {}
 
@@ -189,6 +188,7 @@ def get_price_total_per_retailer(table):
 
 
 def date_ordered_payments(table):
+    """Orders items based on their arrival dates. Returns a list of lists."""
 
     temp_table = [[line[ID], line[TITLE], line[AMOUNT], line[PRICE], line[RETAILER],
                   common.dtime(line[YEAR], line[MONTH], line[DAY])] for line in table]
