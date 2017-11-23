@@ -45,39 +45,41 @@ def start_module():
                         "Update entry",
                         "Remove entry",
                         "Buy the full version of the software to unlock more options"]
+    try:
+        while True:
+            ui.print_menu("Accounting", menu_options, "Back to main menu")
+            option = ui.get_inputs(["Please enter a number: "], "")[0]
 
-    while True:
-        ui.print_menu("Accounting", menu_options, "Back to main menu")
-        option = ui.getch()
+            if option == "1":
+                show_table(table)
+            elif option == "2":
+                add(table)
+            elif option == "3":
+                input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
+                update(table, input_id)
+            elif option == "4":
+                input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
+                remove(table, input_id)
+            elif option == "5":
+                ui.print_result(which_year_max(table))
+            elif option == "6":
+                while True:
+                    years = {line[YEAR] for line in table}
+                    input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
+                                            "Which year do you want to know about?")[0]
+                    if not common.validate_byear(input_year):
+                        continue
+                    if common.index_of_value(table, YEAR, input_year) == -1:
+                        continue
+                    break
+                ui.print_result(avg_amount(table, input_year),
+                                "The average amount of profit per game in {0}".format(input_year))
 
-        if option == "1":
-            show_table(table)
-        elif option == "2":
-            add(table)
-        elif option == "3":
-            input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
-            update(table, input_id)
-        elif option == "4":
-            input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
-            remove(table, input_id)
-        elif option == "5":
-            ui.print_result(which_year_max(table))
-        elif option == "6":
-            while True:
-                years = {line[YEAR] for line in table}
-                input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
-                                           "Which year do you want to know about?")[0]
-                if not common.validate_byear(input_year):
-                    continue
-                if common.index_of_value(table, YEAR, input_year) == -1:
-                    continue
+            elif option == "0":
+                data_manager.write_table_to_file("accounting/items.csv", table)
                 break
-            ui.print_result(avg_amount(table, input_year),
-                            "The average amount of profit per game in {0}".format(input_year))
-
-        elif option == "0":
-            data_manager.write_table_to_file("accounting/items.csv", table)
-            break
+    except (KeyboardInterrupt, EOFError):
+        ui.print_error_message("\nKeyboard interrupt cancelled.\nIf you want to exit, use the menu.")
 
 
 def show_table(table):
@@ -106,7 +108,7 @@ def add(table):
         Table with a new record
     """
 
-    new_data = ui.mass_valid_input([("Please enter the month: ", common.validate_month),
+    new_data = ui.mass_valid_in([("Please enter the month: ", common.validate_month),
                                     ("Please enter the day: ", common.validate_day),
                                     ("Please enter the year: ", common.validate_byear),
                                     ("Please enter the type (in or out): ", common.validate_type),
@@ -163,7 +165,7 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
         ui.print_error_message("The ID doesn't exist.")
         return table
 
-    new_data = ui.mass_valid_input([("Please enter the new month: ", common.validate_month),
+    new_data = ui.mass_valid_in([("Please enter the new month: ", common.validate_month),
                                     ("Please enter the new day: ", common.validate_day),
                                     ("Please enter the new year: ", common.validate_byear),
                                     ("Please enter the new type (in or out): ", common.validate_type),
@@ -188,9 +190,9 @@ def which_year_max(table):
     '''
     max_profit, current_year = 0, 0
     for year in {row[YEAR] for row in table}:
-        temp_sum = common.get_sum_list(
+        temp_sum = common.get_szum_list(
             [int(row[AMOUNT]) for row in table if row[YEAR] == year and row[TYPE] == 'in'])
-        temp_sum -= common.get_sum_list(
+        temp_sum -= common.get_szum_list(
             [int(row[AMOUNT]) for row in table if row[YEAR] == year and row[TYPE] == 'out'])
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
@@ -216,11 +218,11 @@ def avg_amount(table, input_year):
     profit = []
     current_year = 0
 
-    temp_sum = common.get_sum_list(
+    temp_sum = common.get_szum_list(
         [int(row[AMOUNT]) for row in table if row[YEAR] == input_year and row[TYPE] == 'in'])
-    temp_sum -= common.get_sum_list(
+    temp_sum -= common.get_szum_list(
         [int(row[AMOUNT]) for row in table if row[YEAR] == input_year and row[TYPE] == 'out'])
-    temp_count = common.get_sum_list(
+    temp_count = common.get_szum_list(
         [1 for row in table if row[YEAR] == input_year])
 
     return temp_sum / temp_count
