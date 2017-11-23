@@ -43,7 +43,7 @@ def start_module():
 
     try:
         while True:
-            ui.print_menu("Store: Main menu", options, "Exit program")
+            ui.print_menu("Store: Main menu", options, "Back to main menu")
             option = ui.get_inputs(["Please enter a number: "], "")[0]
 
             if option == "1":
@@ -62,7 +62,7 @@ def start_module():
             elif option == "5":
                 count_by_manufacturer_dict = get_counts_by_manufacturers(store_data)
                 count_by_manufacturer_table = [(manufacturer, num)
-                                            for manufacturer, num in count_by_manufacturer_dict.items()]
+                                               for manufacturer, num in count_by_manufacturer_dict.items()]
                 ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
             elif option == "6":
                 manufacturer = ui.get_inputs(["Please a manufacturer: "], "")[0]

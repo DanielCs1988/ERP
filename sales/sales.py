@@ -42,7 +42,7 @@ def start_module():
     ui.clear_scr()
 
     while True:
-        ui.print_menu("Sales Department: Main menu", options, "Exit program")
+        ui.print_menu("Sales Department: Main menu", options, "Back to main menu")
         try:
             option = ui.valid_in("Please enter a number: ", common.validate_string)
         except (KeyboardInterrupt, EOFError):

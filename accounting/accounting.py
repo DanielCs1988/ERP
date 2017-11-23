@@ -29,6 +29,7 @@ def start_module():
     Returns:
         None
     """
+    ui.clear_scr()
 
     table = data_manager.get_table_from_file("accounting/items.csv")
     paid_version = True    # an easter-egg, leave it True and it should (hopefully) cause no problems
@@ -53,17 +54,20 @@ def start_module():
             if option == "1":
                 show_table(table)
             elif option == "2":
+                ui.clear_scr()
                 add(table)
             elif option == "3":
                 input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
                 update(table, input_id)
+                ui.clear_scr()
             elif option == "4":
                 input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
                 remove(table, input_id)
+                ui.clear_scr()
             elif option == "5":
                 ui.print_result(which_year_max(table))
             elif option == "6":
-                while True:
+                while True:    # checks if the year exists in the table at all
                     years = {line[YEAR] for line in table}
                     input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
                                                "Which year do you want to know about?")[0]
@@ -77,9 +81,12 @@ def start_module():
 
             elif option == "0":
                 data_manager.write_table_to_file("accounting/items.csv", table)
+                ui.clear_scr()
                 break
+            else:
+                ui.clear_scr()
     except (KeyboardInterrupt, EOFError):
-        ui.print_error_message("\nKeyboard interrupt cancelled.\nIf you want to exit, use the menu.")
+        ui.print_error_message('''\nKeyboard interrupt.\nIf you want to go back to the main menu, use the menu.''')
 
 
 def show_table(table):
@@ -122,8 +129,6 @@ def add(table):
 
     table.append(new_line)
 
-    show_table(table)
-
     return table
 
 
@@ -148,7 +153,7 @@ def remove(table, id_):
     return table
 
 
-def update(table, id_):  # Constants could be used here, also needs a bit of reviewing.
+def update(table, id_):
     """
     Updates specified record in the table. Ask users for new data.
 
