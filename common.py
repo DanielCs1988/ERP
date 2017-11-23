@@ -267,3 +267,17 @@ def remove_line(table, id):
 
     del table[index]
     return table
+
+
+def apply_update_to_line(original_line, user_input):
+    """
+    Applies data received from mass_valid_update to the original table line.
+    """
+    if user_input is None:
+        return table
+
+    for col_idx in range(len(user_input)):
+        if user_input[col_idx] is None:
+            continue
+        original_line[col_idx + 1] = user_input[col_idx]
+        # col_idx + 1 because the first item is always the ID that is not changed
