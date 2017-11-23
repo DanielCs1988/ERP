@@ -16,20 +16,16 @@ import data_manager
 # common module
 import common
 
-import enum
-
 from datetime import datetime
 
 from statistics import mean
 
 
-class InvCols(enum.IntEnum):
-    __order__ = "ID NAME MANUFACTURER PURCHASE_DATE DURABILITY"
-    ID = 0,
-    NAME = 1,
-    MANUFACTURER = 2,
-    PURCHASE_DATE = 3,
-    DURABILITY = 4
+ID = 0
+NAME = 1
+MANUFACTURER = 2
+PURCHASE_DATE = 3
+DURABILITY = 4
 
 
 def start_module():
@@ -177,7 +173,7 @@ def get_available_items(table):
     now = datetime.now()
     current_year = now.year
 
-    return [row for row in table if current_year - int(row[InvCols.PURCHASE_DATE]) < int(row[InvCols.DURABILITY])]
+    return [row for row in table if current_year - int(row[PURCHASE_DATE]) < int(row[DURABILITY])]
 
 
 # the question: What are the average durability times for each manufacturer?
@@ -186,12 +182,12 @@ def get_available_items(table):
 # @table: list of lists
 def get_average_durability_by_manufacturers(table):
 
-    manufacturers = {row[InvCols.MANUFACTURER] for row in table}
+    manufacturers = {row[MANUFACTURER] for row in table}
 
     durability_by_manufacturers = {}
 
     for manufacturer in manufacturers:
-        durabilities = [int(row[InvCols.DURABILITY]) for row in table if row[InvCols.MANUFACTURER] == manufacturer]
+        durabilities = [int(row[DURABILITY]) for row in table if row[MANUFACTURER] == manufacturer]
         durability_by_manufacturers[manufacturer] = mean(durabilities)
 
     return durability_by_manufacturers
