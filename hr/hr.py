@@ -36,7 +36,7 @@ def start_module():
     ui.clear_scr()
 
     while True:
-        ui.print_menu("HR Department: Main menu", options, "Exit program")
+        ui.print_menu("HR Department: Main menu", options, "Back to main menu")
         try:
             option = ui.valid_in("Please enter a number: ", common.validate_string)
         except (KeyboardInterrupt, EOFError):
@@ -50,14 +50,14 @@ def start_module():
             hr_data = add(hr_data)
             ui.clear_scr()
         elif option == "3":
-            to_remove = ui.valid_in(
-                "What is the ID of the item that you would like to remove? ", common.validate_string)
-            hr_data = remove(hr_data, to_remove)
-            ui.clear_scr()
-        elif option == "4":
             to_update = ui.valid_in(
                 "What is the ID of the item that you would like to update? ", common.validate_string)
             hr_data = update(hr_data, to_update)
+            ui.clear_scr()
+        elif option == "4":
+            to_remove = ui.valid_in(
+                "What is the ID of the item that you would like to remove? ", common.validate_string)
+            hr_data = remove(hr_data, to_remove)
             ui.clear_scr()
         elif option == "5":
             ui.print_result(get_oldest_person(hr_data))
