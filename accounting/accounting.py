@@ -163,54 +163,23 @@ def update(table, id_):  # Constants could be used here, also needs a bit of rev
         table with updated record
     """
 
-    id_to_change = common.index_of_id(table, id_)
-
-    if id_to_change < 0:
-        ui.print_error_message("The given ID doesn't exist.")
+    index = common.index_of_id(table, id_)
+    if index < 0:
+        ui.print_error_message("The ID doesn't exist.")
         return
 
-    while True:
-        input_month = ui.get_inputs(["Please enter the new month: "], "")[0]
-        if common.validate_empty(input_month):
-            input_month = table[id_to_change][MONTH]
-        elif not common.validate_month(input_month):
-            continue
-        break
+    new_data = ui.mass_valid_input([("Please enter the new month: ", common.validate_month),
+                                    ("Please enter the new day: ", common.validate_day),
+                                    ("Please enter the new year: ", common.validate_byear),
+                                    ("Please enter the new type (in or out): ", common.validate_type),
+                                    ("Please enter the new amount (in US dollars): ", common.validate_int)
+                                    ], True)
 
-    while True:
-        input_day = ui.get_inputs(["Please enter the new day: "], "")[0]
-        if common.validate_empty(input_day):
-            input_day = table[id_to_change][DAY]
-        elif not common.validate_day(input_day):
-            continue
-        break
+    new_line = [index]
+    new_line.extend(new_data)
 
-    while True:
-        input_year = ui.get_inputs(["Please enter the new year: "], "")[0]
-        if common.validate_empty(input_year):
-            input_year = table[id_to_change][YEAR]
-        elif not common.validate_byear(input_year):
-            continue
-        break
+    common.apply_update_to_line(table[index], new_line)
 
-    while True:
-        input_type = ui.get_inputs(["Please enter the new type (in or out): "], "")[0]
-        if common.validate_empty(input_type):
-            input_type = table[id_to_change][TYPE]
-        elif not common.validate_type(input_type):
-            continue
-        break
-
-    while True:
-        input_amount = ui.get_inputs(["Please enter the new amount (in US dollars): "], "")[0]
-        if common.validate_empty(input_amount):
-            input_amount = table[id_to_change][AMOUNT]
-        elif not common.validate_int(input_amount):
-            continue
-        break
-
-    # Could be updated dinamically at the input points, but I decided not to.
-    table[id_to_change] = [id_, input_month, input_day, input_year, input_type, input_amount]
     show_table(table)
     return table
 
