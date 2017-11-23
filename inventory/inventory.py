@@ -49,21 +49,23 @@ def start_module():
     try:
         while menuitem != "0":
             ui.print_menu("Inventory",
-                          ["Add item", "Update item", "Remove item", "Show table", "Available item",
+                          ["Show table", "Add entry", "Update entry", "Delete entry", "Available items",
                            "Durability/manufacturer"], "Back to main menu")
 
             menuitem = ui.getch()
             ui.clear_scr()
             if(menuitem == "1"):
-                add(table)
-            elif(menuitem == "2"):
-                id_to_remove = ui.get_inputs(["Enter ID of item to update:"], "")[0]
-                update(table, id_to_remove)
-            elif(menuitem == "3"):
-                id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
-                remove(table, id_to_remove)
-            elif(menuitem == "4"):
                 show_table(table)
+            elif(menuitem == "2"):
+                add(table)
+            elif(menuitem == "3"):
+                id_to_update = ui.get_inputs(["Enter ID of item to update:"], "")[0]
+                if id_to_update:
+                    update(table, id_to_update)
+            elif(menuitem == "4"):
+                id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
+                if id_to_remove:
+                    remove(table, id_to_remove)
             elif menuitem == "5":
                 availables = get_available_items(table)
                 if len(availables) == 0:
@@ -107,8 +109,8 @@ def add(table):
 
     new_item = [common.generate_random(table)]
 
-    user_input = ui.mass_valid_input([("Name:", None),
-                                      ("Manufacturer:", None),
+    user_input = ui.mass_valid_input([("Name:", common.validate_string),
+                                      ("Manufacturer:", common.validate_string),
                                       ("Purchase year: ", common.validate_byear),
                                       ("Durability: ", common.validate_int)])
 
@@ -154,13 +156,12 @@ def update(table, id_):
         ui.print_error_message("Invalid ID: {}.".format(id_))
         return table
 
-    user_input = ui.mass_valid_input([("Name:", None),
-                                      ("Manufacturer:", None),
+    user_input = ui.mass_valid_input([("Name:", common.validate_string),
+                                      ("Manufacturer:", common.validate_string),
                                       ("Purchase year: ", common.validate_byear),
                                       ("Durability: ", common.validate_int)], True)
 
     common.apply_update_to_line(table[index], user_input)
-    # col_idx + 1 because the first item is always the ID that is not changed
 
     return table
 
