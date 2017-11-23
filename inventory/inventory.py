@@ -16,8 +16,6 @@ import data_manager
 # common module
 import common
 
-from datetime import datetime
-
 
 ID = 0
 NAME = 1
@@ -168,8 +166,7 @@ def update(table, id_):
 # @table: list of lists
 def get_available_items(table):
 
-    now = datetime.now()
-    current_year = now.year
+    current_year = common.CURRENT_YEAR
 
     return [row for row in table if current_year - int(row[PURCHASE_DATE]) < int(row[DURABILITY])]
 
