@@ -33,56 +33,44 @@ def start_module():
     table = data_manager.get_table_from_file("accounting/items.csv")
     paid_version = True    # an easter-egg, leave it True and it should (hopefully) cause no problems
     if paid_version:    # uses the options based on the easter-egg
-        menu_options = ["Add entry",
+        menu_options = ["Show table",
+                        "Add entry",
+                        "Update entry",
                         "Remove entry",
-                        "Update",
-                        "Display table",
                         "Which year has the highest profit?",
                         "What is the average (per item) profit in a given year?"]
     else:
-        menu_options = ["Add entry",
+        menu_options = ["Show table",
+                        "Add entry",
+                        "Update entry",
                         "Remove entry",
-                        "Update",
-                        "Display table",
                         "Buy the full version of the software to unlock more options"]
 
     while True:
         ui.print_menu("Accounting", menu_options, "Back to main menu")
-        try:
-            inputs = ui.get_inputs(["Please enter a number: "], "")
-        except (KeyboardInterrupt, EOFError):
-            data_manager.write_table_to_file("accounting/items.csv", table)
-            common.exit()
-
-        option = inputs[0]
+        option = ui.getch()
 
         if option == "1":
-            add(table)
+            show_table(table)
         elif option == "2":
-            input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
-            remove(table, input_id)
+            add(table)
         elif option == "3":
             input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
             update(table, input_id)
         elif option == "4":
-            show_table(table)
+            input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
+            remove(table, input_id)
         elif option == "5":
             ui.print_result(which_year_max(table))
         elif option == "6":
-            while True:
-                input_year = ui.get_inputs(["Which year do you want to know about: "], "")[0]
-                if not common.validate_byear(input_year):
-                    continue
-                if common.index_of_value(table, YEAR, input_year) == -1:
-                    continue
-                break
+            years = {line[YEAR] for line in table}
+            input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
+                                       "Which year do you want to know about?")[0]
             ui.print_result(avg_amount(table, input_year),
                             "The average amount of profit per game in {0}".format(input_year))
         elif option == "0":
             data_manager.write_table_to_file("accounting/items.csv", table)
             break
-        else:
-            ui.print_error_message("There is no such option.")
 
 
 def show_table(table):
@@ -95,6 +83,7 @@ def show_table(table):
     Returns:
         None
     """
+    ui.clear_scr()
     titles = ["ID", "Month", "Day", "Year", "Type", "Amount"]
     ui.print_table(table, titles)
 
@@ -190,6 +179,9 @@ def which_year_max(table):
     Then subtracts the 'out' values.
     Compares and returns the year with the highest profit.
     '''
+
+
+
     max_profit, current_year = 0, 0
     for year in {row[YEAR] for row in table}:
         temp_sum = common.get_sum_list(
@@ -199,7 +191,7 @@ def which_year_max(table):
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
 
-    return current_year, max_profit
+    return current_year
 
 
 # the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
@@ -211,6 +203,18 @@ def avg_amount(table, input_year):
     Divides that by the number of lines
     and returns the year with the average profit. (float)
     '''
+
+    while True:
+        years = {line[YEAR] for line in table}
+        input_year = ui.get_inputs(['''Which year do you want to know about?
+                                    The options are {0}'''.format(", ".join(years))], "")[0]
+
+        if not common.validate_byear(input_year):
+            continue
+        if common.index_of_value(table, YEAR, input_year) == -1:
+            continue
+        break
+
     profit = []
     current_year = 0
 
