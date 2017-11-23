@@ -18,6 +18,8 @@ from sales import sales
 # Customer Relationship Management (CRM) module
 from crm import crm
 
+from logistics import logistics
+
 
 def choose():
     inputs = ui.get_inputs(["Please enter a number: "], "")
@@ -34,6 +36,8 @@ def choose():
         sales.start_module()
     elif option == "6":
         crm.start_module()
+    elif option == "7":
+        logistics.start_module()
     elif option == "0":
         sys.exit(0)
     else:
@@ -46,7 +50,8 @@ def handle_menu():
                "Inventory manager",
                "Accounting manager",
                "Sales manager",
-               "Customer Relationship Management (CRM)"]
+               "Customer Relationship Management (CRM)",
+               "Logistics manager"]
 
     ui.print_menu("Main menu", options, "Exit program")
 

@@ -20,9 +20,9 @@ TITLE = 1
 AMOUNT = 2
 PRICE = 3
 RETAILER = 4
-MONTH = 5
-DAY = 6
-YEAR = 7
+YEAR = 5
+MONTH = 6
+DAY = 7
 
 
 def start_module():
@@ -39,8 +39,8 @@ def start_module():
                "Add Entry",
                "Update Entry",
                "Remove Entry",
-               "Show Lowest Price ID",
-               "Show Sold Items Between Dates"]
+               "Show Payment Total Per Retailers",
+               "Date Ordered List of Arrivals"]
 
     order_data = data_manager.get_table_from_file("logistics/orders.csv")
     ui.clear_scr()
@@ -70,9 +70,11 @@ def start_module():
             order_data = remove(order_data, to_remove)
             ui.clear_scr()
         elif option == "5":
-            pass
+            payments = [item for item in get_price_total_per_retailer(order_data).items()]
+            ui.print_table(payments, ["Retailer", "Total Payment"])
         elif option == "6":
-            pass
+            ui.print_table(date_ordered_payments(order_data),
+                           ["ID", "Title", "Amount", "Price per Item", "Retailer", "Date"])
         elif option == "0":
             data_manager.write_table_to_file("logistics/orders.csv", order_data)
             ui.clear_scr()
@@ -92,7 +94,7 @@ def show_table(table):
         None
     """
     titles = ["ID", "Title", "Amount", "Price per Item", "Retailer", "Date"]
-    output_table = [[row[ID], row[TITLE], row[AMOUNT], row[PRICE], row[RETAILER]
+    output_table = [[row[ID], row[TITLE], row[AMOUNT], row[PRICE], row[RETAILER],
                      '/'.join((row[YEAR], row[MONTH], row[DAY]))] for row in table]
     ui.clear_scr()
     ui.print_table(output_table, titles)
@@ -173,11 +175,17 @@ def update(table, id_):
 
 def get_price_total_per_retailer(table):
 
-    pass
+    r_payments = {}
+
+    for retailer in {line[RETAILER] for line in table}:
+        sm = common.szum_list([int(line[PRICE]) * int(line[AMOUNT]) for line in table if line[RETAILER] == retailer])
+        r_payments[retailer] = sm
+
+    return r_payments
 
 
-def date_ordered_payments(table, month_from, day_from, year_from, month_to, day_to, year_to):
+def date_ordered_payments(table):
 
     temp_table = [[line[ID], line[TITLE], line[AMOUNT], line[PRICE], line[RETAILER],
                   common.dtime(line[YEAR], line[MONTH], line[DAY])] for line in table]
-    temp_table = common.srt(temp_table, key=common.get_item(5))
+    return common.srt(temp_table, key=common.get_item(5))
