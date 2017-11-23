@@ -1,5 +1,4 @@
 from random import choice
-import copy
 import re
 import ui
 
@@ -69,6 +68,20 @@ def qsort_table(table, col, **kwargs):
                  reversed=True if "reversed" in kwargs and kwargs["reversed"] else False)
 
 
+def deepcopy(array):
+    """
+    Our humble imitation of deepcopy.
+    """
+    retval = []
+    for item in array:
+        if isinstance(item, (list, set, tuple)):
+            retval.append(deepcopy(item))
+        else:
+            retval.append(item)
+
+    return retval
+
+
 def qsort(array, **kwargs):
     """
     Sorts the array using the Quicksort algorithm (with Hoare partition scheme). \
@@ -82,7 +95,7 @@ def qsort(array, **kwargs):
     Returns:
         The sorted array (list).
     """
-    array_copy = list(copy.deepcopy(array))
+    array_copy = deepcopy(array)
 
     key = kwargs["key"] if "key" in kwargs else None
 
