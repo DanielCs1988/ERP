@@ -40,7 +40,7 @@ def start_module():
         try:
             option = ui.valid_in("Please enter a number: ", common.validate_string)
         except (KeyboardInterrupt, EOFError):
-            data_manager.write_table_to_file("sales/sales.csv", sales_data)
+            data_manager.write_table_to_file("hr/persons.csv", hr_data)
             ui.clear_scr()
             exit()
 
@@ -60,9 +60,11 @@ def start_module():
             hr_data = remove(hr_data, to_remove)
             ui.clear_scr()
         elif option == "5":
-            ui.print_result(get_oldest_person(hr_data))
+            ui.clear_scr()
+            ui.print_result(get_oldest_person(hr_data), "Oldest people in the database: ")
         elif option == "6":
-            ui.print_result(get_persons_closest_to_average(hr_data))
+            ui.clear_scr()
+            ui.print_result(get_persons_closest_to_average(hr_data), "People closest to the average age: ")
         elif option == "0":
             data_manager.write_table_to_file("hr/persons.csv", hr_data)
             ui.clear_scr()

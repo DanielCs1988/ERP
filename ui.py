@@ -75,6 +75,9 @@ def print_result(result, label=None):
         This function doesn't return anything it only prints to console.
     """
 
+    if not result:
+        return
+
     if label:
         print("\n{}: ".format(label), end='')
 
@@ -84,6 +87,7 @@ def print_result(result, label=None):
         print("\n"+"\n".join("{} = {}".format(name, value) for name, value in result.items()))
     else:
         print(result)
+    print("")
 
 
 def print_menu(title, list_options, exit_message):
