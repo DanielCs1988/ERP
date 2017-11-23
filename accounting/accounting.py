@@ -109,6 +109,25 @@ def add(table):
     Returns:
         Table with a new record
     """
+
+    new_data = ui.mass_valid_input([("Please enter the month: ", common.validate_month),
+                                    ("Please enter the day: ", common.validate_day),
+                                    ("Please enter the year: ", common.validate_byear),
+                                    ("Please enter the type (in or out): ", common.validate_type),
+                                    ("Please enter the amount (in US dollars): ", common.validate_int)
+                                    ])
+
+    if new_data is None:
+        return table
+
+    random_id = common.generate_random(table)
+
+    new_data = [random_id].extend(new_data)
+    table.append(new_data)
+
+    show_table(table)
+
+    '''
     while True:
         input_month = ui.get_inputs(["Please enter the month: "], "")[0]
         if not common.validate_month(input_month):
@@ -138,12 +157,8 @@ def add(table):
         if not common.validate_int(input_amount):
             continue
         break
+    '''
 
-    random_id = common.generate_random(table)
-
-    table.append([random_id, input_month, input_day, input_year, input_type, input_amount])
-
-    show_table(table)
     return table
 
 
