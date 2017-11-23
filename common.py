@@ -5,6 +5,7 @@ import string
 import copy
 import inspect
 import re
+import ui
 
 CHR_TYPES = {"uppercase": string.ascii_uppercase,
              "lowercase": string.ascii_lowercase,
@@ -254,3 +255,15 @@ def validate_empty(userinput):
     if userinput is '':
         return True
     return False
+
+
+def remove_line(table, id):
+    """Takes the table given as a parameter, seeks the line with the given ID and removes it."""
+
+    index = index_of_id(table, id)
+    if index == -1:
+        ui.print_error_message("Wrong ID!")
+        return table
+
+    del table[index]
+    return table

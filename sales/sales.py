@@ -141,13 +141,7 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
-    index = common.index_of_id(table, id_)
-    if index == -1:
-        ui.print_error_message("Wrong ID!")
-        return table
-
-    del table[index]
-    return table
+    return common.remove_line(table, id_)
 
 
 def update(table, id_):
