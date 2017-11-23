@@ -38,7 +38,7 @@ def start_module():
     while True:
         ui.print_menu("HR Department: Main menu", options, "Exit program")
         try:
-            option = ui.valid_input("Please enter a number: ", common.validate_string)
+            option = ui.valid_in("Please enter a number: ", common.validate_string)
         except (KeyboardInterrupt, EOFError):
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
@@ -50,12 +50,12 @@ def start_module():
             hr_data = add(hr_data)
             ui.clear_scr()
         elif option == "3":
-            to_remove = ui.valid_input(
+            to_remove = ui.valid_in(
                 "What is the ID of the item that you would like to remove? ", common.validate_string)
             hr_data = remove(hr_data, to_remove)
             ui.clear_scr()
         elif option == "4":
-            to_update = ui.valid_input(
+            to_update = ui.valid_in(
                 "What is the ID of the item that you would like to update? ", common.validate_string)
             hr_data = update(hr_data, to_update)
             ui.clear_scr()
@@ -98,7 +98,7 @@ def add(table):
     """
     new_person = [common.generate_random(table)]
 
-    input_list = ui.mass_valid_input([("Name: ", None),
+    input_list = ui.mass_valid_in([("Name: ", None),
                                       ("Birth year: ", common.validate_byear)
                                       ])
 
@@ -141,7 +141,7 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    input_list = ui.mass_valid_input([("Name: ", None),
+    input_list = ui.mass_valid_in([("Name: ", None),
                                       ("Birth year: ", common.validate_byear)
                                       ], update_mode=True)
 

@@ -44,7 +44,7 @@ def start_module():
     while True:
         ui.print_menu("Sales Department: Main menu", options, "Exit program")
         try:
-            option = ui.valid_input("Please enter a number: ", common.validate_string)
+            option = ui.valid_in("Please enter a number: ", common.validate_string)
         except (KeyboardInterrupt, EOFError):
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
@@ -56,19 +56,19 @@ def start_module():
             sales_data = add(sales_data)
             ui.clear_scr()
         elif option == "3":
-            to_remove = ui.valid_input(
+            to_remove = ui.valid_in(
                 "What is the ID of the item that you would like to remove? ", common.validate_string)
             sales_data = remove(sales_data, to_remove)
             ui.clear_scr()
         elif option == "4":
-            to_update = ui.valid_input(
+            to_update = ui.valid_in(
                 "What is the ID of the item that you would like to update? ", common.validate_string)
             sales_data = update(sales_data, to_update)
             ui.clear_scr()
         elif option == "5":
             ui.print_result(get_lowest_price_item_id(sales_data))
         elif option == "6":
-            params = ui.mass_valid_input([("Month from:", common.validate_month),
+            params = ui.mass_valid_in([("Month from:", common.validate_month),
                                           ("Day from: ", common.validate_day),
                                           ("Year from: ", common.validate_byear),
                                           ("Month to:", common.validate_month),
@@ -114,7 +114,7 @@ def add(table):
     """
     new_sale = [common.generate_random(table)]
 
-    input_list = ui.mass_valid_input([("Title: ", common.validate_string),
+    input_list = ui.mass_valid_in([("Title: ", common.validate_string),
                                       ("Price: ", common.validate_int),
                                       ("Month of sale: ", common.validate_month),
                                       ("Day of sale: ", common.validate_day),
@@ -160,7 +160,7 @@ def update(table, id_):
         ui.print_error_message("Wrong ID!")
         return table
 
-    input_list = ui.mass_valid_input([("Title: ", None),
+    input_list = ui.mass_valid_in([("Title: ", None),
                                       ("Price: ", common.validate_int),
                                       ("Month of sale: ", common.validate_month),
                                       ("Day of sale: ", common.validate_day),
