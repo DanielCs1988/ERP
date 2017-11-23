@@ -43,7 +43,7 @@ def start_module():
                           ["Show table", "Add entry", "Update entry", "Delete entry", "Available items",
                            "Durability/manufacturer"], "Back to main menu")
 
-            menuitem = input("Please choose an option:")
+            menuitem = ui.get_inputs(["Please choose an option:"], "")[0]
             ui.clear_scr()
             if(menuitem == "1"):
                 show_table(table)
