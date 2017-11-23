@@ -56,14 +56,14 @@ def start_module():
             sales_data = add(sales_data)
             ui.clear_scr()
         elif option == "3":
-            to_remove = ui.valid_in(
-                "What is the ID of the item that you would like to remove? ", common.validate_string)
-            sales_data = remove(sales_data, to_remove)
-            ui.clear_scr()
-        elif option == "4":
             to_update = ui.valid_in(
                 "What is the ID of the item that you would like to update? ", common.validate_string)
             sales_data = update(sales_data, to_update)
+            ui.clear_scr()
+        elif option == "4":
+            to_remove = ui.valid_in(
+                "What is the ID of the item that you would like to remove? ", common.validate_string)
+            sales_data = remove(sales_data, to_remove)
             ui.clear_scr()
         elif option == "5":
             ui.print_result(get_lowest_price_item_id(sales_data))
