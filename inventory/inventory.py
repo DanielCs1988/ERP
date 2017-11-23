@@ -108,9 +108,9 @@ def add(table):
     new_item = [common.generate_random(table)]
 
     user_input = ui.mass_valid_input([("Name:", None),
-                                      ("manufacturer:", None),
+                                      ("Manufacturer:", None),
                                       ("Purchase year: ", common.validate_byear),
-                                      ("Durability", common.validate_int)])
+                                      ("Durability: ", common.validate_int)])
 
     if user_input is None:
         return table
