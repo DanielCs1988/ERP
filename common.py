@@ -396,7 +396,7 @@ def get_item(index):
 class dtime:
     """A lightweight date management class."""
     def __init__(self, year, month, day):
-        if not validate_byear(year):
+        if not validate_int(year):
             raise ValueError("Invalid year parameter!")
         if not validate_month(month):
             raise ValueError("Invalid month parameter!")
