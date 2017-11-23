@@ -157,15 +157,15 @@ def update(table, id_):
 
 
 # the question: What is the id of the customer with the longest name ?
-# return type: string (id) - if there are more than one longest name, return the first by descending alphabetical order
+# return type: string (id) - if there are more than one longest name, return the first by ascending alphabetical order
 def get_longest_name_id(table):
     """Returns the ID of the person who has the longest name. If there are more people it returns the first in
-       descending alphabetical order"""
+       ascending alphabetical order"""
     names_lengths = [(line[ID], len(line[NAME]), line[NAME]) for line in table]
     max_length = max(names_lengths, key=itemgetter(1))[1]
     max_length_names = [(name[0], name[2]) for name in names_lengths if name[1] == max_length]
 
-    return common.qsort(max_length_names, key=itemgetter(1), reversed=True)[0][0]
+    return common.qsort(max_length_names, key=itemgetter(1))[0][0]
 
 
 # the question: Which customers has subscribed to the newsletter?
