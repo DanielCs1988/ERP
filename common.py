@@ -1,6 +1,4 @@
 from random import choice
-from datetime import datetime
-from sys import exit
 import string
 import copy
 import inspect
@@ -13,6 +11,8 @@ CHR_TYPES = {"uppercase": string.ascii_uppercase,
              "symbol": "!@#$%^&*()?",
              "char": string.ascii_letters
              }
+
+CURRENT_YEAR = 2017
 
 
 def random_char(chr_type):
@@ -177,7 +177,7 @@ def validate_byear(year):
 
     if not validate_int(year):
         return False
-    if int(year) > datetime.now().year:
+    if int(year) > CURRENT_YEAR:
         return False
     return True
 
@@ -289,3 +289,59 @@ def validate_string(text):
     if text == "":
         return False
     return True
+
+
+def get_item(index):
+    def func(row):
+        return row[index]
+    return func
+
+
+class dtime:
+
+    def __init__(self, year, month, day):
+        if not validate_byear(year):
+            raise ValueError("Invalid year parameter!")
+        if not validate_month(month):
+            raise ValueError("Invalid month parameter!")
+        if not validate_day(day):
+            raise ValueError("Invalid day parameter!")
+
+        self.year = int(year)
+        self.month = int(month)
+        self.day = int(day)
+
+    def __str__(self):
+        return "{}/{}/{}".format(self.year, self.month, self.day)
+
+    def __eq__(self, other):
+        if not isinstance(other, dtime):
+            raise TypeError("Can only compare dtime object to other dtime objects!")
+        if self.year == other.year and self.month == other.month and self.day == other.day:
+            return True
+        return False
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __gt__(self, other):
+        if not isinstance(other, dtime):
+            raise TypeError("Can only compare dtime object to other dtime objects!")
+        if self.year > other.year:
+            return True
+        elif self.year == other.year:
+            if self.month > other.month:
+                return True
+            elif self.month == other.month:
+                if self.day > other.day:
+                    return True
+        return False
+
+    def __le__(self, other):
+        return not self > other
+
+    def __ge__(self, other):
+        return self > other or self == other
+
+    def __lt__(self, other):
+        return not self >= other
