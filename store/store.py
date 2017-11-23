@@ -42,6 +42,7 @@ def start_module():
     store_data = data_manager.get_table_from_file("store/games.csv")
 
     try:
+        ui.clear_scr()
         while True:
             ui.print_menu("Store: Main menu", options, "Back to main menu")
             option = ui.get_inputs(["Please enter a number: "], "")[0]
@@ -60,13 +61,16 @@ def start_module():
                 store_data = remove(store_data, to_remove[0])
                 ui.clear_scr()
             elif option == "5":
+                ui.clear_scr()
                 count_by_manufacturer_dict = get_counts_by_manufacturers(store_data)
                 count_by_manufacturer_table = [(manufacturer, num)
                                                for manufacturer, num in count_by_manufacturer_dict.items()]
                 ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
             elif option == "6":
-                manufacturer = ui.get_inputs(["Please a manufacturer: "], "")[0]
-                ui.print_result(get_average_by_manufacturer(store_data, manufacturer))
+                ui.clear_scr()
+                manufacturer = ui.get_inputs(["Please enter the manufacturer: "], "")[0]
+                ui.print_result("The average game number of {0} is {1}".format(
+                    manufacturer, get_average_by_manufacturer(store_data, manufacturer)))
             elif option == "0":
                 for game in store_data:
                     game[PRICE] = str(game[PRICE])
@@ -187,6 +191,8 @@ def get_counts_by_manufacturers(table):
 def get_average_by_manufacturer(table, manufacturer):
     """Returns average value of a manufacturer's items in stock."""
 
+    if manufacturer == '':
+        return None
     items_for_manufacturer = [item for item in table if item[MANUFACTURER] == manufacturer]
 
     if len(items_for_manufacturer) == 0:
