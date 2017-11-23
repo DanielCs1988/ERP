@@ -42,6 +42,7 @@ def start_module():
 
     crm_data = data_manager.get_table_from_file("crm/customers.csv")
 
+    ui.clear_scr()
     while True:
         ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
 
@@ -66,10 +67,14 @@ def start_module():
             crm_data = remove(crm_data, remove_id)
             ui.clear_scr()
         elif option == "5":
+            ui.clear_scr()
+            ui.print_result("ID of longest name:")
             ui.print_result(get_longest_name_id(crm_data))
         elif option == "6":
+            ui.clear_scr()
             temp_crm_data = get_subscribed_emails(crm_data)
             temp_crm_data = [line.split(";") for line in temp_crm_data]
+            ui.print_result("Subscribed email")
             ui.print_table(temp_crm_data, ["E-mail", "Name"])
         elif option == "0":
             data_manager.write_table_to_file("crm/customers.csv", crm_data)
