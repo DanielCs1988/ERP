@@ -125,39 +125,7 @@ def add(table):
     new_data = [random_id].extend(new_data)
     table.append(new_data)
 
-    show_table(table)
-
-    '''
-    while True:
-        input_month = ui.get_inputs(["Please enter the month: "], "")[0]
-        if not common.validate_month(input_month):
-            continue
-        break
-
-    while True:
-        input_day = ui.get_inputs(["Please enter the day: "], "")[0]
-        if not common.validate_day(input_day):
-            continue
-        break
-
-    while True:
-        input_year = ui.get_inputs(["Please enter the year: "], "")[0]
-        if not common.validate_byear(input_year):
-            continue
-        break
-
-    while True:
-        input_type = ui.get_inputs(["Please enter the type (in or out): "], "")[0]
-        if not common.validate_type(input_type):
-            continue
-        break
-
-    while True:
-        input_amount = ui.get_inputs(["Please enter the amount (in US dollars): "], "")[0]
-        if not common.validate_int(input_amount):
-            continue
-        break
-    '''
+    # show_table(table)
 
     return table
 
