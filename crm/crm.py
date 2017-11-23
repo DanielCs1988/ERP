@@ -1,21 +1,15 @@
-# data structure:
-# id: string
-#     Unique and randomly generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
-# name: string
-# email: string
-# subscribed: boolean (Is she/he subscribed to the newsletter? 1/0 = yes/not)
+"""
+Customer relations module. Data structure:
+1. ID of contact
+2. Name of contact
+3. E-mail of contact
+4. Contact subscribed to mailing list or not (0: no, 1: yes)
+"""
 
-
-# importing everything you need
 import os
-# User interface module
 import ui
-# data manager module
 import data_manager
-# common module
 import common
-# itemgetter
-from operator import itemgetter
 
 ID = 0
 NAME = 1
@@ -111,8 +105,8 @@ def add(table):
     new_customer_data = [common.generate_random(table)]
 
     new_customer_data.extend(ui.mass_valid_in([("Name: ", common.validate_string),
-                                                  ("E-mail: ", common.validate_email),
-                                                  ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
+                                               ("E-mail: ", common.validate_email),
+                                               ("Subscribed?(1 for yes, 0 for no): ", common.validate_boolean)]))
     if new_customer_data is None:
         return table
 
@@ -154,32 +148,26 @@ def update(table, id_):
         return table
 
     update_input = ui.mass_valid_in([("Name: ", common.validate_string),
-                                        ("E-mail: ", common.validate_email),
-                                        ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
+                                     ("E-mail: ", common.validate_email),
+                                     ("Subscribed?(1 for yes, 0 for no", common.validate_boolean)])
 
     table[index] = common.apply_update_to_line(table[index], update_input)
 
     return table
 
 
-# special functions:
-# ------------------
-
-
-# the question: What is the id of the customer with the longest name ?
-# return type: string (id) - if there are more than one longest name, return the first by ascending alphabetical order
 def get_longest_name_id(table):
     """Returns the ID of the person who has the longest name. If there are more people it returns the first in
        ascending alphabetical order"""
+
     names_lengths = [(line[ID], len(line[NAME]), line[NAME]) for line in table]
-    max_length = max(names_lengths, key=itemgetter(1))[1]
+    max_length = max(names_lengths, key=common.get_item(1))[1]
     max_length_names = [(name[0], name[2]) for name in names_lengths if name[1] == max_length]
 
-    return common.srt(max_length_names, key=itemgetter(1))[0][0]
+    return common.srt(max_length_names, key=common.get_item(1))[0][0]
 
 
-# the question: Which customers has subscribed to the newsletter?
-# return type: list of strings (where string is like email+separator+name, separator=";")
 def get_subscribed_emails(table):
     """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
+
     return [";".join((line[EMAIL], line[NAME])) for line in table if line[SUBSCRIBED] == '1']

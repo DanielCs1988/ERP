@@ -1,9 +1,8 @@
 """
-data structure:
--id: string
- Unique and random generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
--name: string
--birth_date: number (year)
+Human resources module. Data structure:
+1. ID of employee
+2. Name of employee
+3. Birth year of employee
 """
 
 import os
@@ -101,8 +100,8 @@ def add(table):
     new_person = [common.generate_random(table)]
 
     input_list = ui.mass_valid_in([("Name: ", None),
-                                      ("Birth year: ", common.validate_byear)
-                                      ])
+                                   ("Birth year: ", common.validate_byear)
+                                   ])
 
     if input_list is None:
         return table
@@ -144,8 +143,8 @@ def update(table, id_):
         return table
 
     input_list = ui.mass_valid_in([("Name: ", None),
-                                      ("Birth year: ", common.validate_byear)
-                                      ], update_mode=True)
+                                   ("Birth year: ", common.validate_byear)
+                                   ], update_mode=True)
 
     table[index] = common.apply_update_to_line(table[index], input_list)
     return table

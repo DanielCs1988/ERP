@@ -1,11 +1,10 @@
-# data structure:
-# id: string
-#     Unique and randomly generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
-# month: number
-# day: number
-# year: number
-# type: string (in = income, out = outcome)
-# amount: number (dollar)
+"""
+Accounting module. Data structure:
+1. ID of transaction
+2-4. Date of transaction
+5. Type of transaction (in: income, out: outcome)
+6. Transaction amount in dollars
+"""
 
 import os
 import ui
@@ -182,11 +181,6 @@ def update(table, id_):
     return table
 
 
-# special functions:
-# ------------------
-
-# the question: Which year has the highest profit? (profit=in-out)
-# return the answer (number)
 def which_year_max(table):
     '''
     Goes through each unique year, counting the sum of the profits.
@@ -202,12 +196,10 @@ def which_year_max(table):
         if temp_sum > max_profit:
             max_profit, current_year = temp_sum, year
 
-    current_year = int(current_year)    # F*CK THE TEST
+    current_year = int(current_year)
     return current_year
 
 
-# the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
-# return the answer (number)
 def avg_amount(table, input_year):
     '''
     Goes through each unique year, counting the sum of the profits.
@@ -215,7 +207,7 @@ def avg_amount(table, input_year):
     Divides that by the number of lines
     and returns the year with the average profit. (float)
     '''
-    input_year = str(input_year)    # F*CK THE TEST
+    input_year = str(input_year)
     years = {line[YEAR] for line in table}
     if input_year not in years:
         ui.print_error_message("Not a valid year.")
@@ -231,6 +223,3 @@ def avg_amount(table, input_year):
         [1 for row in table if row[YEAR] == input_year])
 
     return temp_sum / temp_count
-
-if __name__ == '__main__':
-    start_module()
