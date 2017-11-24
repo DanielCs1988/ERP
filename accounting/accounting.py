@@ -106,6 +106,7 @@ def start_module(table_file=None, table_cont=None):
                 break
             elif decision in ['N', 'n']:
                 start_module(table_cont=table)
+                break
 
 
 def show_table(table):
