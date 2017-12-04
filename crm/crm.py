@@ -172,3 +172,43 @@ def get_subscribed_emails(table):
     """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
 
     return [";".join((line[EMAIL], line[NAME])) for line in table if line[SUBSCRIBED] == '1']
+
+
+# functions supports data analyser
+# --------------------------------
+
+
+def get_name_by_id(id):
+
+    """
+    Reads the table with the help of the data_manager module.
+    Returns the name (str) of the customer with the given id (str) on None om case of non-existing id.
+
+    Args:
+        id (str): the id of the customer
+
+    Returns:
+        str the name of the customer
+    """
+
+    # your code
+
+    pass
+
+
+def get_name_by_id_from_table(table, id):
+
+    """
+    Returns the name (str) of the customer with the given id (str) on None om case of non-existing id.
+
+    Args:
+        table (list of lists): the customer table
+        id (str): the id of the customer
+
+    Returns:
+        str the name of the customer
+    """
+
+    # your code
+
+    pass
