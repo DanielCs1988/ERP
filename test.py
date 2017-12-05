@@ -281,6 +281,11 @@ class DataAnalyserTester(unittest.TestCase):
     def test_forbidden_functions(self):
         check_forbidden_functions(self, "data_analyser/data_analyser.py")
 
+    def test_get_the_buyer_name_spent_most_and_the_money_spent(self):
+        result = data_analyser.get_the_buyer_name_spent_most_and_the_money_spent()
+        expected = ("Missy Stoney", "434")
+        self.assertEqual(result, expected)
+
 
 def main():
     unittest.main()
