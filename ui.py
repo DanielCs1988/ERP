@@ -29,6 +29,9 @@ def print_table(table, title_list):
     Returns:
         This function doesn't return anything it only prints to console.
     """
+    if isinstance(table, dict):
+        print_table(list(table.items()), title_list)
+        return None
 
     lenghts = [get_longest(table, column) for column in range(len(table[0]))]
     # gets the lengths of each column (in a list)
