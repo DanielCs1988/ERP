@@ -85,7 +85,7 @@ def print_result(result, label=None):
         print("\n{}: ".format(label), end='')
 
     if isinstance(result, (list, set, tuple)):
-        print(", ".join(result))
+        print(", ".join(map(str, result)))
     elif isinstance(result, dict):
         print("\n"+"\n".join("{} = {}".format(name, value) for name, value in result.items()))
     else:

@@ -26,10 +26,42 @@ def start_module():
     Returns:
         None
     """
+    options = ["Show Last Buyer's ID",
+               "Show Last Buyer's Name",
+               "Show ID and Spendings of Person Who Paid the Most",
+               "Show Name and Spendings of Person Who Paid the Most",
+               "Show Most Frequent Buyer's ID",
+               "Show Most Frequent Buyer's Name"]
+    ui.clear_scr()
 
-    # your code
+    while True:
+        ui.print_menu("Data Analyser: Main menu", options, "Back to main menu")
+        try:
+            option = ui.valid_in("Please enter a number: ", common.validate_string)
+        except (KeyboardInterrupt, EOFError):
+            data_manager.write_table_to_file("sales/sales.csv", sales_data)
+            ui.clear_scr()
+            exit()
 
-    pass
+        if option == "1":
+            ui.print_result(get_the_last_buyer_id())
+        elif option == "2":
+            ui.print_result(get_the_last_buyer_name())
+        elif option == "3":
+            ui.print_result(get_the_buyer_id_spent_most_and_the_money_spent())
+        elif option == "4":
+            ui.print_result(get_the_buyer_name_spent_most_and_the_money_spent())
+        elif option == "5":
+            num = int(ui.valid_in("How many of the top customers would you like to see? ", common.validate_int))
+            ui.print_table(get_the_most_frequent_buyers_ids(num), ["Customer ID", "Number of Sales"])
+        elif option == "6":
+            num = int(ui.valid_in("How many of the top customers would you like to see? ", common.validate_int))
+            ui.print_table(get_the_most_frequent_buyers_names(num), ["Customer Name", "Number of Sales"])
+        elif option == "0":
+            ui.clear_scr()
+            break
+        else:
+            ui.clear_scr()
 
 
 def get_the_last_buyer_name():
@@ -82,7 +114,7 @@ def get_the_buyer_id_spent_most_and_the_money_spent():
         Tuple of customer id and the sum the customer spent
     """
 
-    customer_sales = list(get_sum_of_sales_per_customer())
+    customer_sales = sales.get_sum_of_sales_per_customer().items()
     return max(customer_sales, key=common.get_item(1))
 
 

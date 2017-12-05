@@ -39,9 +39,9 @@ def choose():
     elif option == "6":
         crm.start_module()
     elif option == "7":
-        data_analyser.start_module()
-    elif option == "8":
         logistics.start_module()
+    elif option == "8":
+        data_analyser.start_module()
     elif option == "0":
         sys.exit(0)
     else:
@@ -55,8 +55,9 @@ def handle_menu():
                "Accounting manager",
                "Sales manager",
                "Customer Relationship Management (CRM)",
-               "Data analyzer",
-               "Logistics manager"]
+               "Logistics manager",
+               "Data analyzer"
+               ]
 
     ui.print_menu("Main menu", options, "Exit program")
 
