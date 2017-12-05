@@ -132,7 +132,8 @@ def add(table):
                                    ("Price: ", common.validate_int),
                                    ("Month of sale: ", common.validate_month),
                                    ("Day of sale: ", common.validate_day),
-                                   ("Year of sale: ", common.validate_byear)
+                                   ("Year of sale: ", common.validate_byear),
+                                   ("Customer ID: ", common.validate_id_possible)
                                    ])
 
     if input_list is None:
@@ -178,7 +179,8 @@ def update(table, id_):
                                    ("Price: ", common.validate_int),
                                    ("Month of sale: ", common.validate_month),
                                    ("Day of sale: ", common.validate_day),
-                                   ("Year of sale: ", common.validate_byear)
+                                   ("Year of sale: ", common.validate_byear),
+                                   ("Customer ID: ", common.validate_id_possible)
                                    ], update_mode=True)
 
     table[index] = common.apply_update_to_line(table[index], input_list)

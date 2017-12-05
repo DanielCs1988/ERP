@@ -345,6 +345,26 @@ def validate_empty(userinput):
     return False
 
 
+def validate_id_possible(userinput):
+    '''
+    Validates if it is a proper id.
+    Does not check if it exists anywhere
+    '''
+    valid = {"upper": 0, "lower": 0, "digit": 0, "symbol": 0}
+    for char in userinput:
+        if char in CHR_TYPES["uppercase"]:
+            valid["upper"] += 1
+        elif char in CHR_TYPES["lowercase"]:
+            valid["lower"] += 1
+        elif char in CHR_TYPES["digit"]:
+            valid["digit"] += 1
+        elif char in CHR_TYPES["symbol"]:
+            valid["symbol"] += 1
+    if 0 not in valid.values() and 1 not in valid.values():
+        return True
+    return False
+
+
 def remove_line(table, id):
     """Takes the table given as a parameter, seeks the line with the given ID and removes it."""
 
