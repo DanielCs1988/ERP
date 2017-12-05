@@ -147,6 +147,11 @@ class CRMTester(unittest.TestCase):
         result = crm.get_subscribed_emails(table)
         compare_lists(self, expected, result)
 
+    def test_get_name_by_id(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        result = crm.get_name_by_id("kH94Ju#&")
+        self.assertEqual(result, "Phylis Farberanmt")
+
 
 class HRTester(unittest.TestCase):
     data_file = "hr/persons_test.csv"
@@ -210,7 +215,7 @@ class SalesTester(unittest.TestCase):
         result = sales.get_the_sum_of_prices_from_table(table, ("tH34Ju#&", "eH34Ju#&", "kH14Ju#&"))
         self.assertEqual(expected, result)
 
-    def get_sum_of_sales_per_customer_from_table(self):
+    def test_get_sum_of_sales_per_customer_from_table(self):
         table = data_manager.get_table_from_file(self.data_file)
         expected = sum_of_sales_per_customer()
         result = sales.get_sum_of_sales_per_customer_from_table(table)
