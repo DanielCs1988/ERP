@@ -353,10 +353,8 @@ def get_customer_id_by_sale_id(sale_id):
     Returns:
          customer_id that belongs to the given sale id
     """
-
-    # your code
-
-    pass
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    return get_customer_id_by_sale_id_from_table(sales_data, sale_id)
 
 
 def get_customer_id_by_sale_id_from_table(table, sale_id):
