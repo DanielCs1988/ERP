@@ -31,7 +31,8 @@ def start_module():
                "Show ID and Spendings of Person Who Paid the Most",
                "Show Name and Spendings of Person Who Paid the Most",
                "Show Most Frequent Buyer's ID",
-               "Show Most Frequent Buyer's Name"]
+               "Show Most Frequent Buyer's Name",
+               "Show Idle Customers"]
     ui.clear_scr()
 
     while True:
@@ -39,7 +40,6 @@ def start_module():
         try:
             option = ui.valid_in("Please enter a number: ", common.validate_string)
         except (KeyboardInterrupt, EOFError):
-            data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
             exit()
 
@@ -57,6 +57,8 @@ def start_module():
         elif option == "6":
             num = int(ui.valid_in("How many of the top customers would you like to see? ", common.validate_int))
             ui.print_table(get_the_most_frequent_buyers_names(num), ["Customer Name", "Number of Sales"])
+        elif option == "7":
+            ui.print_table(get_idle_customers(), ["Name", "ID"])
         elif option == "0":
             ui.clear_scr()
             break
@@ -152,3 +154,10 @@ def get_the_most_frequent_buyers_ids(num=1):
     buy_frequencies = sales.get_num_of_sales_per_customer_ids()
     buy_frequencies = common.srt(buy_frequencies.items(), key=common.get_item(1), reversed=True)
     return buy_frequencies[:num]
+
+
+def get_idle_customers():
+    all_customers = crm.get_all_customer_ids()
+    paying_customers = sales.get_all_customer_ids()
+    idle_customers = all_customers - paying_customers
+    return common.srt([(crm.get_name_by_id(id), id) for id in idle_customers], key=common.get_item(0))

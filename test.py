@@ -17,6 +17,7 @@ from sales import sales
 from crm import crm
 from data_analyser import data_analyser
 
+
 def compare_lists(tester, expected_list, result_list):
     for item in result_list:
         tester.assertTrue(item in expected_list)
@@ -28,6 +29,26 @@ def sum_of_sales_per_customer():
 
 def num_of_sales_per_customer():
     return {"kH14Jt#&": 8, "kH14Jh#&": 1, "jH34Jk#&": 11}
+
+
+def idle_customers():
+    return [('Lieselotte Rainey', 'kH38Jm#&'),
+            ('Adrianna Verduzco', 'kH14Ju#&'),
+            ('Maude Toll', 'eH34Jd#&'),
+            ('Fawn Lambrecht', 'kH38Ju#&'),
+            ('Nicholle Penaloza', 'vH34Ju#&'),
+            ('Daniele Coach', 'kH94Jc#&'),
+            ('Signe Kossman', 'kH35Jn#&'),
+            ('Phylis Farberanmt', 'kH94Ju#&'),
+            ('Genoveva Dingess', 'tH34Jl#&'),
+            ('Royce Stager', 'vH34Jz#&'),
+            ('Drew Massaro', 'kH35Ju#&'),
+            ('Pierre Cotta', 'eH34Jy#&'),
+            ('Concetta Nussbaum', 'bH34Ju#&'),
+            ('Bari Flanagan', 'tH34Js#&'),
+            ('Caleb Paschal', 'kH34Jq#&'),
+            ('Teresia Plude', 'kH35Jr#&'),
+            ('Carin Arevalo', 'bH34Jx#&')]
 
 
 def get_subscribed_list():
@@ -76,12 +97,13 @@ def get_count_by_manufacturer_list():
 
 
 def get_expected_all_sales_ids_for_customer_ids_form_table():
-        return {"jH34Jk#&":
-                ["kH34Ju#&", "jH34Ju#&", "tH34Ju#&", "eH34Ju#&", "kH14Ju#&", "kH35Ju#&", "kH38Ju#&", "kH94Ju#&", "tH34Jl#&", "eH34Jy#&", "bH34Jx#&"],
-                "kH14Jt#&":
-                ["bH34Ju#&", "vH34Ju#&", "kH34Ji#&", "vH34Jz#&", "kH14Jt#&", "kH35Jr#&", "kH38Je#&", "kH94Jw#&"],
-                "kH14Jh#&":
-                ["jH34Jk#&"]}
+    return {"jH34Jk#&":
+            ["kH34Ju#&", "jH34Ju#&", "tH34Ju#&", "eH34Ju#&", "kH14Ju#&", "kH35Ju#&",
+                "kH38Ju#&", "kH94Ju#&", "tH34Jl#&", "eH34Jy#&", "bH34Jx#&"],
+            "kH14Jt#&":
+            ["bH34Ju#&", "vH34Ju#&", "kH34Ji#&", "vH34Jz#&", "kH14Jt#&", "kH35Jr#&", "kH38Je#&", "kH94Jw#&"],
+            "kH14Jh#&":
+            ["jH34Jk#&"]}
 
 
 def check_forbidden_functions(tester, file_name):
@@ -245,7 +267,7 @@ class SalesTester(unittest.TestCase):
         tested_id = 'kH34Ji#&'
         result = sales.get_customer_id_by_sale_id_from_table(table, tested_id)
         self.assertEqual('kH14Jt#&', result)
-    
+
     def test_get_num_of_sales_per_customer_ids_from_table(self):
         table = data_manager.get_table_from_file(self.data_file)
         expected = num_of_sales_per_customer()
@@ -308,6 +330,11 @@ class DataAnalyserTester(unittest.TestCase):
         result = data_analyser.get_the_buyer_name_spent_most_and_the_money_spent()
         expected = ("Missy Stoney", 434)
         self.assertEqual(result, expected)
+    
+    def test_get_idle_customers(self):
+        expected = sorted(idle_customers())
+        result = data_analyser.get_idle_customers()
+        self.assertEqual(expected, result)
 
 
 def main():
