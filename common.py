@@ -184,7 +184,7 @@ def get_longest(table, column):
     return max([len(str(row[column])) for row in table])
 
 
-def szum(table, column):
+def szum(table, column, condition=None):
     """ Returns the sum of the data of the given column.
 
     Args:
@@ -195,7 +195,7 @@ def szum(table, column):
     Returns:
         the sum of the values, integer type
     """
-    return szum_list([row[column] for row in table])
+    return szum_list([row[column] for row in table if condition is None or condition(row)])
 
 
 def szum_list(collection):
