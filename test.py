@@ -196,10 +196,10 @@ class SalesTester(unittest.TestCase):
 
     def test_get_the_sum_of_prices_from_table(self):
         table = data_manager.get_table_from_file(self.data_file)
-        expected = 30+25+32
+        expected = 30 + 25 + 32
         result = sales.get_the_sum_of_prices_from_table(table, ("tH34Ju#&", "eH34Ju#&", "kH14Ju#&"))
         self.assertEqual(expected, result)
-    
+
     def test_get_num_of_sales_per_customer_ids_from_table(self):
         table = data_manager.get_table_from_file(self.data_file)
         expected = get_num_of_sales_per_customer()
@@ -249,12 +249,15 @@ class InventoryTester(unittest.TestCase):
         result = inventory.get_average_durability_by_manufacturers(table)
         self.assertEqual(result, expected)
 
+
 class DataAnalyserTester(unittest.TestCase):
     def test_forbidden_functions(self):
         check_forbidden_functions(self, "data_analyser/data_analyser.py")
 
+
 def main():
     unittest.main()
+
 
 if __name__ == '__main__':
     main()
