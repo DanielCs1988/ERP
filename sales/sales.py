@@ -27,6 +27,7 @@ PRICE = 2
 MONTH = 3
 DAY = 4
 YEAR = 5
+CUSTOMER_ID = 6
 
 
 def start_module():
@@ -108,9 +109,9 @@ def show_table(table):
     Returns:
         None
     """
-    titles = ["ID", "Title", "Price", "Date"]
+    titles = ["ID", "Title", "Price", "Date", "Customer ID"]
     output_table = [[row[ID], row[TITLE], row[PRICE],
-                     '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY])))] for row in table]
+                     '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY]))), row[CUSTOMER_ID]] for row in table]
     ui.clear_scr()
     ui.print_table(output_table, titles)
 
