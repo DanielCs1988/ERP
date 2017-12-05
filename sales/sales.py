@@ -307,9 +307,8 @@ def get_the_sum_of_prices(item_ids):
         (number) the sum of the items' prices
     """
 
-    # your code
-
-    pass
+    table = data_manager.get_table_from_file("sales.csv")
+    return get_the_sum_of_prices_from_table(table, item_ids)
 
 
 def get_the_sum_of_prices_from_table(table, item_ids):
@@ -323,10 +322,7 @@ def get_the_sum_of_prices_from_table(table, item_ids):
     Returns:
         (number) the sum of the items' prices
     """
-
-    # your code
-
-    pass
+    return common.szum(table, PRICE, lambda row: row[ID] in item_ids)
 
 
 def get_customer_id_by_sale_id(sale_id):
