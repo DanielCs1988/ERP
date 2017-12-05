@@ -222,9 +222,11 @@ def get_title_by_id(id):
         str the title of the item
     """
 
-    # your code
-
-    pass
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    for line in sales_data:
+        if line[ID] == id:
+            return line[TITLE]
+    return None
 
 
 def get_title_by_id_from_table(table, id):
@@ -240,9 +242,10 @@ def get_title_by_id_from_table(table, id):
         str the title of the item
     """
 
-    # your code
-
-    pass
+    for line in sales_data:
+        if line[ID] == id:
+            return line[TITLE]
+    return None
 
 
 def get_item_id_sold_last():
