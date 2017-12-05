@@ -78,7 +78,7 @@ def start_module():
             ui.clear_scr()
         elif option == "5":
             ui.clear_scr()
-            ui.print_result(get_sum_of_sales_per_customer(), "ID of the item with the lowest price: ")
+            ui.print_result(get_lowest_price_item_id(sales_data), "ID of the item with the lowest price: ")
         elif option == "6":
             ui.clear_scr()
             params = ui.mass_valid_in([("Month from:", common.validate_month),
