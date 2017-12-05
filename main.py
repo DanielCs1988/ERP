@@ -55,6 +55,7 @@ def handle_menu():
                "Accounting manager",
                "Sales manager",
                "Customer Relationship Management (CRM)",
+               "Data analyzer",
                "Logistics manager"]
 
     ui.print_menu("Main menu", options, "Exit program")

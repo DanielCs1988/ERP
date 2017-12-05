@@ -48,7 +48,9 @@ def start_module():
                "Show Lowest Price ID",
                "Show Sold Items Between Dates",
                "Show Sale Number per Customer Name",
-               "Sum of prices"]
+               "Sum of prices",
+               "Get id of latest sold",
+               "Get title of latest sold"]
 
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     ui.clear_scr()
@@ -100,15 +102,19 @@ def start_module():
                 sales_data), ["Customer ID", "Total Number of Sales"])
         elif option == "8":
             show_table(sales_data)
-            ui.print_result("Please enter item IDs. Enter 'end' to finish your input.")
+            ui.print_result("Please enter item IDs. Press Enter (with empty input) to finish.")
             item_ids = []
             while True:
-                new_id = ui.valid_in("ID:", lambda inp: inp.lower() == "end" or common.id_exists(sales_data, inp))
-                if new_id.lower() == "end":
+                new_id = ui.valid_in("ID:", lambda inp: inp.lower() == "end" or common.id_exists(sales_data, inp), True)
+                if not new_id:
                     break
                 item_ids.append(new_id)
             sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
             ui.print_result("Sum of prices: {}".format(sum_prices))
+        elif option == "9":
+            ui.print_result(get_item_id_sold_last_from_table(sales_data))
+        elif option == "10":
+            ui.print_result(get_item_title_sold_last_from_table(sales_data))
         elif option == "0":
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
@@ -206,7 +212,7 @@ def update(table, id_):
 
 
 def get_lowest_price_item_id(table):
-    """Returns the ID of the item that was sold for the lowest price. 
+    """Returns the ID of the item that was sold for the lowest price.
        If there are more than one with the lowest price, return the first by descending alphabetical order."""
 
     prices = [(line[ID], line[TITLE], int(line[PRICE])) for line in table]
@@ -275,10 +281,7 @@ def get_item_id_sold_last():
     Returns:
         (str) the _id_ of the item that was sold most recently.
     """
-
-    # your code
-
-    pass
+    return common.get_last_by_date(data_manager.get_table_from_file("sales/sales.csv"), YEAR, MONTH, DAY)[0]
 
 
 def get_item_id_sold_last_from_table(table):
@@ -291,10 +294,7 @@ def get_item_id_sold_last_from_table(table):
     Returns:
         (str) the _id_ of the item that was sold most recently.
     """
-
-    # your code
-
-    pass
+    return common.get_last_by_date(table, YEAR, MONTH, DAY)[0]
 
 
 def get_item_title_sold_last_from_table(table):
@@ -307,10 +307,7 @@ def get_item_title_sold_last_from_table(table):
     Returns:
         (str) the _title_ of the item that was sold most recently.
     """
-
-    # your code
-
-    pass
+    return common.get_last_by_date(table, YEAR, MONTH, DAY)[1]
 
 
 def get_the_sum_of_prices(item_ids):
@@ -483,16 +480,12 @@ def get_num_of_sales_per_customer_names_from_table(table):
 
 
 def get_sum_of_sales_per_customer():
-    summed_sales_per_customer = {}
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
-    for customer in {line[CUSTOMER_ID] for line in sales_data}:
-        sum_of_sales = common.szum_list([line[PRICE] for line in sales_data if line[CUSTOMER_ID] == customer])
-        summed_sales_per_customer[customer] = sum_of_sales
-    return summed_sales_per_customer
+    return get_sum_of_sales_per_customer_from_table(sales_data)
 
 
 def get_sum_of_sales_per_customer_from_table(table):
-
+    summed_sales_per_customer = {}
     for customer in {line[CUSTOMER_ID] for line in table}:
         sum_of_sales = common.szum_list([line[PRICE] for line in table if line[CUSTOMER_ID] == customer])
         summed_sales_per_customer[customer] = sum_of_sales
