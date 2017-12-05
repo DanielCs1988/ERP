@@ -132,7 +132,8 @@ def add(table):
                                    ("Price: ", common.validate_int),
                                    ("Month of sale: ", common.validate_month),
                                    ("Day of sale: ", common.validate_day),
-                                   ("Year of sale: ", common.validate_byear)
+                                   ("Year of sale: ", common.validate_byear),
+                                   ("Customer ID: ", common.validate_id_possible)
                                    ])
 
     if input_list is None:
@@ -178,7 +179,8 @@ def update(table, id_):
                                    ("Price: ", common.validate_int),
                                    ("Month of sale: ", common.validate_month),
                                    ("Day of sale: ", common.validate_day),
-                                   ("Year of sale: ", common.validate_byear)
+                                   ("Year of sale: ", common.validate_byear),
+                                   ("Customer ID: ", common.validate_id_possible)
                                    ], update_mode=True)
 
     table[index] = common.apply_update_to_line(table[index], input_list)
@@ -307,9 +309,8 @@ def get_the_sum_of_prices(item_ids):
         (number) the sum of the items' prices
     """
 
-    # your code
-
-    pass
+    table = data_manager.get_table_from_file("sales.csv")
+    return get_the_sum_of_prices_from_table(table, item_ids)
 
 
 def get_the_sum_of_prices_from_table(table, item_ids):
@@ -323,10 +324,7 @@ def get_the_sum_of_prices_from_table(table, item_ids):
     Returns:
         (number) the sum of the items' prices
     """
-
-    # your code
-
-    pass
+    return common.szum(table, PRICE, lambda row: row[ID] in item_ids)
 
 
 def get_customer_id_by_sale_id(sale_id):
@@ -432,10 +430,8 @@ def get_num_of_sales_per_customer_ids():
      Returns:
          dict of (key, value): (customer_id (str), num_of_sales (number))
     """
-
-    # your code
-
-    pass
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    return get_num_of_sales_per_customer_ids_from_table(sales_data)
 
 
 def get_num_of_sales_per_customer_ids_from_table(table):
@@ -448,8 +444,34 @@ def get_num_of_sales_per_customer_ids_from_table(table):
      Returns:
          dict of (key, value): (customer_id (str), num_of_sales (number))
     """
+    sales_per_customers = {}
+    for row in table:
+        if row[CUSTOMER_ID] not in sales_per_customers:
+            sales_per_customers[row[CUSTOMER_ID]] = 1
+        else:
+            sales_per_customers[row[CUSTOMER_ID]] += 1
+    return sales_per_customers
 
-    # your code
+
+def get_num_of_sales_per_customer_names_from_table(table):
+    """
+     Returns a dictionary of (customer_id, num_of_sales) where:
+        customer_id:
+        num_of_sales (number): number of sales the customer made
+     Args:
+        table (list of list): the sales table
+     Returns:
+         dict of (key, value): (customer_id (str), num_of_sales (number))
+    """
+    sales_per_customers = {}
+    for row in table:
+        customer_name = crm.get_name_by_id(row[CUSTOMER_ID])
+        if customer_name not in sales_per_customers:
+            sales_per_customers[customer_name] = 1
+        else:
+            sales_per_customers[customer_name] += 1
+    return sales_per_customers
+
 
     pass
 
@@ -468,3 +490,14 @@ def get_sum_of_sales_per_customer_from_table(table):
         sum_of_sales = common.szumlist([line[PRICE] for line in table if line[CUSTOMER_ID] == customer])
         summed_sales_per_customer[customer] = sum_of_sales
     return summed_sales_per_customer
+def get_num_of_sales_per_customer_names():
+    """
+     Reads the customer-sales association table with the help of the data_manager module.
+     Returns a dictionary of (customer_id, num_of_sales) where:
+        customer_id:
+        num_of_sales (number): number of sales the customer made
+     Returns:
+         dict of (key, value): (customer_id (str), num_of_sales (number))
+    """
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    return get_num_of_sales_per_customer_names_from_table(sales_data)

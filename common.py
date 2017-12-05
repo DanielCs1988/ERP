@@ -184,7 +184,7 @@ def get_longest(table, column):
     return max([len(str(row[column])) for row in table])
 
 
-def szum(table, column):
+def szum(table, column, condition=None):
     """ Returns the sum of the data of the given column.
 
     Args:
@@ -195,7 +195,7 @@ def szum(table, column):
     Returns:
         the sum of the values, integer type
     """
-    return szum_list([row[column] for row in table])
+    return szum_list([row[column] for row in table if condition is None or condition(row)])
 
 
 def szum_list(collection):
@@ -341,6 +341,26 @@ def validate_empty(userinput):
     Checks if the given parameter is an empty string. If so, returns true.
     '''
     if userinput is '':
+        return True
+    return False
+
+
+def validate_id_possible(userinput):
+    '''
+    Validates if it is a proper id.
+    Does not check if it exists anywhere
+    '''
+    valid = {"upper": 0, "lower": 0, "digit": 0, "symbol": 0}
+    for char in userinput:
+        if char in CHR_TYPES["uppercase"]:
+            valid["upper"] += 1
+        elif char in CHR_TYPES["lowercase"]:
+            valid["lower"] += 1
+        elif char in CHR_TYPES["digit"]:
+            valid["digit"] += 1
+        elif char in CHR_TYPES["symbol"]:
+            valid["symbol"] += 1
+    if 0 not in valid.values() and 1 not in valid.values():
         return True
     return False
 
