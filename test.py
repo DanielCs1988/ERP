@@ -147,6 +147,11 @@ class CRMTester(unittest.TestCase):
         result = crm.get_subscribed_emails(table)
         compare_lists(self, expected, result)
 
+    def test_get_name_by_id(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        result = crm.get_name_by_id("kH94Ju#&")
+        self.assertEqual(result, "Phylis Farberanmt")
+
 
 class HRTester(unittest.TestCase):
     data_file = "hr/persons_test.csv"
@@ -210,7 +215,7 @@ class SalesTester(unittest.TestCase):
         result = sales.get_the_sum_of_prices_from_table(table, ("tH34Ju#&", "eH34Ju#&", "kH14Ju#&"))
         self.assertEqual(expected, result)
 
-    def get_sum_of_sales_per_customer_from_table(self):
+    def test_get_sum_of_sales_per_customer_from_table(self):
         table = data_manager.get_table_from_file(self.data_file)
         expected = sum_of_sales_per_customer()
         result = sales.get_sum_of_sales_per_customer_from_table(table)
@@ -219,13 +224,21 @@ class SalesTester(unittest.TestCase):
     def test_get_all_sales_ids_for_customer_ids_form_table(self):
         table = data_manager.get_table_from_file(self.data_file)
         expected = {"jH34Jk#&":
-                    ["kH34Ju#&", "jH34Ju#&", "tH34Ju#&", "eH34Ju#&", "kH14Ju#&", "kH35Ju#&", "kH38Ju#&", "kH94Ju#&", "tH34Jl#&", "eH34Jy#&", "bH34Jx#&"],
+                    ["kH34Ju#&", "jH34Ju#&", "tH34Ju#&", "eH34Ju#&", "kH14Ju#&", "kH35Ju#&",
+                        "kH38Ju#&", "kH94Ju#&", "tH34Jl#&", "eH34Jy#&", "bH34Jx#&"],
                     "kH14Jt#&":
                     ["bH34Ju#&", "vH34Ju#&", "kH34Ji#&", "vH34Jz#&", "kH14Jt#&", "kH35Jr#&", "kH38Je#&", "kH94Jw#&"],
                     "kH14Jh#&":
                     ["jH34Jk#&"]}
         result = sales.get_all_sales_ids_for_customer_ids_form_table(table)
         self.assertDictEqual(expected, result)
+
+    def test_get_customer_id_by_sale_id_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        tested_id = 'kH34Ji#&'
+        result = sales.get_customer_id_by_sale_id_from_table(table, tested_id)
+        self.assertEqual('kH14Jt#&', result)
+
 
 class StoreTester(unittest.TestCase):
     data_file = "store/games_test.csv"
