@@ -80,7 +80,7 @@ def get_the_buyer_id_spent_most_and_the_money_spent():
     """
 
     customer_sales = list(get_sum_of_sales_per_customer())
-    return most_spent_customer = max(customer_sales, key=common.get_item(1))
+    return max(customer_sales, key=common.get_item(1))
 
 
 def get_the_most_frequent_buyers_names(num=1):
