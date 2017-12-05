@@ -211,6 +211,12 @@ class SalesTester(unittest.TestCase):
         expected = {"jH34Jk#&", "kH14Jt#&", "kH14Jh#&"}
         result = sales.get_all_customer_ids_from_table(table)
         self.assertSetEqual(expected, result)
+    
+    def test_get_customer_id_by_sale_id_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        tested_id = 'kH34Ji#&'
+        result = sales.get_customer_id_by_sale_id_from_table(table, tested_id)
+        self.assertEqual('kH14Jt#&', result)
 
 
 class StoreTester(unittest.TestCase):
