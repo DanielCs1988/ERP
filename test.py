@@ -206,6 +206,12 @@ class SalesTester(unittest.TestCase):
         result = sales.get_num_of_sales_per_customer_ids_from_table(table)
         self.assertEqual(expected, result)
 
+    def test_get_all_customer_ids_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        expected = {"jH34Jk#&", "kH14Jt#&", "kH14Jh#&"}
+        result = sales.get_all_customer_ids_from_table(table)
+        self.assertSetEqual(expected, result)
+
 
 class StoreTester(unittest.TestCase):
     data_file = "store/games_test.csv"
