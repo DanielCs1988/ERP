@@ -100,11 +100,11 @@ def start_module():
                 sales_data), ["Customer ID", "Total Number of Sales"])
         elif option == "8":
             show_table(sales_data)
-            ui.print_result("Please enter item IDs. Enter 'end' to finish your input.")
+            ui.print_result("Please enter item IDs. Press Enter (with empty input) to finish.")
             item_ids = []
             while True:
-                new_id = ui.valid_in("ID:", lambda inp: inp.lower() == "end" or common.id_exists(sales_data, inp))
-                if new_id.lower() == "end":
+                new_id = ui.valid_in("ID:", lambda inp: inp.lower() == "end" or common.id_exists(sales_data, inp), True)
+                if not new_id:
                     break
                 item_ids.append(new_id)
             sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
