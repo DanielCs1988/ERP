@@ -432,10 +432,8 @@ def get_num_of_sales_per_customer_ids():
      Returns:
          dict of (key, value): (customer_id (str), num_of_sales (number))
     """
-
-    # your code
-
-    pass
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    return get_num_of_sales_per_customer_ids_from_table(sales_data)
 
 
 def get_num_of_sales_per_customer_ids_from_table(table):
@@ -448,7 +446,43 @@ def get_num_of_sales_per_customer_ids_from_table(table):
      Returns:
          dict of (key, value): (customer_id (str), num_of_sales (number))
     """
+    sales_per_customers = {}
+    for row in table:
+        if row[CUSTOMER_ID] not in sales_per_customers:
+            sales_per_customers[row[CUSTOMER_ID]] = 1
+        else:
+            sales_per_customers[row[CUSTOMER_ID]] += 1
+    return sales_per_customers
 
-    # your code
 
-    pass
+def get_num_of_sales_per_customer_names_from_table(table):
+    """
+     Returns a dictionary of (customer_id, num_of_sales) where:
+        customer_id:
+        num_of_sales (number): number of sales the customer made
+     Args:
+        table (list of list): the sales table
+     Returns:
+         dict of (key, value): (customer_id (str), num_of_sales (number))
+    """
+    sales_per_customers = {}
+    for row in table:
+        customer_name = crm.get_name_by_id(row[CUSTOMER_ID])
+        if customer_name not in sales_per_customers:
+            sales_per_customers[customer_name] = 1
+        else:
+            sales_per_customers[customer_name] += 1
+    return sales_per_customers
+
+
+def get_num_of_sales_per_customer_names():
+    """
+     Reads the customer-sales association table with the help of the data_manager module.
+     Returns a dictionary of (customer_id, num_of_sales) where:
+        customer_id:
+        num_of_sales (number): number of sales the customer made
+     Returns:
+         dict of (key, value): (customer_id (str), num_of_sales (number))
+    """
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    return get_num_of_sales_per_customer_names_from_table(sales_data)
