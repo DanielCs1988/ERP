@@ -17,7 +17,6 @@ from sales import sales
 from crm import crm
 from data_analyser import data_analyser
 
-
 def compare_lists(tester, expected_list, result_list):
     for item in result_list:
         tester.assertTrue(item in expected_list)
@@ -163,7 +162,7 @@ class CRMTester(unittest.TestCase):
 
     def test_get_name_by_id(self):
         table = data_manager.get_table_from_file(self.data_file)
-        result = crm.get_name_by_id("kH94Ju#&")
+        result = crm.get_name_by_id_from_table(table, "kH94Ju#&")
         self.assertEqual(result, "Phylis Farberanmt")
 
 
