@@ -106,7 +106,7 @@ def deepcopy(array):
     """
     retval = []
     for item in array:
-        if isinstance(item, (list, set, tuple)):
+        if isinstance(item, (list, set)):
             retval.append(deepcopy(item))
         else:
             retval.append(item)
