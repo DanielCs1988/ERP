@@ -95,8 +95,8 @@ def start_module():
                 ui.print_result("No items found between specified dates.")
         elif option == "7":
             ui.clear_scr()
-            customer_sales_info = list(get_num_of_sales_per_customer_names_from_table(sales_data).items())
-            ui.print_table(customer_sales_info, ["Customer ID", "Total Number of Sales"])
+            ui.print_table(get_num_of_sales_per_customer_names_from_table(
+                sales_data), ["Customer ID", "Total Number of Sales"])
         elif option == "0":
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
