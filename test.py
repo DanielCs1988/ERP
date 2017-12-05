@@ -190,6 +190,12 @@ class SalesTester(unittest.TestCase):
         result = sales.get_items_sold_between(table, 2, 12, 2016, 7, 6, 2016)
         compare_lists(self, expected, result)
 
+    def test_get_the_sum_of_prices_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        expected = 30+25+32
+        result = sales.get_the_sum_of_prices_from_table(table, ("tH34Ju#&", "eH34Ju#&", "kH14Ju#&"))
+        self.assertEqual(expected, result)
+
 
 class StoreTester(unittest.TestCase):
     data_file = "store/games_test.csv"
