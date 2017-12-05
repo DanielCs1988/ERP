@@ -147,6 +147,11 @@ class CRMTester(unittest.TestCase):
         result = crm.get_subscribed_emails(table)
         compare_lists(self, expected, result)
 
+    def get_name_by_id(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        result = crm.get_name_by_id("kH94Ju#&")
+        self.assertEqual(result, "Phylis Farberanmt")
+
 
 class HRTester(unittest.TestCase):
     data_file = "hr/persons_test.csv"
