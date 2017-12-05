@@ -452,3 +452,19 @@ def get_num_of_sales_per_customer_ids_from_table(table):
     # your code
 
     pass
+
+
+def get_sum_of_sales_per_customer():
+
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    for customer in {line[CUSTOMER_ID] for line in sales_data}:
+        sum_of_sales = common.szumlist([line[PRICE] for line in sales_data if line[CUSTOMER_ID] == customer])
+        summed_sales_per_customer[customer] = sum_of_sales
+    return summed_sales_per_customer
+
+def get_sum_of_sales_per_customer_from_table(table):
+
+    for customer in {line[CUSTOMER_ID] for line in table}:
+        sum_of_sales = common.szumlist([line[PRICE] for line in table if line[CUSTOMER_ID] == customer])
+        summed_sales_per_customer[customer] = sum_of_sales
+    return summed_sales_per_customer
