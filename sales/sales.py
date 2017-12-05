@@ -470,9 +470,6 @@ def get_num_of_sales_per_customer_names_from_table(table):
     return sales_per_customers
 
 
-    pass
-
-
 def get_sum_of_sales_per_customer():
 
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
@@ -481,12 +478,15 @@ def get_sum_of_sales_per_customer():
         summed_sales_per_customer[customer] = sum_of_sales
     return summed_sales_per_customer
 
+
 def get_sum_of_sales_per_customer_from_table(table):
 
     for customer in {line[CUSTOMER_ID] for line in table}:
         sum_of_sales = common.szumlist([line[PRICE] for line in table if line[CUSTOMER_ID] == customer])
         summed_sales_per_customer[customer] = sum_of_sales
     return summed_sales_per_customer
+
+
 def get_num_of_sales_per_customer_names():
     """
      Reads the customer-sales association table with the help of the data_manager module.
