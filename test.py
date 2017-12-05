@@ -26,6 +26,10 @@ def sum_of_sales_per_customer():
     return {"kH14Jt#&": 273, "kH14Jh#&": 30, "jH34Jk#&": 434}
 
 
+def num_of_sales_per_customer():
+    return {"kH14Jt#&": 8, "kH14Jh#&": 1, "jH34Jk#&": 11}
+
+
 def get_subscribed_list():
     return ["hv8@qsuotla508.com;Lieselotte Rainey",
             "t1ytt@vpm5xkvn.com;Maude Toll",
@@ -241,6 +245,12 @@ class SalesTester(unittest.TestCase):
         tested_id = 'kH34Ji#&'
         result = sales.get_customer_id_by_sale_id_from_table(table, tested_id)
         self.assertEqual('kH14Jt#&', result)
+    
+    def test_get_num_of_sales_per_customer_ids_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        expected = num_of_sales_per_customer()
+        result = sales.get_num_of_sales_per_customer_ids_from_table(table)
+        self.assertEqual(expected, result)
 
 
 class StoreTester(unittest.TestCase):
@@ -283,6 +293,16 @@ class InventoryTester(unittest.TestCase):
 class DataAnalyserTester(unittest.TestCase):
     def test_forbidden_functions(self):
         check_forbidden_functions(self, "data_analyser/data_analyser.py")
+
+    def test_get_the_most_frequent_buyers_names(self):
+        expected = [('Missy Stoney', 11), ('Sadye Hession', 8)]
+        result = data_analyser.get_the_most_frequent_buyers_names(2)
+        self.assertEqual(expected, result)
+
+    def test_get_the_most_frequent_buyers_ids(self):
+        expected = [("jH34Jk#&", 11), ("kH14Jt#&", 8)]
+        result = data_analyser.get_the_most_frequent_buyers_ids(2)
+        self.assertEqual(expected, result)
 
     def test_get_the_buyer_name_spent_most_and_the_money_spent(self):
         result = data_analyser.get_the_buyer_name_spent_most_and_the_money_spent()
