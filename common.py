@@ -426,7 +426,7 @@ def get_last_by_date(table, year, month, day, reverse=False):
         the row in that table
     '''
     DAYS_SUMMED = 7
-    new_table = table
+    new_table = deepcopy(table)
     for row in new_table:
         row.append(str(int(row[year]) * 365 + int(row[month]) * 31 + int(row[day])))
     return qsort_table(new_table, DAYS_SUMMED, reversed=not reverse)[0]
