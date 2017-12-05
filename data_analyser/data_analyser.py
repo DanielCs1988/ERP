@@ -67,7 +67,7 @@ def get_the_buyer_name_spent_most_and_the_money_spent():
    Returns:
         Tuple of customer name and the sum the customer spent
     """
-    customer_sales = list(sales.get_sum_of_sales_per_customer())
+    customer_sales = sales.get_sum_of_sales_per_customer().items()
     most_spent_customer = max(customer_sales, key=common.get_item(1))
     return crm.get_name_by_id(most_spent_customer[NAME]), most_spent_customer[MONEY]
 
