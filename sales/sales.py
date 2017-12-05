@@ -20,6 +20,7 @@ import os
 import ui
 import data_manager
 import common
+from crm import crm
 
 ID = 0
 TITLE = 1
@@ -45,7 +46,8 @@ def start_module():
                "Update Entry",
                "Remove Entry",
                "Show Lowest Price ID",
-               "Show Sold Items Between Dates"]
+               "Show Sold Items Between Dates",
+               "Show Sale Number per Customer Name"]
 
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     ui.clear_scr()
@@ -91,6 +93,10 @@ def start_module():
                 ui.print_result("Table: items sold between specified dates")
             else:
                 ui.print_result("No items found between specified dates.")
+        elif option == "7":
+            ui.clear_scr()
+            customer_sales_info = list(get_num_of_sales_per_customer_names_from_table(sales_data).items())
+            ui.print_table(customer_sales_info, ["Customer ID", "Total Number of Sales"])
         elif option == "0":
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
@@ -213,7 +219,6 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
 
 
 def get_title_by_id(id):
-
     """
     Reads the table with the help of the data_manager module.
     Returns the title (str) of the item with the given id (str) on None om case of non-existing id.
@@ -233,7 +238,6 @@ def get_title_by_id(id):
 
 
 def get_title_by_id_from_table(table, id):
-
     """
     Returns the title (str) of the item with the given id (str) on None om case of non-existing id.
 
