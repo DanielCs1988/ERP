@@ -102,11 +102,11 @@ def start_module():
                 sales_data), ["Customer ID", "Total Number of Sales"])
         elif option == "8":
             show_table(sales_data)
-            ui.print_result("Please enter item IDs. Enter 'end' to finish your input.")
+            ui.print_result("Please enter item IDs. Press Enter (with empty input) to finish.")
             item_ids = []
             while True:
-                new_id = ui.valid_in("ID:", lambda inp: inp.lower() == "end" or common.id_exists(sales_data, inp))
-                if new_id.lower() == "end":
+                new_id = ui.valid_in("ID:", lambda inp: inp.lower() == "end" or common.id_exists(sales_data, inp), True)
+                if not new_id:
                     break
                 item_ids.append(new_id)
             sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
@@ -353,10 +353,8 @@ def get_customer_id_by_sale_id(sale_id):
     Returns:
          customer_id that belongs to the given sale id
     """
-
-    # your code
-
-    pass
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    return get_customer_id_by_sale_id_from_table(sales_data, sale_id)
 
 
 def get_customer_id_by_sale_id_from_table(table, sale_id):
@@ -485,16 +483,12 @@ def get_num_of_sales_per_customer_names_from_table(table):
 
 
 def get_sum_of_sales_per_customer():
-    summed_sales_per_customer = {}
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
-    for customer in {line[CUSTOMER_ID] for line in sales_data}:
-        sum_of_sales = common.szum_list([line[PRICE] for line in sales_data if line[CUSTOMER_ID] == customer])
-        summed_sales_per_customer[customer] = sum_of_sales
-    return summed_sales_per_customer
+    return get_sum_of_sales_per_customer_from_table(sales_data)
 
 
 def get_sum_of_sales_per_customer_from_table(table):
-
+    summed_sales_per_customer = {}
     for customer in {line[CUSTOMER_ID] for line in table}:
         sum_of_sales = common.szum_list([line[PRICE] for line in table if line[CUSTOMER_ID] == customer])
         summed_sales_per_customer[customer] = sum_of_sales
