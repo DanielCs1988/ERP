@@ -22,6 +22,10 @@ def compare_lists(tester, expected_list, result_list):
         tester.assertTrue(item in expected_list)
 
 
+def sum_of_sales_per_customer():
+    return {"kH14Jt#&": 273, "kH14Jh#&": 30, "jH34Jk#&": 434}
+
+
 def get_subscribed_list():
     return ["hv8@qsuotla508.com;Lieselotte Rainey",
             "t1ytt@vpm5xkvn.com;Maude Toll",
@@ -190,17 +194,27 @@ class SalesTester(unittest.TestCase):
         result = sales.get_items_sold_between(table, 2, 12, 2016, 7, 6, 2016)
         compare_lists(self, expected, result)
 
+    def test_item_id_sold_last_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        result = sales.get_item_id_sold_last_from_table(table)
+        self.assertEqual(result, "kH34Ju#&")
+
+    def test_item_name_sold_last_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        result = sales.get_item_title_sold_last_from_table(table)
+        self.assertEqual(result, "Age of Empires II: The Age of Kings")
+
     def test_get_the_sum_of_prices_from_table(self):
         table = data_manager.get_table_from_file(self.data_file)
-        expected = 30+25+32
+        expected = 30 + 25 + 32
         result = sales.get_the_sum_of_prices_from_table(table, ("tH34Ju#&", "eH34Ju#&", "kH14Ju#&"))
         self.assertEqual(expected, result)
 
-    def test_get_all_customer_ids_from_table(self):
+    def get_sum_of_sales_per_customer_from_table(self):
         table = data_manager.get_table_from_file(self.data_file)
-        expected = {"jH34Jk#&", "kH14Jt#&", "kH14Jh#&"}
-        result = sales.get_all_customer_ids_from_table(table)
-        self.assertSetEqual(expected, result)
+        expected = sum_of_sales_per_customer()
+        result = sales.get_sum_of_sales_per_customer_from_table(table)
+        self.assertEqual(expected, result)
 
     def test_get_all_sales_ids_for_customer_ids_form_table(self):
         table = data_manager.get_table_from_file(self.data_file)
@@ -249,12 +263,15 @@ class InventoryTester(unittest.TestCase):
         result = inventory.get_average_durability_by_manufacturers(table)
         self.assertEqual(result, expected)
 
+
 class DataAnalyserTester(unittest.TestCase):
     def test_forbidden_functions(self):
         check_forbidden_functions(self, "data_analyser/data_analyser.py")
 
+
 def main():
     unittest.main()
+
 
 if __name__ == '__main__':
     main()
