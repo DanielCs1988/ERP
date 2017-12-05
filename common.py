@@ -413,6 +413,25 @@ def get_item(index):
     return func
 
 
+def get_last_by_date(table, year, month, day, reverse=False):
+    '''
+    Gets the newest or oldest entry or entries.
+
+    Args:
+        table
+        year, month and day: the numbers (constant) of the columns
+        reverse: if true, gives the newest entry instead
+
+    Returns:
+        the row in that table
+    '''
+    DAYS_SUMMED = 7
+    new_table = deepcopy(table)
+    for row in new_table:
+        row.append(str(int(row[year]) * 365 + int(row[month]) * 31 + int(row[day])))
+    return qsort_table(new_table, DAYS_SUMMED, reversed=not reverse)[0]
+
+
 class dtime:
     """A lightweight date management class."""
     def __init__(self, year, month, day):
