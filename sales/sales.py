@@ -309,7 +309,7 @@ def get_the_sum_of_prices(item_ids):
         (number) the sum of the items' prices
     """
 
-    table = data_manager.get_table_from_file("sales.csv")
+    table = data_manager.get_table_from_file("sales/sales.csv")
     return get_the_sum_of_prices_from_table(table, item_ids)
 
 
@@ -367,9 +367,8 @@ def get_all_customer_ids():
          set of customer_ids that are present in the table
     """
 
-    # your code
-
-    pass
+    table = data_manager.get_table_from_file("sales/sales.csv")
+    return get_all_customer_ids_from_table(table)
 
 
 def get_all_customer_ids_from_table(table):
@@ -381,9 +380,7 @@ def get_all_customer_ids_from_table(table):
          set of customer_ids that are present in the table
     """
 
-    # your code
-
-    pass
+    return {row[CUSTOMER_ID] for row in table}
 
 
 def get_all_sales_ids_for_customer_ids():
