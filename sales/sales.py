@@ -47,7 +47,8 @@ def start_module():
                "Remove Entry",
                "Show Lowest Price ID",
                "Show Sold Items Between Dates",
-               "Show Sale Number per Customer Name"]
+               "Show Sale Number per Customer Name",
+               "Sum of prices"]
 
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     ui.clear_scr()
@@ -97,6 +98,17 @@ def start_module():
             ui.clear_scr()
             ui.print_table(get_num_of_sales_per_customer_names_from_table(
                 sales_data), ["Customer ID", "Total Number of Sales"])
+        elif option == "8":
+            show_table(sales_data)
+            ui.print_result("Please enter item IDs. Enter 'end' to finish your input.")
+            item_ids = []
+            while True:
+                new_id = ui.valid_in("ID:", lambda inp: inp.lower() == "end" or common.id_exists(sales_data, inp))
+                if new_id.lower() == "end":
+                    break
+                item_ids.append(new_id)
+            sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
+            ui.print_result("Sum of prices: {}".format(sum_prices))
         elif option == "0":
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
@@ -357,10 +369,10 @@ def get_customer_id_by_sale_id_from_table(table, sale_id):
     Returns:
          customer_id that belongs to the given sale id
     """
-
-    # your code
-
-    pass
+    for row in table:
+        if row[ID] == sale_id:
+            return row[CUSTOMER_ID]
+    return None
 
 
 def get_all_customer_ids():
