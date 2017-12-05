@@ -13,6 +13,9 @@ import common
 from sales import sales
 from crm import crm
 
+NAME = 0
+MONEY = 1
+
 
 def start_module():
     """
@@ -66,7 +69,7 @@ def get_the_buyer_name_spent_most_and_the_money_spent():
     """
     customer_sales = list(get_sum_of_sales_per_customer())
     most_spent_customer = max(customer_sales, key=common.get_item(1))
-    return crm.get_name_by_id(most_spent_customer[0]), most_spent_customer[1]
+    return crm.get_name_by_id(most_spent_customer[NAME]), most_spent_customer[MONEY]
 
 
 def get_the_buyer_id_spent_most_and_the_money_spent():
