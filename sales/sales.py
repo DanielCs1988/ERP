@@ -357,10 +357,10 @@ def get_customer_id_by_sale_id_from_table(table, sale_id):
     Returns:
          customer_id that belongs to the given sale id
     """
-
-    # your code
-
-    pass
+    for row in table:
+        if row[ID] == sale_id:
+            return row[CUSTOMER_ID]
+    return None
 
 
 def get_all_customer_ids():
