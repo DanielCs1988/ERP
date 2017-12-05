@@ -71,6 +71,15 @@ def get_count_by_manufacturer_list():
             "Games Farm": 2}
 
 
+def get_expected_all_sales_ids_for_customer_ids_form_table():
+        return {"jH34Jk#&":
+                ["kH34Ju#&", "jH34Ju#&", "tH34Ju#&", "eH34Ju#&", "kH14Ju#&", "kH35Ju#&", "kH38Ju#&", "kH94Ju#&", "tH34Jl#&", "eH34Jy#&", "bH34Jx#&"],
+                "kH14Jt#&":
+                ["bH34Ju#&", "vH34Ju#&", "kH34Ji#&", "vH34Jz#&", "kH14Jt#&", "kH35Jr#&", "kH38Je#&", "kH94Jw#&"],
+                "kH14Jh#&":
+                ["jH34Jk#&"]}
+
+
 def check_forbidden_functions(tester, file_name):
     with open(file_name, "r") as file:
         lines = file.read()
@@ -223,13 +232,7 @@ class SalesTester(unittest.TestCase):
 
     def test_get_all_sales_ids_for_customer_ids_form_table(self):
         table = data_manager.get_table_from_file(self.data_file)
-        expected = {"jH34Jk#&":
-                    ["kH34Ju#&", "jH34Ju#&", "tH34Ju#&", "eH34Ju#&", "kH14Ju#&", "kH35Ju#&",
-                        "kH38Ju#&", "kH94Ju#&", "tH34Jl#&", "eH34Jy#&", "bH34Jx#&"],
-                    "kH14Jt#&":
-                    ["bH34Ju#&", "vH34Ju#&", "kH34Ji#&", "vH34Jz#&", "kH14Jt#&", "kH35Jr#&", "kH38Je#&", "kH94Jw#&"],
-                    "kH14Jh#&":
-                    ["jH34Jk#&"]}
+        expected = get_expected_all_sales_ids_for_customer_ids_form_table()
         result = sales.get_all_sales_ids_for_customer_ids_form_table(table)
         self.assertDictEqual(expected, result)
 
