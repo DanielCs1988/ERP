@@ -38,7 +38,7 @@ def start_module():
 
     ui.clear_scr()
     while True:
-        ui.print_menu("Customer relationship management:", crm_options, "Back to main menu")
+        ui.print_menu("Customer relationship management", crm_options, "Back to main menu")
 
         try:
             option = ui.valid_in("Please enter a number: ", common.validate_string)
