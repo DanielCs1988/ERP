@@ -191,7 +191,7 @@ def get_name_by_id(id):
     """
 
     crm_data = data_manager.get_table_from_file("crm/customers.csv")
-    get_name_by_id_from_table(crm_data, id)
+    return get_name_by_id_from_table(crm_data, id)
 
 
 def get_name_by_id_from_table(table, id):
