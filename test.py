@@ -44,6 +44,10 @@ def get_item_sold_between_dates():
             ["kH35Ju#&", "Age of Empires", 11, 3, 7, 2016]]
 
 
+def get_num_of_sales_per_customer():
+    return {"jH34Jk#&": 11, "kH14Jt#&": 8, "kH14Jh#&": 1}
+
+
 def get_count_by_manufacturer_list():
     return {"Ensemble Studios": 4,
             "Edelweiss": 1,
@@ -200,6 +204,24 @@ class SalesTester(unittest.TestCase):
         result = sales.get_item_title_sold_last_from_table(table)
         self.assertEqual(result, "Age of Empires II: The Age of Kings")
 
+    def test_get_the_sum_of_prices_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        expected = 30 + 25 + 32
+        result = sales.get_the_sum_of_prices_from_table(table, ("tH34Ju#&", "eH34Ju#&", "kH14Ju#&"))
+        self.assertEqual(expected, result)
+
+    def test_get_num_of_sales_per_customer_ids_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        expected = get_num_of_sales_per_customer()
+        result = sales.get_num_of_sales_per_customer_ids_from_table(table)
+        self.assertEqual(expected, result)
+
+    def test_get_all_customer_ids_from_table(self):
+        table = data_manager.get_table_from_file(self.data_file)
+        expected = {"jH34Jk#&", "kH14Jt#&", "kH14Jh#&"}
+        result = sales.get_all_customer_ids_from_table(table)
+        self.assertSetEqual(expected, result)
+
 
 class StoreTester(unittest.TestCase):
     data_file = "store/games_test.csv"
@@ -237,12 +259,15 @@ class InventoryTester(unittest.TestCase):
         result = inventory.get_average_durability_by_manufacturers(table)
         self.assertEqual(result, expected)
 
+
 class DataAnalyserTester(unittest.TestCase):
     def test_forbidden_functions(self):
         check_forbidden_functions(self, "data_analyser/data_analyser.py")
 
+
 def main():
     unittest.main()
+
 
 if __name__ == '__main__':
     main()

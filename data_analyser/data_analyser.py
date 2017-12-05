@@ -13,6 +13,9 @@ import common
 from sales import sales
 from crm import crm
 
+NAME = 0
+MONEY = 1
+
 
 def start_module():
     """
@@ -64,10 +67,9 @@ def get_the_buyer_name_spent_most_and_the_money_spent():
    Returns:
         Tuple of customer name and the sum the customer spent
     """
-
-    # your code
-
-    pass
+    customer_sales = list(get_sum_of_sales_per_customer())
+    most_spent_customer = max(customer_sales, key=common.get_item(1))
+    return crm.get_name_by_id(most_spent_customer[NAME]), most_spent_customer[MONEY]
 
 
 def get_the_buyer_id_spent_most_and_the_money_spent():
@@ -80,9 +82,8 @@ def get_the_buyer_id_spent_most_and_the_money_spent():
         Tuple of customer id and the sum the customer spent
     """
 
-    # your code
-
-    pass
+    customer_sales = list(get_sum_of_sales_per_customer())
+    return max(customer_sales, key=common.get_item(1))
 
 
 def get_the_most_frequent_buyers_names(num=1):
@@ -98,10 +99,9 @@ def get_the_most_frequent_buyers_names(num=1):
     Returns:
         Ordered list of tuples of customer names and num of sales
     """
-
-    # your code
-
-    pass
+    buy_frequencies = sales.get_num_of_sales_per_customer_names()
+    buy_frequencies = common.srt(list(buy_frequencies), key=common.get_item(1), reversed=True)
+    return buy_frequencies[:num]
 
 
 def get_the_most_frequent_buyers_ids(num=1):
@@ -117,7 +117,6 @@ def get_the_most_frequent_buyers_ids(num=1):
     Returns:
         Ordered list of tuples of customer ids and num of sales
     """
-
-    # your code
-
-    pass
+    buy_frequencies = sales.get_num_of_sales_per_customer_ids()
+    buy_frequencies = common.srt(list(buy_frequencies), key=common.get_item(1), reversed=True)
+    return buy_frequencies[:num]
