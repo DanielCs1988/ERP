@@ -309,6 +309,11 @@ class DataAnalyserTester(unittest.TestCase):
         expected = ("Missy Stoney", 434)
         self.assertEqual(result, expected)
 
+    def test_get_the_buyer_id_spent_most_and_the_money_spent(self):
+        result = data_analyser.get_the_buyer_id_spent_most_and_the_money_spent()
+        expected = ("jH34Jk#&", 434)
+        self.assertEqual(result, expected)
+
 
 def main():
     unittest.main()
