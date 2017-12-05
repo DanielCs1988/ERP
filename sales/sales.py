@@ -50,7 +50,9 @@ def start_module():
                "Show Sale Number per Customer Name",
                "Sum of prices",
                "Get id of latest sold",
-               "Get title of latest sold"]
+               "Get title of latest sold",
+               "All customer IDs",
+               "All sales for customers"]
 
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     ui.clear_scr()
@@ -115,6 +117,16 @@ def start_module():
             ui.print_result(get_item_id_sold_last_from_table(sales_data))
         elif option == "10":
             ui.print_result(get_item_title_sold_last_from_table(sales_data))
+        elif option == "11":
+            ui.clear_scr()
+            ui.print_result("List of customer IDs:")
+            ui.print_result(get_all_customer_ids_from_table(sales_data))
+        elif option == "12":
+            ui.clear_scr()
+            ui.print_result("Sales for customers")
+            sales_for_customers = get_all_sales_ids_for_customer_ids_form_table(sales_data).items()
+            sales_for_customers = list({row[0]: ", ".join(row[1]) for row in sales_for_customers}.items())
+            ui.print_table(sales_for_customers, ["Customer ID", "Sales IDs"])
         elif option == "0":
             data_manager.write_table_to_file("sales/sales.csv", sales_data)
             ui.clear_scr()
