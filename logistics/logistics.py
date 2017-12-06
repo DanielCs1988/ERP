@@ -33,49 +33,68 @@ def start_module():
                "Show Payment Total Per Retailers",
                "Date Ordered List of Arrivals"]
 
-    order_data = data_manager.get_table_from_file("logistics/orders.csv")
+    logistics_file = "logistics/orders.csv"
+    order_data = data_manager.get_table_from_file(logistics_file)
     ui.clear_scr()
 
     while True:
-        ui.print_menu("Logistics Department: Main menu", options, "Exit program")
         try:
+            ui.print_menu("Logistics Department: Main menu", options, "Back to main menu")
             option = ui.valid_in("Please enter a number: ", common.validate_string)
-        except (KeyboardInterrupt, EOFError):
-            data_manager.write_table_to_file("logistics/orders.csv", order_data)
-            ui.clear_scr()
-            exit()
 
-        if option == "1":
-            show_table(order_data)
-        elif option == "2":
-            order_data = add(order_data)
-            ui.clear_scr()
-        elif option == "3":
-            to_update = ui.valid_in(
-                "What is the ID of the entry that you would like to update? ", common.validate_string)
-            order_data = update(order_data, to_update)
-            ui.clear_scr()
-        elif option == "4":
-            to_remove = ui.valid_in(
-                "What is the ID of the entry that you would like to remove? ", common.validate_string)
-            order_data = remove(order_data, to_remove)
-            ui.clear_scr()
-        elif option == "5":
-            ui.clear_scr()
-            payments = [item for item in get_price_total_per_retailer(order_data).items()]
-            ui.print_result("Payments due for individual retailers:")
-            ui.print_table(payments, ["Retailer", "Total Payment"])
-        elif option == "6":
-            ui.clear_scr()
-            ui.print_result("Payments due in a timely order:")
-            ui.print_table(date_ordered_payments(order_data),
-                           ["ID", "Title", "Amount", "Price per Item", "Retailer", "Date"])
-        elif option == "0":
-            data_manager.write_table_to_file("logistics/orders.csv", order_data)
-            ui.clear_scr()
-            break
-        else:
-            ui.clear_scr()
+            if option == "1":
+                show_table(order_data)
+            elif option == "2":
+                menuaction_add(order_data)
+            elif option == "3":
+                menuaction_update(order_data)
+            elif option == "4":
+                menuaction_remove(order_data)
+            elif option == "5":
+                menuaction_payment_total_per_retailers(order_data)
+            elif option == "6":
+                menuaction_date_ordered_list_of_arrivals(order_data)
+            elif option == "0":
+                data_manager.write_table_to_file(logistics_file, order_data)
+                ui.clear_scr()
+                break
+            else:
+                ui.clear_scr()
+        except (KeyboardInterrupt, EOFError):
+            common.handle_kb_interrupt(logistics_file, order_data)
+
+
+def menuaction_add(order_data):
+    add(order_data)
+    ui.clear_scr()
+
+
+def menuaction_update(order_data):
+    to_update = ui.valid_in(
+        "What is the ID of the entry that you would like to update? ", common.validate_string)
+    update(order_data, to_update)
+    ui.clear_scr()
+
+
+def menuaction_remove(order_data):
+    to_remove = ui.valid_in(
+        "What is the ID of the entry that you would like to remove? ", common.validate_string)
+    remove(order_data, to_remove)
+    ui.clear_scr()
+
+
+def menuaction_payment_total_per_retailers(order_data):
+    ui.clear_scr()
+    payments = [item for item in get_price_total_per_retailer(order_data).items()]
+    ui.print_result("Payments due for individual retailers:")
+    ui.print_table(payments, ["Retailer", "Total Payment"])
+
+
+def menuaction_date_ordered_list_of_arrivals(order_data):
+    ui.clear_scr()
+    ui.print_result("Payments due in a timely order:")
+    ui.print_table(date_ordered_payments(order_data),
+                   ["ID", "Title", "Amount", "Price per Item", "Retailer", "Date"])
 
 
 def show_table(table):
