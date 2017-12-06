@@ -25,14 +25,8 @@ INVENTORY_INPUT_SPECIFIERS = [("Name:", common.validate_string),
 
 
 def start_module():
-    """
-    Starts this module and displays its menu.
-    User can access default special features from here.
-    User can go back to main menu from here.
+    """Starts the module and displays its menu."""
 
-    Returns:
-        None
-    """
     inv_file = "inventory/inventory.csv"
     table = data_manager.get_table_from_file(inv_file)
 
@@ -88,88 +82,34 @@ def start_module():
 
 
 def show_table(table):
-    """
-    Display a table
-
-    Args:
-        table: list of lists to be displayed.
-
-    Returns:
-        None
-    """
-
+    """Display the table given as parameter."""
     ui.print_table(table, ["ID", "Name", "Manufacturer", "Purchase date", "Durability"])
 
 
 def add(table):
-    """
-    Asks user for input and adds it into the table.
-
-    Args:
-        table: table to add new record to
-
-    Returns:
-        Table with a new record
-    """
-
+    """Asks user for input and adds it to the table. Returns table with the new record."""
     return common.add_line(table, INVENTORY_INPUT_SPECIFIERS)
 
 
 def remove(table, id_):
-    """
-    Remove a record with a given id from the table.
-
-    Args:
-        table: table to remove a record from
-        id_ (str): id of a record to be removed
-
-    Returns:
-        Table without specified record.
-    """
-
+    """Remove a record with a given id from the table. Returns table without the specified record."""
     return common.remove_line(table, id_)
 
 
 def update(table, id_):
-    """
-    Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table: list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        table with updated record
-    """
+    """Updates specified record in the table. Asks users for new data. Returns table with the updated record."""
     return common.update_line(table, id_, INVENTORY_INPUT_SPECIFIERS)
 
-# special functions:
-# ------------------
 
 def get_available_items(table):
-    """Gets the table for items that have not exceeded their durability.
-
-    Args:
-        table: The input table.
-
-    Returns:
-        table: The filtered table.
-    """
+    """Gets the table for items that have not exceeded their durability."""
     current_year = common.CURRENT_YEAR
 
     return [row for row in table if current_year - int(row[PURCHASE_DATE]) < int(row[DURABILITY])]
 
 
 def get_average_durability_by_manufacturers(table):
-    """
-    Gets the average durability for each manufacturer.
-
-    Args:
-        table: The input table.
-
-    Returns:
-        A dictionary of manufacturer name / average durability pairs.
-    """
+    """Gets the average durability for each manufacturer."""
     manufacturers = {row[MANUFACTURER] for row in table}
 
     durability_by_manufacturers = {}

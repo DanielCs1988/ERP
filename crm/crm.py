@@ -18,14 +18,8 @@ SUBSCRIBED = 3
 
 
 def start_module():
-    """
-    Starts this module and displays its menu.
-    User can access default special features from here.
-    User can go back to main menu from here.
+    """Starts the module and displays its menu."""
 
-    Returns:
-        None
-    """
     ui.clear_scr()
     crm_options = ["Show table",
                    "Add entry",
@@ -79,61 +73,25 @@ def start_module():
 
 
 def show_table(table):
-    """
-    Display a table
-
-    Args:
-        table: list of lists to be displayed.
-
-    Returns:
-        None
-    """
+    """Display the table given as parameter."""
     ui.clear_scr()
     ui.print_table(table, ["ID", "Name", "E-mail", "Subscribed"])
 
 
 def add(table):
-    """
-    Asks user for input and adds it into the table.
-
-    Args:
-        table: table to add new record to
-
-    Returns:
-    #    Table with a new record
-    #"""
+    """Asks user for input and adds it to the table. Returns table with the new record."""
     return common.add_line(table, [("Name: ", common.validate_string),
                                    ("E-mail: ", common.validate_email),
                                    ("Subscribed? (1 for yes, 0 for no): ", common.validate_boolean)])
 
 
 def remove(table, id_):
-    """
-    Remove a record with a given id from the table.
-
-    Args:
-        table: table to remove a record from
-        id_ (str): id of a record to be removed
-
-    Returns:
-        Table without specified record.
-    """
-
+    """Remove a record with a given id from the table. Returns table without the specified record."""
     return common.remove_line(table, id_)
 
 
 def update(table, id_):
-    """
-    Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table: list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        table with updated record
-    """
-
+    """Updates specified record in the table. Asks users for new data. Returns table with the updated record."""
     return common.update_line(table, id_, [("Name: ", common.validate_string),
                                            ("E-mail: ", common.validate_email),
                                            ("Subscribed? (1 for yes, 0 for no) ", common.validate_boolean)])
@@ -152,41 +110,17 @@ def get_longest_name_id(table):
 
 def get_subscribed_emails(table):
     """Returns a list of subscribed customers with their name and e-mail seperated by ";" """
-
     return [";".join((line[EMAIL], line[NAME])) for line in table if line[SUBSCRIBED] == '1']
 
 
-# functions supports data analyser
-# --------------------------------
-
-
 def get_name_by_id(id):
-    """
-    Reads the table with the help of the data_manager module.
-    Returns the name (str) of the customer with the given id (str) on None om case of non-existing id.
-
-    Args:
-        id (str): the id of the customer
-
-    Returns:
-        str the name of the customer
-    """
-
+    """Returns the name (str) of the customer with the given id (str), None in case of non-existing id."""
     crm_data = data_manager.get_table_from_file("crm/customers.csv")
     return get_name_by_id_from_table(crm_data, id)
 
 
 def get_name_by_id_from_table(table, id):
-    """
-    Returns the name (str) of the customer with the given id (str) on None om case of non-existing id.
-
-    Args:
-        table (list of lists): the customer table
-        id (str): the id of the customer
-
-    Returns:
-        str the name of the customer
-    """
+    """Returns the name (str) of the customer with the given id (str), None in case of non-existing id."""
 
     for line in table:
         if line[ID] == id:
@@ -195,12 +129,6 @@ def get_name_by_id_from_table(table, id):
 
 
 def get_all_customer_ids():
-    """
-    Returns a set of customer_ids that are present in the table.
-    Args:
-        table (list of list): the sales table
-    Returns:
-         set of customer_ids that are present in the table
-    """
+    """Returns a set of customer_ids that are present in the table."""
     table = data_manager.get_table_from_file("crm/customers.csv")
     return {row[ID] for row in table}
