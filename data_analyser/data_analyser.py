@@ -101,7 +101,7 @@ def get_idle_customers():
     all_customers = crm.get_all_customer_ids()
     paying_customers = sales.get_all_customer_ids()
     idle_customers = all_customers - paying_customers
-    return common.srt([(crm.get_name_by_id(id), id) for id in idle_customers], key=common.get_item(0))
+    return common.srt([(crm.get_name_by_id(id), id) for id in idle_customers])
 
 
 def get_buyer_emails():
