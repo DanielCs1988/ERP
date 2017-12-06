@@ -1,26 +1,15 @@
-# Do not modify this file
-# run this program (the ERP software) from the terminal from thd root directory of this project
-
-
 import sys
 import os
-import ui  # User Interface
-# Store module
-from store import store
-# Human Resources module
-from hr import hr
-# Tool manager module
-from inventory import inventory
-# Accounting module
-from accounting import accounting
-# Sales module
-from sales import sales
-# Customer Relationship Management (CRM) module
-from crm import crm
-# Data Analyser module
-from data_analyser import data_analyser
+import ui
 
+from store import store
+from hr import hr
+from inventory import inventory
+from accounting import accounting
+from sales import sales
+from crm import crm
 from logistics import logistics
+from data_analyser import data_analyser
 
 
 def choose():
