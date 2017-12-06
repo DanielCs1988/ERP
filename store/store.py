@@ -1,18 +1,15 @@
-# data structure:
-# id: string
-#     Unique and random generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
-# title: string
-# manufacturer: string
-# price: number (dollars)
-# in_stock: number
+"""
+Store module. Data structure:
+1. ID of item
+2. Name of item
+3. Manufacturer of item
+4. Price of item
+5. Whether the item is in stock. (1 for yes, 0 for no)
+"""
 
-# importing everything you need
 import os
-# User interface module
 import ui
-# data manager module
 import data_manager
-# common module
 import common
 
 ID = 0
@@ -28,14 +25,8 @@ INPUT_DESCRIPTIONS = [("Title: ", common.validate_string),
 
 
 def start_module():
-    """
-    Starts this module and displays its menu.
-    User can access default special features from here.
-    User can go back to main menu from here.
+    """Starts the module and displays its menu."""
 
-    Returns:
-        None
-    """
     ui.clear_scr()
     options = ["Show Table",
                "Add Entry",
@@ -93,76 +84,28 @@ def start_module():
 
 
 def show_table(table):
-    """
-    Display a table
-
-    Args:
-        table: list of lists to be displayed.
-
-    Returns:
-        None
-    """
+    """Display the table given as parameter."""
     ui.clear_scr()
     ui.print_table(table, ["ID", "Title", "Manufacturer", "Price", "In Stock"])
 
 
 def add(table):
-    """
-    Asks user for input and adds it into the table.
-
-    Args:
-        table: table to add new record to
-
-    Returns:
-        Table with a new record
-    """
-
+    """Asks user for input and adds it to the table. Returns table with the new record."""
     return common.add_line(table, INPUT_DESCRIPTIONS)
 
 
 def remove(table, id_):
-    """
-    Remove a record with a given id from the table.
-
-    Args:
-        table: table to remove a record from
-        id_ (str): id of a record to be removed
-
-    Returns:
-        Table without specified record.
-    """
-
+    """Remove a record with a given id from the table. Returns table without the specified record."""
     return common.remove_line(table, id_)
 
 
 def update(table, id_):
-    """
-    Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table: list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        table with updated record
-    """
+    """Updates specified record in the table. Asks users for new data. Returns table with the updated record."""
     return common.update_line(table, id_, INPUT_DESCRIPTIONS)
 
 
-
-# special functions:
-# ------------------
-
 def get_counts_by_manufacturers(table):
-    """
-    Get number of games per manufacturer.
-
-    Args:
-        table: The input data table.
-
-    Returns:
-        A dictionary of manufacturer name / item count table.
-    """
+    """Returns dictionary containing the number of games (value) per manufacturer (key)."""
     manufacturers = {row[MANUFACTURER] for row in table}
 
     count_by_manufacturers = {}
@@ -175,12 +118,7 @@ def get_counts_by_manufacturers(table):
 
 
 def get_average_by_manufacturer(table, manufacturer):
-    """Returns average number of a manufacturer's items in stock.
-
-        Args:
-            table: The input data table.
-            manufacturer: The manufacturer name.
-    """
+    """Returns average number of a manufacturer's items in stock."""
 
     if manufacturer == '':
         return None
