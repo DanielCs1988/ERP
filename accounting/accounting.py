@@ -27,7 +27,6 @@ INPUT_DESCRIPTIONS = [("Please enter the month: ", common.validate_month),
 
 
 def menuaction_show(table):
-    ui.clear_scr()
     show_table(table)
 
 
@@ -55,7 +54,7 @@ def menuaction_highest_profit(table):
 
 
 def menuaction_profit_per_year(table):
-    while True:    # checks if the year exists in the table at all
+    while True:
         ui.clear_scr()
         years = {line[YEAR] for line in table}
         input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
@@ -69,6 +68,11 @@ def menuaction_profit_per_year(table):
                     "The average amount of USD profit per game in {0} is".format(input_year))
 
 
+def menuaction_exit(accounting_file, table):
+    data_manager.write_table_to_file(accounting_file, table)
+    ui.clear_scr()
+
+
 def start_module(table_cont=None):
     """
     Starts this module and displays its menu.
@@ -79,15 +83,8 @@ def start_module(table_cont=None):
         table_cont: use the previously opened table,
             in case of keyboard interrupt
     """
-    # data = (table_cont if table_cont else "accounting/items.csv")
-    common.load_data("accounting", table_cont)
-
-    if not table_cont:
-        table = data_manager.get_table_from_file("accounting/items.csv")
-    elif not table_cont:
-        table = table_file
-    else:
-        table = table_cont
+    accounting_file = "accounting/items.csv"
+    table = data_manager.get_table_from_file(accounting_file)
 
     options = ["Show table",
                "Add entry",
@@ -116,20 +113,12 @@ def start_module(table_cont=None):
             elif option == "6":
                 menuaction_profit_per_year(table)
             elif option == "0":
-                data_manager.write_table_to_file("accounting/items.csv", table)
-                ui.clear_scr()
+                menuaction_exit(accounting_file, table)
                 break
             else:
                 ui.clear_scr()
     except (KeyboardInterrupt, EOFError):
-        ui.print_error_message('''\nKeyboard interrupt.\n\nYou will lose all changes.''')
-        while True:
-            decision = ui.get_inputs(["Are you sure you want to quit without saving?.(Y/N)"], "")[0]
-            if decision in ['Y', 'y']:
-                break
-            elif decision in ['N', 'n']:
-                start_module(table_cont=table)
-                break
+        common.handle_kb_interrupt(accounting_file, table)
 
 
 def show_table(table):

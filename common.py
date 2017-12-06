@@ -365,29 +365,16 @@ def validate_id_possible(userinput):
         return True
     return False
 
-
-# def handle_interrupt_alt():
-#    """
-#    Requires load_table as well.
-#    """
-#    ui.print_error_message('''\nKeyboard interrupt.\n\nYou will lose all changes.''')
-#    while True:
-#        decision = ui.get_inputs(["Are you sure you want to quit without saving?.(Y/N)"], "")[0]
-#        if decision in ['Y', 'y']:
-#            break
-#        elif decision in ['N', 'n']:
-#            start_module(table_cont=table)
-#            break
-
-
+'''
 def load_data(module_name, table_continue=None):
-    '''
-    Loads data from the module's file. Used with handle_interrupt_alt.
-    If table is given, uses that instead.
-    '''
-    ui.clear_scr()
-    data = (table_continue if table_continue else "{0}/items.csv".format(module_name.lower()))
+    "Loads data from the module's file. Used with handle_interrupt_alt.
+    If table is given, uses that instead."
 
+    ui.clear_scr()
+    if table_continue:
+        return table_continue
+    return data_manager.get_table_from_file(module_name)
+'''
 
 def trial_version(menu_options, characters):
     '''
@@ -395,9 +382,35 @@ def trial_version(menu_options, characters):
     Chooses a random character from uppercase list,
     the chance will depend on the characters argument. (string or list)
     '''
-    if common.random_char("uppercase") in characters:
+    if random_char("uppercase") in characters:
         menu_options = menu_options[:4]
         menu_options.append("Buy the full version of the software to unlock more options")
+
+'''
+def handle_interrupt_alt(filename, table_to_save):
+    """
+    Requires load_table as well.
+    """
+    module = filename.split
+    while True:
+        ui.print_error_message("\nKeyboard interrupt.\n")
+        decision1 = ui.get_inputs(["Are you sure you want to quit?.(Y/N)"], "")[0]
+        if decision1 in 'Yy':
+            break
+        elif decision1 in 'Nn':
+            accounting.start_module(table_cont=table_to_save)
+            break
+    while True:
+        if decision1 in 'Nn':
+            break
+        decision2 = ui.get_inputs(["Do you want to save before quitting?.(Y/N)"], "")[0]
+        ui.clear_scr()
+        if decision2 in 'Yy':
+            data_manager.write_table_to_file(filename, table_to_save)
+            exit()
+        elif decision2 in 'Nn':
+            exit()
+'''
 
 
 def handle_kb_interrupt(filename=None, table_to_save=None):

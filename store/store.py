@@ -24,6 +24,42 @@ INPUT_DESCRIPTIONS = [("Title: ", common.validate_string),
                       ("In Stock: ", common.validate_int)]
 
 
+def menuaction_show(table):
+    show_table(table)
+
+
+def menuaction_add(table):
+    table = add(table)
+    ui.clear_scr()
+
+
+def menuaction_update(table):
+    to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
+    table = update(table, to_update[0])
+    ui.clear_scr()
+
+
+def menuaction_remove(table):
+    to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
+    table = remove(table, to_remove[0])
+    ui.clear_scr()
+
+
+def menuaction_count_by_manufacturer(table):
+    ui.clear_scr()
+    count_by_manufacturer_dict = get_counts_by_manufacturers(table)
+    count_by_manufacturer_table = [(manufacturer, num)
+                                   for manufacturer, num in count_by_manufacturer_dict.items()]
+    ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
+
+
+def menuaction_average_by_manufacturer(table):
+    ui.clear_scr()
+    manufacturer = ui.get_inputs(["Please enter the manufacturer: "], "")[0]
+    ui.print_result("The average game number of {0} is {1}".format(
+        manufacturer, get_average_by_manufacturer(table, manufacturer)))
+
+
 def start_module():
     """Starts the module and displays its menu."""
 
@@ -44,29 +80,17 @@ def start_module():
             option = ui.get_inputs(["Please enter a number: "], "")[0]
 
             if option == "1":
-                show_table(store_data)
+                menuaction_show(store_data)
             elif option == "2":
-                store_data = add(store_data)
-                ui.clear_scr()
+                menuaction_add(store_data)
             elif option == "3":
-                to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
-                store_data = update(store_data, to_update[0])
-                ui.clear_scr()
+                menuaction_update(store_data)
             elif option == "4":
-                to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
-                store_data = remove(store_data, to_remove[0])
-                ui.clear_scr()
+                menuaction_remove(store_data)
             elif option == "5":
-                ui.clear_scr()
-                count_by_manufacturer_dict = get_counts_by_manufacturers(store_data)
-                count_by_manufacturer_table = [(manufacturer, num)
-                                               for manufacturer, num in count_by_manufacturer_dict.items()]
-                ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
+                menuaction_count_by_manufacturer(store_data)
             elif option == "6":
-                ui.clear_scr()
-                manufacturer = ui.get_inputs(["Please enter the manufacturer: "], "")[0]
-                ui.print_result("The average game number of {0} is {1}".format(
-                    manufacturer, get_average_by_manufacturer(store_data, manufacturer)))
+                menuaction_average_by_manufacturer(store_data)
             elif option == "0":
                 for game in store_data:
                     game[PRICE] = str(game[PRICE])
@@ -77,10 +101,7 @@ def start_module():
             else:
                 ui.clear_scr()
     except (KeyboardInterrupt, EOFError):
-        ui.clear_scr()
-        data_manager.write_table_to_file("store/games.csv", store_data)
-        ui.print_error_message("Keyboard interrupt. If you want to got back to main menu, use the menu.")
-        exit()
+        common.handle_kb_interrupt("store/games.csv", store_data)
 
 
 def show_table(table):
