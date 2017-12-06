@@ -112,9 +112,7 @@ def add(table):
     Returns:
         Table with a new record
     """
-    new_order = [common.generate_random(table)]
-
-    input_list = ui.mass_valid_in([("Title: ", common.validate_string),
+    return common.add_line(table, [("Title: ", common.validate_string),
                                    ("Amount: ", common.validate_int),
                                    ("Price per Item: ", common.validate_int),
                                    ("Retailer: ", common.validate_string),
@@ -122,14 +120,6 @@ def add(table):
                                    ("Month of arrival: ", common.validate_month),
                                    ("Day of arrival: ", common.validate_day)
                                    ])
-
-    if input_list is None:
-        return table
-
-    new_order.extend(input_list)
-    table.append(new_order)
-
-    return table
 
 
 def remove(table, id_):
@@ -157,22 +147,14 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-    index = common.index_of_id(table, id_)
-    if index == -1:
-        ui.print_error_message("Wrong ID!")
-        return table
-
-    input_list = ui.mass_valid_in([("Title: ", None),
-                                   ("Amount: ", common.validate_int),
-                                   ("Price per Item: ", common.validate_int),
-                                   ("Retailer: ", common.validate_string),
-                                   ("Year of arrival: ", common.validate_fyear),
-                                   ("Month of arrival: ", common.validate_month),
-                                   ("Day of arrival: ", common.validate_day)
-                                   ], update_mode=True)
-
-    table[index] = common.apply_update_to_line(table[index], input_list)
-    return table
+    return common.update_line(table, id_, [("Title: ", None),
+                                           ("Amount: ", common.validate_int),
+                                           ("Price per Item: ", common.validate_int),
+                                           ("Retailer: ", common.validate_string),
+                                           ("Year of arrival: ", common.validate_fyear),
+                                           ("Month of arrival: ", common.validate_month),
+                                           ("Day of arrival: ", common.validate_day)
+                                           ])
 
 
 def get_price_total_per_retailer(table):
@@ -191,5 +173,5 @@ def date_ordered_payments(table):
     """Orders items based on their arrival dates. Returns a list of lists."""
 
     temp_table = [[line[ID], line[TITLE], line[AMOUNT], line[PRICE], line[RETAILER],
-                  common.dtime(line[YEAR], line[MONTH], line[DAY])] for line in table]
+                   common.dtime(line[YEAR], line[MONTH], line[DAY])] for line in table]
     return common.srt(temp_table, key=common.get_item(5))
