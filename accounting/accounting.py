@@ -27,7 +27,6 @@ INPUT_DESCRIPTIONS = [("Please enter the month: ", common.validate_month),
 
 
 def menuaction_show(table):
-    ui.clear_scr()
     show_table(table)
 
 
@@ -67,6 +66,11 @@ def menuaction_profit_per_year(table):
         break
     ui.print_result(avg_amount(table, input_year),
                     "The average amount of USD profit per game in {0} is".format(input_year))
+
+
+def menuaction_exit(table):
+    data_manager.write_table_to_file("accounting/items.csv", table)
+    ui.clear_scr()
 
 
 def start_module(table_cont=None):
@@ -116,8 +120,7 @@ def start_module(table_cont=None):
             elif option == "6":
                 menuaction_profit_per_year(table)
             elif option == "0":
-                data_manager.write_table_to_file("accounting/items.csv", table)
-                ui.clear_scr()
+                menuaction_exit(table)
                 break
             else:
                 ui.clear_scr()
