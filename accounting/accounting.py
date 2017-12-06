@@ -51,23 +51,18 @@ def start_module(table_file=None, table_cont=None):
     else:
         table = table_cont
 
-    paid_version = True    # an easter-egg, leave it True and it should (hopefully) cause no problems
-    if paid_version:    # uses the options based on the easter-egg
-        menu_options = ["Show table",
-                        "Add entry",
-                        "Update entry",
-                        "Remove entry",
-                        "Which year has the highest profit?",
-                        "What is the average (per item) profit in a given year?"]
-    else:
-        menu_options = ["Show table",
-                        "Add entry",
-                        "Update entry",
-                        "Remove entry",
-                        "Buy the full version of the software to unlock more options"]
+    options = ["Show table",
+               "Add entry",
+               "Update entry",
+               "Remove entry",
+               "Which year has the highest profit?",
+               "What is the average (per item) profit in a given year?"]
+
+    # options = common.trial_version(options, "X")
+
     try:
         while True:
-            ui.print_menu("Accounting", menu_options, "Back to main menu")
+            ui.print_menu("Accounting", options, "Back to main menu")
             option = ui.get_inputs(["Please enter a number: "], "")[0]
 
             if option == "1":
@@ -108,7 +103,7 @@ def start_module(table_file=None, table_cont=None):
     except (KeyboardInterrupt, EOFError):
         ui.print_error_message('''\nKeyboard interrupt.\n\nYou will lose all changes.''')
         while True:
-            decision = ui.get_inputs(["Are you sure you want to quit?.(Y/N)"], "")[0]
+            decision = ui.get_inputs(["Are you sure you want to quit without saving?.(Y/N)"], "")[0]
             if decision in ['Y', 'y']:
                 break
             elif decision in ['N', 'n']:
