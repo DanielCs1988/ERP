@@ -107,21 +107,10 @@ def add(table):
         Table with a new record
     """
 
-    new_item = [common.generate_random(table)]
-
-    user_input = ui.mass_valid_in([("Name:", common.validate_string),
-                                   ("Manufacturer:", common.validate_string),
-                                   ("Purchase year: ", common.validate_byear),
-                                   ("Durability: ", common.validate_int)])
-
-    if user_input is None:
-        return table
-
-    new_item.extend(user_input)
-
-    table.append(new_item)
-
-    return table
+    return common.add_line(table, [("Name:", common.validate_string),
+                           ("Manufacturer:", common.validate_string),
+                           ("Purchase year: ", common.validate_byear),
+                           ("Durability: ", common.validate_int)])
 
 
 def remove(table, id_):
@@ -150,20 +139,10 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-    index = common.index_of_id(table, id_)
-    if index < 0:
-        ui.print_error_message("Invalid ID: {}.".format(id_))
-        return table
-
-    user_input = ui.mass_valid_in([("Name:", common.validate_string),
-                                   ("Manufacturer:", common.validate_string),
-                                   ("Purchase year: ", common.validate_byear),
-                                   ("Durability: ", common.validate_int)], True)
-
-    common.apply_update_to_line(table[index], user_input)
-
-    return table
-
+    return common.update_line(table, id_, [("Name:", common.validate_string),
+                              ("Manufacturer:", common.validate_string),
+                              ("Purchase year: ", common.validate_byear),
+                              ("Durability: ", common.validate_int)])
 
 # special functions:
 # ------------------
