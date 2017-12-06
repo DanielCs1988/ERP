@@ -103,10 +103,7 @@ def start_module():
             else:
                 ui.clear_scr()
     except (KeyboardInterrupt, EOFError):  # Ctrl-C, Ctrl-D
-        ui.clear_scr()
-        data_manager.write_table_to_file("store/games.csv", table)
-        ui.print_error_message("Keyboard interrupt. If you want to got back to main menu, use the menu.")
-        exit()
+        common.handle_kb_interrupt(inv_file, table)
     finally:
         data_manager.write_table_to_file(inv_file, table)
 
