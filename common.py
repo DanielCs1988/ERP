@@ -366,9 +366,9 @@ def validate_id_possible(userinput):
     return False
 
 
-# def handle_interrupt():
+# def handle_interrupt_alt():
 #    """
-#    Requires load table as well.
+#    Requires load_table as well.
 #    """
 #    ui.print_error_message('''\nKeyboard interrupt.\n\nYou will lose all changes.''')
 #    while True:
@@ -382,7 +382,7 @@ def validate_id_possible(userinput):
 
 def load_data(module_name, table_continue=None):
     '''
-    Loads data from the module's file.
+    Loads data from the module's file. Used with handle_interrupt_alt.
     If table is given, uses that instead.
     '''
     ui.clear_scr()
