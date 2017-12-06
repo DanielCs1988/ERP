@@ -18,6 +18,13 @@ YEAR = 3
 TYPE = 4
 AMOUNT = 5
 
+INPUT_DESCRIPTIONS = [("Please enter the month: ", common.validate_month),
+                      ("Please enter the day: ", common.validate_day),
+                      ("Please enter the year: ", common.validate_byear),
+                      ("Please enter the type (in or out): ", common.validate_type),
+                      ("Please enter the amount (in US dollars): ", common.validate_int)
+                      ]
+
 
 def start_module(table_file=None, table_cont=None):
     """
@@ -134,23 +141,7 @@ def add(table):
     Returns:
         Table with a new record
     """
-
-    new_data = ui.mass_valid_in([("Please enter the month: ", common.validate_month),
-                                 ("Please enter the day: ", common.validate_day),
-                                 ("Please enter the year: ", common.validate_byear),
-                                 ("Please enter the type (in or out): ", common.validate_type),
-                                 ("Please enter the amount (in US dollars): ", common.validate_int)
-                                 ])
-
-    if new_data is None:
-        return table
-    new_line = [common.generate_random(table)]
-    new_line.extend(new_data)
-
-    table.append(new_line)
-    ui.clear_scr()
-
-    return table
+    return common.add_line(table, INPUT_DESCRIPTIONS)
 
 
 def remove(table, id_):
@@ -165,13 +156,7 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    id_to_delete = common.index_of_id(table, id_)
-
-    if id_to_delete >= 0:
-        del table[id_to_delete]
-
-    show_table(table)
-    return table
+    return common.remove_line(table, id_)
 
 
 def update(table, id_):
@@ -186,20 +171,7 @@ def update(table, id_):
         table with updated record
     """
 
-    index = common.index_of_id(table, id_)
-    if index < 0:
-        return table
-
-    new_data = ui.mass_valid_in([("Please enter the new month: ", common.validate_month),
-                                 ("Please enter the new day: ", common.validate_day),
-                                 ("Please enter the new year: ", common.validate_byear),
-                                 ("Please enter the new type (in or out): ", common.validate_type),
-                                 ("Please enter the new amount (in US dollars): ", common.validate_int)
-                                 ], True)
-
-    common.apply_update_to_line(table[index], new_data)
-    show_table(table)
-    return table
+    return common.update_line(table, id_, INPUT_DESCRIPTIONS)
 
 
 def which_year_max(table):

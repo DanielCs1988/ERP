@@ -162,23 +162,12 @@ def add(table):
     Returns:
         Table with a new record
     """
-    new_sale = [common.generate_random(table)]
-
-    input_list = ui.mass_valid_in([("Title: ", common.validate_string),
+    return common.add_line(table, [("Title: ", common.validate_string),
                                    ("Price: ", common.validate_int),
                                    ("Month of sale: ", common.validate_month),
-                                   ("Day of sale: ", common.validate_day),
+                                   ("Day of sale: ", common.validate_date),
                                    ("Year of sale: ", common.validate_byear),
-                                   ("Customer ID: ", common.validate_id_possible)
-                                   ])
-
-    if input_list is None:
-        return table
-
-    new_sale.extend(input_list)
-    table.append(new_sale)
-
-    return table
+                                   ("Customer ID: ", common.validate_id_possible)])
 
 
 def remove(table, id_):
@@ -206,21 +195,12 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-    index = common.index_of_id(table, id_)
-    if index == -1:
-        ui.print_error_message("Wrong ID!")
-        return table
-
-    input_list = ui.mass_valid_in([("Title: ", None),
-                                   ("Price: ", common.validate_int),
-                                   ("Month of sale: ", common.validate_month),
-                                   ("Day of sale: ", common.validate_day),
-                                   ("Year of sale: ", common.validate_byear),
-                                   ("Customer ID: ", common.validate_id_possible)
-                                   ], update_mode=True)
-
-    table[index] = common.apply_update_to_line(table[index], input_list)
-    return table
+    return common.update_line(table, id_, [("Title: ", None),
+                                           ("Price: ", common.validate_int),
+                                           ("Month of sale: ", common.validate_month),
+                                           ("Day of sale: ", common.validate_day),
+                                           ("Year of sale: ", common.validate_byear),
+                                           ("Customer ID: ", common.validate_id_possible)])
 
 
 def get_lowest_price_item_id(table):
