@@ -73,10 +73,9 @@ def get_the_last_buyer_name():
     Returns:
         Customer name of the last buyer
     """
-
-    # your code
-
-    pass
+    sold_last = sales.get_item_id_sold_last()
+    last_customer = sales.get_customer_id_by_sale_id(sold_last)
+    return crm.get_name_by_id(last_customer)
 
 
 def get_the_last_buyer_id():
@@ -86,10 +85,9 @@ def get_the_last_buyer_id():
     Returns:
         Customer id of the last buyer
     """
-
-    # your code
-
-    pass
+    sold_last = sales.get_item_id_sold_last()
+    last_customer = sales.get_customer_id_by_sale_id(sold_last)
+    return last_customer
 
 
 def get_the_buyer_name_spent_most_and_the_money_spent():
