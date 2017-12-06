@@ -359,3 +359,9 @@ def get_num_of_sales_per_customer_names():
        key, value: customer name, number of corresponding sales"""
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     return get_num_of_sales_per_customer_names_from_table(sales_data)
+
+
+def get_buyer_emails():
+    """Returns a list tuples with buying customer names and their e-mails."""
+    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    return {(crm.get_name_by_id(row[CUSTOMER_ID]), crm.get_email_by_id(row[CUSTOMER_ID])) for row in sales_data}

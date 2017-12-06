@@ -146,6 +146,16 @@ def get_name_by_id_from_table(table, id):
     return None
 
 
+def get_email_by_id(id):
+    """Returns the e-mail (str) of the customer with the given id (str), None in case of non-existing id."""
+
+    crm_data = data_manager.get_table_from_file("crm/customers.csv")
+    for line in crm_data:
+        if line[ID] == id:
+            return line[EMAIL]
+    return None
+
+
 def get_all_customer_ids():
     """Returns a set of customer_ids that are present in the table."""
     table = data_manager.get_table_from_file("crm/customers.csv")

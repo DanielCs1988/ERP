@@ -330,7 +330,7 @@ class DataAnalyserTester(unittest.TestCase):
         result = data_analyser.get_the_buyer_name_spent_most_and_the_money_spent()
         expected = ("Missy Stoney", 434)
         self.assertEqual(result, expected)
-    
+
     def test_get_idle_customers(self):
         expected = sorted(idle_customers())
         result = data_analyser.get_idle_customers()
@@ -339,6 +339,13 @@ class DataAnalyserTester(unittest.TestCase):
     def test_get_the_buyer_id_spent_most_and_the_money_spent(self):
         result = data_analyser.get_the_buyer_id_spent_most_and_the_money_spent()
         expected = ("jH34Jk#&", 434)
+        self.assertEqual(result, expected)
+
+    def test_get_buyer_emails(self):
+        expected = [("Kanesha Moshier", "u6vt7o4@n7a-0t.com"),
+                    ("Missy Stoney", "ixnqwxkgvlppx9@4qt-a5jtsj.com"),
+                    ("Sadye Hession", "ufvp64.ghw5@r2l3f1.com")]
+        result = data_analyser.get_buyer_emails()
         self.assertEqual(result, expected)
 
 
