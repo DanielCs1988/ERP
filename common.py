@@ -377,6 +377,54 @@ def remove_line(table, id):
     return table
 
 
+def add_line(table, input_specifiers):
+    """
+    Asks user for input and adds it into the table.
+
+    Args:
+        table: table to add new record to
+
+    Returns:
+        Table with a new record
+    """
+
+    new_item = [generate_random(table)]
+
+    user_input = ui.mass_valid_in(input_specifiers)
+
+    if user_input is None:
+        return table
+
+    new_item.extend(user_input)
+
+    table.append(new_item)
+
+    return table
+
+
+def update_line(table, id_, input_specifiers):
+    """
+    Updates specified record in the table. Ask users for new data.
+
+    Args:
+        table: list in which record should be updated
+        id_ (str): id of a record to update
+
+    Returns:
+        table with updated record
+    """
+    index = index_of_id(table, id_)
+    if index < 0:
+        ui.print_error_message("Invalid ID: {}.".format(id_))
+        return table
+
+    user_input = ui.mass_valid_in(input_specifiers, True)
+
+    apply_update_to_line(table[index], user_input)
+
+    return table
+
+
 def apply_update_to_line(original_line, user_input):
     """
     Applies data received from mass_valid_update to the original table line.
