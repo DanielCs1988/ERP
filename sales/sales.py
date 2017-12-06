@@ -54,87 +54,86 @@ def start_module():
                "All customer IDs",
                "All sales for customers"]
 
-    sales_data = data_manager.get_table_from_file("sales/sales.csv")
+    sales_file = "sales/sales.csv"
+    sales_data = data_manager.get_table_from_file(sales_file)
     ui.clear_scr()
 
     while True:
-        ui.print_menu("Sales Department: Main menu", options, "Back to main menu")
         try:
+            ui.print_menu("Sales Department: Main menu", options, "Back to main menu")
             option = ui.valid_in("Please enter a number: ", common.validate_string)
-        except (KeyboardInterrupt, EOFError):
-            data_manager.write_table_to_file("sales/sales.csv", sales_data)
-            ui.clear_scr()
-            exit()
 
-        if option == "1":
-            show_table(sales_data)
-        elif option == "2":
-            sales_data = add(sales_data)
-            ui.clear_scr()
-        elif option == "3":
-            to_update = ui.valid_in(
-                "What is the ID of the entry that you would like to update? ", common.validate_string)
-            sales_data = update(sales_data, to_update)
-            ui.clear_scr()
-        elif option == "4":
-            to_remove = ui.valid_in(
-                "What is the ID of the entry that you would like to remove? ", common.validate_string)
-            sales_data = remove(sales_data, to_remove)
-            ui.clear_scr()
-        elif option == "5":
-            ui.clear_scr()
-            ui.print_result(get_lowest_price_item_id(sales_data), "ID of the item with the lowest price: ")
-        elif option == "6":
-            ui.clear_scr()
-            params = ui.mass_valid_in([("Month from:", common.validate_month),
-                                       ("Day from: ", common.validate_day),
-                                       ("Year from: ", common.validate_byear),
-                                       ("Month to:", common.validate_month),
-                                       ("Day to: ", common.validate_day),
-                                       ("Year to: ", common.validate_byear)
-                                       ])
-            if params:
-                show_table(get_items_sold_between(sales_data, *params))
-                ui.print_result("Table: items sold between specified dates")
+            if option == "1":
+                show_table(sales_data)
+            elif option == "2":
+                sales_data = add(sales_data)
+                ui.clear_scr()
+            elif option == "3":
+                to_update = ui.valid_in(
+                    "What is the ID of the entry that you would like to update? ", common.validate_string)
+                sales_data = update(sales_data, to_update)
+                ui.clear_scr()
+            elif option == "4":
+                to_remove = ui.valid_in(
+                    "What is the ID of the entry that you would like to remove? ", common.validate_string)
+                sales_data = remove(sales_data, to_remove)
+                ui.clear_scr()
+            elif option == "5":
+                ui.clear_scr()
+                ui.print_result(get_lowest_price_item_id(sales_data), "ID of the item with the lowest price: ")
+            elif option == "6":
+                ui.clear_scr()
+                params = ui.mass_valid_in([("Month from:", common.validate_month),
+                                        ("Day from: ", common.validate_day),
+                                        ("Year from: ", common.validate_byear),
+                                        ("Month to:", common.validate_month),
+                                        ("Day to: ", common.validate_day),
+                                        ("Year to: ", common.validate_byear)
+                                        ])
+                if params:
+                    show_table(get_items_sold_between(sales_data, *params))
+                    ui.print_result("Table: items sold between specified dates")
+                else:
+                    ui.print_result("No items found between specified dates.")
+            elif option == "7":
+                ui.clear_scr()
+                ui.print_table(get_num_of_sales_per_customer_names_from_table(
+                    sales_data), ["Customer ID", "Total Number of Sales"])
+            elif option == "8":
+                show_table(sales_data)
+                ui.print_result("Please enter item IDs. Press Enter (with empty input) to finish.")
+                item_ids = []
+                while True:
+                    new_id = ui.valid_in("ID:", lambda inp: common.id_exists(sales_data, inp), True)
+                    if not new_id or new_id == "__exit__":
+                        break
+                    item_ids.append(new_id)
+
+                if len(item_ids) > 0:
+                    sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
+                    ui.print_result("Sum of prices: {}".format(sum_prices))
+            elif option == "9":
+                ui.print_result(get_item_id_sold_last_from_table(sales_data))
+            elif option == "10":
+                ui.print_result(get_item_title_sold_last_from_table(sales_data))
+            elif option == "11":
+                ui.clear_scr()
+                ui.print_result("List of customer IDs:")
+                ui.print_result(get_all_customer_ids_from_table(sales_data))
+            elif option == "12":
+                ui.clear_scr()
+                ui.print_result("Sales for customers")
+                sales_for_customers = get_all_sales_ids_for_customer_ids_form_table(sales_data).items()
+                sales_for_customers = list({row[0]: ", ".join(row[1]) for row in sales_for_customers}.items())
+                ui.print_table(sales_for_customers, ["Customer ID", "Sales IDs"])
+            elif option == "0":
+                data_manager.write_table_to_file(sales_file, sales_data)
+                ui.clear_scr()
+                break
             else:
-                ui.print_result("No items found between specified dates.")
-        elif option == "7":
-            ui.clear_scr()
-            ui.print_table(get_num_of_sales_per_customer_names_from_table(
-                sales_data), ["Customer ID", "Total Number of Sales"])
-        elif option == "8":
-            show_table(sales_data)
-            ui.print_result("Please enter item IDs. Press Enter (with empty input) to finish.")
-            item_ids = []
-            while True:
-                new_id = ui.valid_in("ID:", lambda inp: common.id_exists(sales_data, inp), True)
-                if not new_id or new_id == "__exit__":
-                    break
-                item_ids.append(new_id)
-
-            if len(item_ids) > 0:
-                sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
-                ui.print_result("Sum of prices: {}".format(sum_prices))
-        elif option == "9":
-            ui.print_result(get_item_id_sold_last_from_table(sales_data))
-        elif option == "10":
-            ui.print_result(get_item_title_sold_last_from_table(sales_data))
-        elif option == "11":
-            ui.clear_scr()
-            ui.print_result("List of customer IDs:")
-            ui.print_result(get_all_customer_ids_from_table(sales_data))
-        elif option == "12":
-            ui.clear_scr()
-            ui.print_result("Sales for customers")
-            sales_for_customers = get_all_sales_ids_for_customer_ids_form_table(sales_data).items()
-            sales_for_customers = list({row[0]: ", ".join(row[1]) for row in sales_for_customers}.items())
-            ui.print_table(sales_for_customers, ["Customer ID", "Sales IDs"])
-        elif option == "0":
-            data_manager.write_table_to_file("sales/sales.csv", sales_data)
-            ui.clear_scr()
-            break
-        else:
-            ui.clear_scr()
+                ui.clear_scr()
+        except (KeyboardInterrupt, EOFError):
+                common.handle_kb_interrupt(sales_file, sales_data)
 
 
 def show_table(table):
