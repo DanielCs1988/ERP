@@ -364,6 +364,31 @@ def validate_id_possible(userinput):
         return True
     return False
 
+#def handle_interrupt():
+#    """
+#    Requires load table as well.
+#    """
+#    ui.print_error_message('''\nKeyboard interrupt.\n\nYou will lose all changes.''')
+#    while True:
+#        decision = ui.get_inputs(["Are you sure you want to quit without saving?.(Y/N)"], "")[0]
+#        if decision in ['Y', 'y']:
+#            break
+#        elif decision in ['N', 'n']:
+#            start_module(table_cont=table)
+#            break
+
+
+
+def trial_version(menu_options, characters):
+    '''
+    Displays a different set of menu options if the random chance succeds.
+    Chooses a random character from uppercase list,
+    the chance will depend on the characters argument. (string or list)
+    '''
+    if common.random_char("uppercase") in characters:
+        menu_options = menu_options[:4]
+        menu_options.append("Buy the full version of the software to unlock more options")
+
 
 def remove_line(table, id):
     """Takes the table given as a parameter, seeks the line with the given ID and removes it."""
