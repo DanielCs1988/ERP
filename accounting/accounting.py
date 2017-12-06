@@ -133,60 +133,24 @@ def start_module(table_cont=None):
 
 
 def show_table(table):
-    """
-    Display a table
-
-    Args:
-        table: list of lists to be displayed.
-
-    Returns:
-        None
-    """
+    """Display the table given as parameter."""
     ui.clear_scr()
     titles = ["ID", "Month", "Day", "Year", "Type", "Amount"]
     ui.print_table(table, titles)
 
 
 def add(table):
-    """
-    Asks user for input and adds it into the table.
-
-    Args:
-        table: table to add new record to
-
-    Returns:
-        Table with a new record
-    """
+    """Asks user for input and adds it to the table. Returns table with the new record."""
     return common.add_line(table, INPUT_DESCRIPTIONS)
 
 
 def remove(table, id_):
-    """
-    Remove a record with a given id from the table.
-
-    Args:
-        table: table to remove a record from
-        id_ (str): id of a record to be removed
-
-    Returns:
-        Table without specified record.
-    """
-
+    """Remove a record with a given id from the table. Returns table without the specified record."""
     return common.remove_line(table, id_)
 
 
 def update(table, id_):
-    """
-    Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table: list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        table with updated record
-    """
-
+    """Updates specified record in the table. Asks users for new data. Returns table with the updated record."""
     return common.update_line(table, id_, INPUT_DESCRIPTIONS)
 
 

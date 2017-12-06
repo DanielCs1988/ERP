@@ -1,20 +1,11 @@
 """
 Sales module. Data structure:
-1. ID of sale
+1. Sale ID
 2. Name of sold item
 3. Price of sold item
 4-6. Date when the item was sold
+7. Customer ID
 """
-# data structure:
-# id: string
-#     Unique and random generated (at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter)
-# title: string
-# price: number (the actual sale price in $)
-# month: number
-# day: number
-# year: number
-# month,year and day combined gives the date the sale was made
-# customer_id: string, id from the crm
 
 import os
 import ui
@@ -32,14 +23,7 @@ CUSTOMER_ID = 6
 
 
 def start_module():
-    """
-    Starts this module and displays its menu.
-    User can access default special features from here.
-    User can go back to main menu from here.
-
-    Returns:
-        None
-    """
+    """Starts the module and displays its menu."""
 
     options = ["Show Table",
                "Add Entry",
@@ -137,15 +121,7 @@ def start_module():
 
 
 def show_table(table):
-    """
-    Display a table
-
-    Args:
-        table: list of lists to be displayed.
-
-    Returns:
-        None
-    """
+    """Display the table given as parameter."""
     titles = ["ID", "Title", "Price", "Date", "Customer ID"]
     output_table = [[row[ID], row[TITLE], row[PRICE],
                      '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY]))), row[CUSTOMER_ID]] for row in table]
@@ -154,15 +130,7 @@ def show_table(table):
 
 
 def add(table):
-    """
-    Asks user for input and adds it into the table.
-
-    Args:
-        table: table to add new record to
-
-    Returns:
-        Table with a new record
-    """
+    """Asks user for input and adds it to the table. Returns table with the new record."""
     return common.add_line(table, [("Title: ", common.validate_string),
                                    ("Price: ", common.validate_int),
                                    ("Month of sale: ", common.validate_month),
@@ -172,30 +140,12 @@ def add(table):
 
 
 def remove(table, id_):
-    """
-    Remove a record with a given id from the table.
-
-    Args:
-        table: table to remove a record from
-        id_ (str): id of a record to be removed
-
-    Returns:
-        Table without specified record.
-    """
+    """Remove a record with a given id from the table. Returns table without the specified record."""
     return common.remove_line(table, id_)
 
 
 def update(table, id_):
-    """
-    Updates specified record in the table. Ask users for new data.
-
-    Args:
-        table: list in which record should be updated
-        id_ (str): id of a record to update
-
-    Returns:
-        table with updated record
-    """
+    """Updates specified record in the table. Asks users for new data. Returns table with the updated record."""
     return common.update_line(table, id_, [("Title: ", None),
                                            ("Price: ", common.validate_int),
                                            ("Month of sale: ", common.validate_month),
@@ -225,10 +175,6 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
             for line in table if min_date < common.dtime(line[YEAR], line[MONTH], line[DAY]) < max_date]
 
 
-# functions supports data abalyser
-# --------------------------------
-
-
 def get_title_by_id(id):
     """
     Reads the table with the help of the data_manager module.
@@ -249,16 +195,7 @@ def get_title_by_id(id):
 
 
 def get_title_by_id_from_table(table, id):
-    """
-    Returns the title (str) of the item with the given id (str) on None om case of non-existing id.
-
-    Args:
-        table (list of lists): the sales table
-        id (str): the id of the item
-
-    Returns:
-        str the title of the item
-    """
+    """Returns the title (str) of the item with the given id (str), None in case of non-existing id."""
 
     for line in sales_data:
         if line[ID] == id:
@@ -267,96 +204,42 @@ def get_title_by_id_from_table(table, id):
 
 
 def get_item_id_sold_last():
-    """
-    Reads the table with the help of the data_manager module.
-    Returns the _id_ of the item that was sold most recently.
-
-    Returns:
-        (str) the _id_ of the item that was sold most recently.
-    """
+    """Returns the _id_ of the item that was sold most recently."""
     return common.get_last_by_date(data_manager.get_table_from_file("sales/sales.csv"), YEAR, MONTH, DAY)[0]
 
 
 def get_item_id_sold_last_from_table(table):
-    """
-    Returns the _id_ of the item that was sold most recently.
-
-    Args:
-        table (list of lists): the sales table
-
-    Returns:
-        (str) the _id_ of the item that was sold most recently.
-    """
+    """Returns the _id_ of the item that was sold most recently."""
     return common.get_last_by_date(table, YEAR, MONTH, DAY)[0]
 
 
 def get_item_title_sold_last_from_table(table):
-    """
-    Returns the _title_ of the item that was sold most recently.
-
-    Args:
-        table (list of lists): the sales table
-
-    Returns:
-        (str) the _title_ of the item that was sold most recently.
-    """
+    """Returns the _title_ of the item that was sold most recently."""
     return common.get_last_by_date(table, YEAR, MONTH, DAY)[1]
 
 
 def get_the_sum_of_prices(item_ids):
-    """
-    Reads the table of sales with the help of the data_manager module.
-    Returns the sum of the prices of the items in the item_ids.
-
-    Args:
-        item_ids (list of str): the ids
-
-    Returns:
-        (number) the sum of the items' prices
-    """
+    """Returns the sum of the prices of the items in the item_ids."""
 
     table = data_manager.get_table_from_file("sales/sales.csv")
     return get_the_sum_of_prices_from_table(table, item_ids)
 
 
 def get_the_sum_of_prices_from_table(table, item_ids):
-    """
-    Returns the sum of the prices of the items in the item_ids.
-
-    Args:
-        table (list of lists): the sales table
-        item_ids (list of str): the ids
-
-    Returns:
-        (number) the sum of the items' prices
-    """
+    """Returns the sum of the prices of the items in the item_ids."""
     return common.szum(table, PRICE, lambda row: row[ID] in item_ids)
 
 
 def get_customer_id_by_sale_id(sale_id):
-    """
-    Reads the sales table with the help of the data_manager module.
-    Returns the customer_id that belongs to the given sale_id
-    or None if no such sale_id is in the table.
-    Args:
-         sale_id (str): sale id to search for
-    Returns:
-         customer_id that belongs to the given sale id
-    """
+    """Returns the customer_id that belongs to the given sale_id,
+       or None if no such sale_id is in the table."""
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     return get_customer_id_by_sale_id_from_table(sales_data, sale_id)
 
 
 def get_customer_id_by_sale_id_from_table(table, sale_id):
-    """
-    Returns the customer_id that belongs to the given sale_id
-    or None if no such sale_id is in the table.
-    Args:
-        table: table to remove a record from
-        sale_id (str): sale id to search for
-    Returns:
-         customer_id that belongs to the given sale id
-    """
+    """Returns the customer_id that belongs to the given sale_id,
+       or None if no such sale_id is in the table."""
     for row in table:
         if row[ID] == sale_id:
             return row[CUSTOMER_ID]
@@ -364,85 +247,41 @@ def get_customer_id_by_sale_id_from_table(table, sale_id):
 
 
 def get_all_customer_ids():
-    """
-    Reads the sales table with the help of the data_manager module.
-    Returns a set of customer_ids that are present in the table.
-    Returns:
-         set of customer_ids that are present in the table
-    """
-
+    """Returns a set of customer_ids that are present in the sales table."""
     table = data_manager.get_table_from_file("sales/sales.csv")
     return get_all_customer_ids_from_table(table)
 
 
 def get_all_customer_ids_from_table(table):
-    """
-    Returns a set of customer_ids that are present in the table.
-    Args:
-        table (list of list): the sales table
-    Returns:
-         set of customer_ids that are present in the table
-    """
-
+    """Returns a set of customer_ids that are present in the sales table."""
     return {row[CUSTOMER_ID] for row in table}
 
 
 def get_all_sales_ids_for_customer_ids():
-    """
-    Reads the customer-sales association table with the help of the data_manager module.
-    Returns a dictionary of (customer_id, sale_ids) where:
-        customer_id:
-        sale_ids (list): all the sales belong to the given customer
-    (one customer id belongs to only one tuple)
-    Returns:
-         (dict of (key, value): (customer_id, (list) sale_ids)) where the sale_ids list contains
-         all the sales id belong to the given customer_id
-    """
-
+    """Returns a dictionary of customer_id, sale_ids where:
+       key, value: customer_id, list of corresponding sale_ids"""
     table = data_manager.get_table_from_file("sales/sales.csv")
     return get_all_sales_ids_for_customer_ids_form_table(table)
 
 
 def get_all_sales_ids_for_customer_ids_form_table(table):
-    """
-    Returns a dictionary of (customer_id, sale_ids) where:
-        customer_id:
-        sale_ids (list): all the sales belong to the given customer
-    (one customer id belongs to only one tuple)
-    Args:
-        table (list of list): the sales table
-    Returns:
-         (dict of (key, value): (customer_id, (list) sale_ids)) where the sale_ids list contains
-         all the sales id belong to the given customer_id
-    """
-
+    """Returns a dictionary of customer_id, sale_ids where:
+       key, value: customer_id, list of corresponding sale_ids"""
     customer_ids = get_all_customer_ids_from_table(table)
     return {customer_id: [row[ID] for row in table if row[CUSTOMER_ID] == customer_id] for customer_id in customer_ids}
 
 
 def get_num_of_sales_per_customer_ids():
-    """
-     Reads the customer-sales association table with the help of the data_manager module.
-     Returns a dictionary of (customer_id, num_of_sales) where:
-        customer_id:
-        num_of_sales (number): number of sales the customer made
-     Returns:
-         dict of (key, value): (customer_id (str), num_of_sales (number))
-    """
+    """Returns a dictionary of customer_id, sale number where:
+       key, value: customer_id, number of corresponding sales"""
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     return get_num_of_sales_per_customer_ids_from_table(sales_data)
 
 
 def get_num_of_sales_per_customer_ids_from_table(table):
-    """
-     Returns a dictionary of (customer_id, num_of_sales) where:
-        customer_id:
-        num_of_sales (number): number of sales the customer made
-     Args:
-        table (list of list): the sales table
-     Returns:
-         dict of (key, value): (customer_id (str), num_of_sales (number))
-    """
+    """Returns a dictionary of customer_id, sale number where:
+       key, value: customer_id, number of corresponding sales"""
+
     sales_per_customers = {}
     for row in table:
         if row[CUSTOMER_ID] not in sales_per_customers:
@@ -453,15 +292,9 @@ def get_num_of_sales_per_customer_ids_from_table(table):
 
 
 def get_num_of_sales_per_customer_names_from_table(table):
-    """
-     Returns a dictionary of (customer_id, num_of_sales) where:
-        customer_id:
-        num_of_sales (number): number of sales the customer made
-     Args:
-        table (list of list): the sales table
-     Returns:
-         dict of (key, value): (customer_id (str), num_of_sales (number))
-    """
+    """Returns a dictionary of customer name, sale number where:
+       key, value: customer name, number of corresponding sales"""
+
     sales_per_customers = {}
     for row in table:
         customer_name = crm.get_name_by_id(row[CUSTOMER_ID])
@@ -473,11 +306,14 @@ def get_num_of_sales_per_customer_names_from_table(table):
 
 
 def get_sum_of_sales_per_customer():
+    """Returns a dictionary of customer name, sale number where:
+       key, value: customer name, number of corresponding sales"""
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     return get_sum_of_sales_per_customer_from_table(sales_data)
 
 
 def get_sum_of_sales_per_customer_from_table(table):
+    """Returns a dictionary with customer IDs as keys and the sum of corresponding sale prices as values."""
     summed_sales_per_customer = {}
     for customer in {line[CUSTOMER_ID] for line in table}:
         sum_of_sales = common.szum_list([line[PRICE] for line in table if line[CUSTOMER_ID] == customer])
@@ -486,13 +322,7 @@ def get_sum_of_sales_per_customer_from_table(table):
 
 
 def get_num_of_sales_per_customer_names():
-    """
-     Reads the customer-sales association table with the help of the data_manager module.
-     Returns a dictionary of (customer_id, num_of_sales) where:
-        customer_id:
-        num_of_sales (number): number of sales the customer made
-     Returns:
-         dict of (key, value): (customer_id (str), num_of_sales (number))
-    """
+    """Returns a dictionary of customer name, sale number where:
+       key, value: customer name, number of corresponding sales"""
     sales_data = data_manager.get_table_from_file("sales/sales.csv")
     return get_num_of_sales_per_customer_names_from_table(sales_data)
