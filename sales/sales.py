@@ -118,17 +118,23 @@ def menuaction_sales_between_dates(sales_data):
                               ("Year to: ", common.validate_byear)
                              ])
     if params:
-        show_table(get_items_sold_between(sales_data, *params))
+        show_table(get_items_sold_between(sales_data, *params), False)
         ui.print_result("Table: items sold between specified dates")
     else:
         ui.print_result("No items found between specified dates.")
 
 
-def show_table(table):
+def show_table(table, has_customer_id=True):
     """Display the table given as parameter."""
-    titles = ["ID", "Title", "Price", "Date", "Customer ID"]
-    output_table = [[row[ID], row[TITLE], row[PRICE],
-                     '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY]))), row[CUSTOMER_ID]] for row in table]
+    titles = ["ID", "Title", "Price", "Date"]
+    if has_customer_id:
+        titles.append("Customer ID")
+        output_table = [[row[ID], row[TITLE], row[PRICE],
+                        '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY]))), row[CUSTOMER_ID]] for row in table]
+    else:
+        output_table = [[row[ID], row[TITLE], row[PRICE],
+                        '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY])))] for row in table]
+
     ui.clear_scr()
     ui.print_table(output_table, titles)
 
@@ -175,7 +181,7 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
     min_date = common.dtime(year_from, month_from, day_from)
     max_date = common.dtime(year_to, month_to, day_to)
 
-    return [[line[ID], line[TITLE], int(line[PRICE]), int(line[MONTH]), int(line[DAY]), int(line[YEAR]), line[CUSTOMER_ID]]
+    return [[line[ID], line[TITLE], int(line[PRICE]), int(line[MONTH]), int(line[DAY]), int(line[YEAR])]
             for line in table if min_date < common.dtime(line[YEAR], line[MONTH], line[DAY]) < max_date]
 
 
