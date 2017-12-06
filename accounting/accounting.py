@@ -26,6 +26,49 @@ INPUT_DESCRIPTIONS = [("Please enter the month: ", common.validate_month),
                       ]
 
 
+def menuaction_show(table):
+    ui.clear_scr()
+    show_table(table)
+
+
+def menuaction_add(table):
+    add(table)
+    ui.clear_scr()
+
+
+def menuaction_update(table):
+    id_to_update = ui.get_inputs(["Enter ID of item to update:"], "")[0]
+    if id_to_update:
+        update(table, id_to_update)
+    ui.clear_scr()
+
+
+def menuaction_remove(table):
+    id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
+    if id_to_remove:
+        remove(table, id_to_remove)
+    ui.clear_scr()
+
+
+def menuaction_highest_profit(table):
+    ui.print_result("The year with the highest profit is {0}".format(which_year_max(table)))
+
+
+def menuaction_profit_per_year(table):
+    while True:    # checks if the year exists in the table at all
+        ui.clear_scr()
+        years = {line[YEAR] for line in table}
+        input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
+                                   "Which year do you want to know about?")[0]
+        if not common.validate_byear(input_year):
+            continue
+        if common.index_of_value(table, YEAR, input_year) == -1:
+            continue
+        break
+    ui.print_result(avg_amount(table, input_year),
+                    "The average amount of USD profit per game in {0} is".format(input_year))
+
+
 def start_module(table_cont=None):
     """
     Starts this module and displays its menu.
@@ -36,7 +79,6 @@ def start_module(table_cont=None):
         table_cont: use the previously opened table,
             in case of keyboard interrupt
     """
-    ui.clear_scr()
     # data = (table_cont if table_cont else "accounting/items.csv")
     common.load_data("accounting", table_cont)
 
@@ -62,34 +104,17 @@ def start_module(table_cont=None):
             option = ui.get_inputs(["Please enter a number: "], "")[0]
 
             if option == "1":
-                show_table(table)
+                menuaction_show(table)
             elif option == "2":
-                ui.clear_scr()
-                add(table)
+                menuaction_add(table)
             elif option == "3":
-                input_id = ui.get_inputs(["Please enter the id of the one you want to change: "], "")[0]
-                update(table, input_id)
-                ui.clear_scr()
+                menuaction_update(table)
             elif option == "4":
-                input_id = ui.get_inputs(["Please enter the id of the one you want to remove: "], "")[0]
-                remove(table, input_id)
-                ui.clear_scr()
+                menuaction_remove(table)
             elif option == "5":
-                ui.print_result("The year with the highest profit is {0}".format(which_year_max(table)))
+                menuaction_highest_profit(table)
             elif option == "6":
-                while True:    # checks if the year exists in the table at all
-                    ui.clear_scr()
-                    years = {line[YEAR] for line in table}
-                    input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
-                                               "Which year do you want to know about?")[0]
-                    if not common.validate_byear(input_year):
-                        continue
-                    if common.index_of_value(table, YEAR, input_year) == -1:
-                        continue
-                    break
-                ui.print_result(avg_amount(table, input_year),
-                                "The average amount of USD profit per game in {0} is".format(input_year))
-
+                menuaction_profit_per_year(table)
             elif option == "0":
                 data_manager.write_table_to_file("accounting/items.csv", table)
                 ui.clear_scr()
