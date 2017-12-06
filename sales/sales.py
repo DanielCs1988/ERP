@@ -50,54 +50,27 @@ def start_module():
             if option == "1":
                 show_table(sales_data)
             elif option == "2":
-                sales_data = add(sales_data)
-                ui.clear_scr()
+                menuaction_add(sales_data)
             elif option == "3":
-                to_update = ui.valid_in(
-                    "What is the ID of the entry that you would like to update? ", common.validate_string)
-                sales_data = update(sales_data, to_update)
-                ui.clear_scr()
+                menuaction_update(sales_data)
             elif option == "4":
-                to_remove = ui.valid_in(
-                    "What is the ID of the entry that you would like to remove? ", common.validate_string)
-                sales_data = remove(sales_data, to_remove)
-                ui.clear_scr()
+                menuaction_remove(sales_data)
             elif option == "5":
-                ui.clear_scr()
-                ui.print_result(get_lowest_price_item_id(sales_data), "ID of the item with the lowest price: ")
+                menuaction_show_lowest_price_id(sales_data)
             elif option == "6":
                 menuaction_sales_between_dates(sales_data)
             elif option == "7":
-                ui.clear_scr()
-                ui.print_table(get_num_of_sales_per_customer_names_from_table(
-                    sales_data), ["Customer ID", "Total Number of Sales"])
+                menuaction_num_sales_per_customer(sales_data)
             elif option == "8":
-                show_table(sales_data)
-                ui.print_result("Please enter item IDs. Press Enter (with empty input) to finish.")
-                item_ids = []
-                while True:
-                    new_id = ui.valid_in("ID:", lambda inp: common.id_exists(sales_data, inp), True)
-                    if not new_id or new_id == "__exit__":
-                        break
-                    item_ids.append(new_id)
-
-                if len(item_ids) > 0:
-                    sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
-                    ui.print_result("Sum of prices: {}".format(sum_prices))
+                menuaction_sum_of_prices(sales_data)
             elif option == "9":
                 ui.print_result(get_item_id_sold_last_from_table(sales_data))
             elif option == "10":
                 ui.print_result(get_item_title_sold_last_from_table(sales_data))
             elif option == "11":
-                ui.clear_scr()
-                ui.print_result("List of customer IDs:")
-                ui.print_result(get_all_customer_ids_from_table(sales_data))
+                menuaction_all_customer_ids(sales_data)
             elif option == "12":
-                ui.clear_scr()
-                ui.print_result("Sales for customers")
-                sales_for_customers = get_all_sales_ids_for_customer_ids_form_table(sales_data).items()
-                sales_for_customers = list({row[0]: ", ".join(row[1]) for row in sales_for_customers}.items())
-                ui.print_table(sales_for_customers, ["Customer ID", "Sales IDs"])
+                menuaction_sales_for_all_customers(sales_data)
             elif option == "0":
                 data_manager.write_table_to_file(sales_file, sales_data)
                 ui.clear_scr()
@@ -106,6 +79,65 @@ def start_module():
                 ui.clear_scr()
         except (KeyboardInterrupt, EOFError):
                 common.handle_kb_interrupt(sales_file, sales_data)
+
+
+def menuaction_add(sales_data):
+    add(sales_data)
+    ui.clear_scr()
+
+
+def menuaction_update(sales_data):
+    to_update = ui.valid_in(
+        "What is the ID of the entry that you would like to update? ", common.validate_string)
+    update(sales_data, to_update)
+    ui.clear_scr()
+
+
+def menuaction_remove(sales_data):
+    to_remove = ui.valid_in(
+        "What is the ID of the entry that you would like to remove? ", common.validate_string)
+    remove(sales_data, to_remove)
+    ui.clear_scr()
+
+
+def menuaction_show_lowest_price_id(sales_data):
+    ui.clear_scr()
+    ui.print_result(get_lowest_price_item_id(sales_data), "ID of the item with the lowest price: ")
+
+
+def menuaction_num_sales_per_customer(sales_data):
+    ui.clear_scr()
+    ui.print_table(get_num_of_sales_per_customer_names_from_table(
+        sales_data), ["Customer ID", "Total Number of Sales"])
+
+
+def menuaction_all_customer_ids(sales_data):
+    ui.clear_scr()
+    ui.print_result("List of customer IDs:")
+    ui.print_result(get_all_customer_ids_from_table(sales_data))
+
+
+def menuaction_sum_of_prices(sales_data):
+    show_table(sales_data)
+    ui.print_result("Please enter item IDs. Press Enter (with empty input) to finish.")
+    item_ids = []
+    while True:
+        new_id = ui.valid_in("ID:", lambda inp: common.id_exists(sales_data, inp), True)
+        if not new_id or new_id == "__exit__":
+            break
+        item_ids.append(new_id)
+
+    if len(item_ids) > 0:
+        sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
+        ui.print_result("Sum of prices: {}".format(sum_prices))
+
+
+def menuaction_sales_for_all_customers(sales_data):
+    ui.clear_scr()
+    ui.print_result("Sales for customers")
+    sales_for_customers = get_all_sales_ids_for_customer_ids_form_table(sales_data).items()
+    sales_for_customers = list({row[0]: ", ".join(row[1]) for row in sales_for_customers}.items())
+    ui.print_table(sales_for_customers, ["Customer ID", "Sales IDs"])
 
 
 def menuaction_sales_between_dates(sales_data):
@@ -144,7 +176,7 @@ def add(table):
     return common.add_line(table, [("Title: ", common.validate_string),
                                    ("Price: ", common.validate_int),
                                    ("Month of sale: ", common.validate_month),
-                                   ("Day of sale: ", common.validate_date),
+                                   ("Day of sale: ", common.validate_day),
                                    ("Year of sale: ", common.validate_byear),
                                    ("Customer ID: ", common.validate_id_possible)])
 
