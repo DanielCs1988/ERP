@@ -54,7 +54,7 @@ def menuaction_highest_profit(table):
 
 
 def menuaction_profit_per_year(table):
-    while True:    # checks if the year exists in the table at all
+    while True:
         ui.clear_scr()
         years = {line[YEAR] for line in table}
         input_year = ui.get_inputs(["The options are {0}\n".format(", ".join(years))],
@@ -83,15 +83,7 @@ def start_module(table_cont=None):
         table_cont: use the previously opened table,
             in case of keyboard interrupt
     """
-    # data = (table_cont if table_cont else "accounting/items.csv")
-    common.load_data("accounting", table_cont)
-
-    if not table_cont:
-        table = data_manager.get_table_from_file("accounting/items.csv")
-    elif not table_cont:
-        table = table_file
-    else:
-        table = table_cont
+    table = data_manager.get_table_from_file("accounting/items.csv")
 
     options = ["Show table",
                "Add entry",
@@ -125,14 +117,7 @@ def start_module(table_cont=None):
             else:
                 ui.clear_scr()
     except (KeyboardInterrupt, EOFError):
-        ui.print_error_message('''\nKeyboard interrupt.\n\nYou will lose all changes.''')
-        while True:
-            decision = ui.get_inputs(["Are you sure you want to quit without saving?.(Y/N)"], "")[0]
-            if decision in ['Y', 'y']:
-                break
-            elif decision in ['N', 'n']:
-                start_module(table_cont=table)
-                break
+        common.handle_kb_interrupt("accounting/items.csv", table)
 
 
 def show_table(table):
