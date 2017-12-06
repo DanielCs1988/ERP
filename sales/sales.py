@@ -82,19 +82,7 @@ def start_module():
                 ui.clear_scr()
                 ui.print_result(get_lowest_price_item_id(sales_data), "ID of the item with the lowest price: ")
             elif option == "6":
-                ui.clear_scr()
-                params = ui.mass_valid_in([("Month from:", common.validate_month),
-                                        ("Day from: ", common.validate_day),
-                                        ("Year from: ", common.validate_byear),
-                                        ("Month to:", common.validate_month),
-                                        ("Day to: ", common.validate_day),
-                                        ("Year to: ", common.validate_byear)
-                                        ])
-                if params:
-                    show_table(get_items_sold_between(sales_data, *params))
-                    ui.print_result("Table: items sold between specified dates")
-                else:
-                    ui.print_result("No items found between specified dates.")
+                menuaction_sales_between_dates(sales_data)
             elif option == "7":
                 ui.clear_scr()
                 ui.print_table(get_num_of_sales_per_customer_names_from_table(
@@ -134,6 +122,22 @@ def start_module():
                 ui.clear_scr()
         except (KeyboardInterrupt, EOFError):
                 common.handle_kb_interrupt(sales_file, sales_data)
+
+
+def menuaction_sales_between_dates(sales_data):
+    ui.clear_scr()
+    params = ui.mass_valid_in([("Month from:", common.validate_month),
+                              ("Day from: ", common.validate_day),
+                              ("Year from: ", common.validate_byear),
+                              ("Month to:", common.validate_month),
+                              ("Day to: ", common.validate_day),
+                              ("Year to: ", common.validate_byear)
+                             ])
+    if params:
+        show_table(get_items_sold_between(sales_data, *params))
+        ui.print_result("Table: items sold between specified dates")
+    else:
+        ui.print_result("No items found between specified dates.")
 
 
 def show_table(table):
@@ -221,7 +225,7 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
     min_date = common.dtime(year_from, month_from, day_from)
     max_date = common.dtime(year_to, month_to, day_to)
 
-    return [[line[ID], line[TITLE], int(line[PRICE]), int(line[MONTH]), int(line[DAY]), int(line[YEAR])]
+    return [[line[ID], line[TITLE], int(line[PRICE]), int(line[MONTH]), int(line[DAY]), int(line[YEAR]), line[CUSTOMER_ID]]
             for line in table if min_date < common.dtime(line[YEAR], line[MONTH], line[DAY]) < max_date]
 
 
