@@ -28,48 +28,66 @@ def start_module():
                    "What is the ID of the longest name person?",
                    "Subscribed emails"]
 
-    crm_data = data_manager.get_table_from_file("crm/customers.csv")
+    crm_file = "crm/customers.csv"
+    crm_data = data_manager.get_table_from_file(crm_file)
 
     ui.clear_scr()
     while True:
-        ui.print_menu("Customer relationship management", crm_options, "Back to main menu")
-
         try:
+            ui.print_menu("Customer relationship management", crm_options, "Back to main menu")
             option = ui.valid_in("Please enter a number: ", common.validate_string)
-        except (KeyboardInterrupt, EOFError):
-            data_manager.write_table_to_file("crm/customers.csv", crm_data)
-            ui.clear_scr()
-            exit()
 
-        if option == "1":
-            show_table(crm_data)
-        elif option == "2":
-            crm_data = add(crm_data)
-            ui.clear_scr()
-        elif option == "3":
-            update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "], "")[0]
-            crm_data = update(crm_data, update_id)
-            ui.clear_scr()
-        elif option == "4":
-            remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
-            crm_data = remove(crm_data, remove_id)
-            ui.clear_scr()
-        elif option == "5":
-            ui.clear_scr()
-            ui.print_result("ID of longest name:")
-            ui.print_result(get_longest_name_id(crm_data))
-        elif option == "6":
-            ui.clear_scr()
-            temp_crm_data = get_subscribed_emails(crm_data)
-            temp_crm_data = [line.split(";") for line in temp_crm_data]
-            ui.print_result("Subscribed email")
-            ui.print_table(temp_crm_data, ["E-mail", "Name"])
-        elif option == "0":
-            data_manager.write_table_to_file("crm/customers.csv", crm_data)
-            ui.clear_scr()
-            break
-        else:
-            ui.clear_scr()
+            if option == "1":
+                show_table(crm_data)
+            elif option == "2":
+                menuaction_add(crm_data)
+            elif option == "3":
+                menuaction_update(crm_data)
+            elif option == "4":
+                menuaction_remove(crm_data)
+            elif option == "5":
+                menuaction_index_of_longest_name(crm_data)
+            elif option == "6":
+                menuaction_subscribed_emails(crm_data)
+            elif option == "0":
+                data_manager.write_table_to_file(crm_file, crm_data)
+                ui.clear_scr()
+                break
+            else:
+                ui.clear_scr()
+        except (KeyboardInterrupt, EOFError):
+            common.handle_kb_interrupt(crm_file, crm_data)
+
+
+def menuaction_subscribed_emails(crm_data):
+    ui.clear_scr()
+    temp_crm_data = get_subscribed_emails(crm_data)
+    temp_crm_data = [line.split(";") for line in temp_crm_data]
+    ui.print_result("Subscribed email")
+    ui.print_table(temp_crm_data, ["E-mail", "Name"])
+
+
+def menuaction_index_of_longest_name(crm_data):
+    ui.clear_scr()
+    ui.print_result("ID of longest name:")
+    ui.print_result(get_longest_name_id(crm_data))
+
+
+def menuaction_remove(crm_data):
+    remove_id = ui.get_inputs(["Please enter the ID of the person you want to delete: "], "")[0]
+    remove(crm_data, remove_id)
+    ui.clear_scr()
+
+
+def menuaction_update(crm_data):
+    update_id = ui.get_inputs(["Please enter the ID of the person you want to update: "], "")[0]
+    update(crm_data, update_id)
+    ui.clear_scr()
+
+
+def menuaction_add(crm_data):
+    add(crm_data)
+    ui.clear_scr()
 
 
 def show_table(table):
@@ -125,6 +143,16 @@ def get_name_by_id_from_table(table, id):
     for line in table:
         if line[ID] == id:
             return line[NAME]
+    return None
+
+
+def get_email_by_id(id):
+    """Returns the e-mail (str) of the customer with the given id (str), None in case of non-existing id."""
+
+    crm_data = data_manager.get_table_from_file("crm/customers.csv")
+    for line in crm_data:
+        if line[ID] == id:
+            return line[EMAIL]
     return None
 
 

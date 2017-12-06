@@ -25,45 +25,65 @@ def start_module():
                "Show Oldest Person",
                "Show Persons Closest to Average Age"]
 
-    hr_data = data_manager.get_table_from_file("hr/persons.csv")
+    hr_file = "hr/persons.csv"
+    hr_data = data_manager.get_table_from_file(hr_file)
     ui.clear_scr()
 
     while True:
-        ui.print_menu("HR Department: Main menu", options, "Back to main menu")
         try:
+            ui.print_menu("HR Department: Main menu", options, "Back to main menu")
             option = ui.valid_in("Please enter a number: ", common.validate_string)
-        except (KeyboardInterrupt, EOFError):
-            data_manager.write_table_to_file("hr/persons.csv", hr_data)
-            ui.clear_scr()
-            exit()
 
-        if option == "1":
-            show_table(hr_data)
-        elif option == "2":
-            hr_data = add(hr_data)
-            ui.clear_scr()
-        elif option == "3":
-            to_update = ui.valid_in(
-                "What is the ID of the item that you would like to update? ", common.validate_string)
-            hr_data = update(hr_data, to_update)
-            ui.clear_scr()
-        elif option == "4":
-            to_remove = ui.valid_in(
-                "What is the ID of the item that you would like to remove? ", common.validate_string)
-            hr_data = remove(hr_data, to_remove)
-            ui.clear_scr()
-        elif option == "5":
-            ui.clear_scr()
-            ui.print_result(get_oldest_person(hr_data), "Oldest people in the database: ")
-        elif option == "6":
-            ui.clear_scr()
-            ui.print_result(get_persons_closest_to_average(hr_data), "People closest to the average age: ")
-        elif option == "0":
-            data_manager.write_table_to_file("hr/persons.csv", hr_data)
-            ui.clear_scr()
-            break
-        else:
-            ui.clear_scr()
+            if option == "1":
+                show_table(hr_data)
+            elif option == "2":
+                menuaction_add(hr_data)
+            elif option == "3":
+                menuaction_update(hr_data)
+            elif option == "4":
+                menuaction_remove(hr_data)
+            elif option == "5":
+                menuaction_oldest_ppl(hr_data)
+            elif option == "6":
+                menuaction_ppl_closest_to_avg(hr_data)
+            elif option == "0":
+                data_manager.write_table_to_file(hr_file, hr_data)
+                ui.clear_scr()
+                break
+            else:
+                ui.clear_scr()
+
+        except (KeyboardInterrupt, EOFError):
+            common.handle_kb_interrupt(hr_file, hr_data)
+
+
+def menuaction_ppl_closest_to_avg(hr_data):
+    ui.clear_scr()
+    ui.print_result(get_persons_closest_to_average(hr_data), "People closest to the average age")
+
+
+def menuaction_oldest_ppl(hr_data):
+    ui.clear_scr()
+    ui.print_result(get_oldest_person(hr_data), "Oldest people in the database")
+
+
+def menuaction_remove(hr_data):
+    to_remove = ui.valid_in(
+        "What is the ID of the item that you would like to remove? ", common.validate_string)
+    remove(hr_data, to_remove)
+    ui.clear_scr()
+
+
+def menuaction_update(hr_data):
+    to_update = ui.valid_in(
+        "What is the ID of the item that you would like to update? ", common.validate_string)
+    update(hr_data, to_update)
+    ui.clear_scr()
+
+
+def menuaction_add(hr_data):
+    add(hr_data)
+    ui.clear_scr()
 
 
 def show_table(table):

@@ -413,7 +413,7 @@ def handle_interrupt_alt(filename, table_to_save):
 '''
 
 
-def handle_kb_interrupt(filename, table_to_save):
+def handle_kb_interrupt(filename=None, table_to_save=None):
     """
     Handles keyboard interrupt exceptions. Display a message to the user, save the current module's data \
         and exits the program.
@@ -426,7 +426,8 @@ def handle_kb_interrupt(filename, table_to_save):
         None
     """
     ui.clear_scr()
-    data_manager.write_table_to_file(filename, table_to_save)
+    if filename and table_to_save:
+        data_manager.write_table_to_file(filename, table_to_save)
     ui.print_error_message("Keyboard interrupt. If you want to got back to main menu, use the menu.")
     exit()
 
