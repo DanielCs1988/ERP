@@ -366,6 +366,40 @@ def validate_id_possible(userinput):
     return False
 
 
+# def handle_interrupt_alt():
+#    """
+#    Requires load_table as well.
+#    """
+#    ui.print_error_message('''\nKeyboard interrupt.\n\nYou will lose all changes.''')
+#    while True:
+#        decision = ui.get_inputs(["Are you sure you want to quit without saving?.(Y/N)"], "")[0]
+#        if decision in ['Y', 'y']:
+#            break
+#        elif decision in ['N', 'n']:
+#            start_module(table_cont=table)
+#            break
+
+
+def load_data(module_name, table_continue=None):
+    '''
+    Loads data from the module's file. Used with handle_interrupt_alt.
+    If table is given, uses that instead.
+    '''
+    ui.clear_scr()
+    data = (table_continue if table_continue else "{0}/items.csv".format(module_name.lower()))
+
+
+def trial_version(menu_options, characters):
+    '''
+    Displays a different set of menu options if the random chance succeds.
+    Chooses a random character from uppercase list,
+    the chance will depend on the characters argument. (string or list)
+    '''
+    if common.random_char("uppercase") in characters:
+        menu_options = menu_options[:4]
+        menu_options.append("Buy the full version of the software to unlock more options")
+
+
 def handle_kb_interrupt(filename, table_to_save):
     """
     Handles keyboard interrupt exceptions. Display a message to the user, save the current module's data \
