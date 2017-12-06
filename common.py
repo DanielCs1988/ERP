@@ -364,7 +364,8 @@ def validate_id_possible(userinput):
         return True
     return False
 
-#def handle_interrupt():
+
+# def handle_interrupt():
 #    """
 #    Requires load table as well.
 #    """
@@ -377,6 +378,14 @@ def validate_id_possible(userinput):
 #            start_module(table_cont=table)
 #            break
 
+
+def load_data(module_name, table_continue=None):
+    '''
+    Loads data from the module's file.
+    If table is given, uses that instead.
+    '''
+    ui.clear_scr()
+    data = (table_continue if table_continue else "{0}/items.csv".format(module_name.lower()))
 
 
 def trial_version(menu_options, characters):
