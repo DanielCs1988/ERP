@@ -26,25 +26,21 @@ INPUT_DESCRIPTIONS = [("Please enter the month: ", common.validate_month),
                       ]
 
 
-def start_module(table_file=None, table_cont=None):
+def start_module(table_cont=None):
     """
     Starts this module and displays its menu.
-    User can access default special features from here.
-    User can go back to main menu from here.
 
     If no argument given, uses items.csv
 
     Args:
-        table_file: use a 2d list instead, overwritten by table_cont
         table_cont: use the previously opened table,
-            in case of keyboead interrupt
-
-    Returns:
-        None
+            in case of keyboard interrupt
     """
     ui.clear_scr()
+    # data = (table_cont if table_cont else "accounting/items.csv")
+    common.load_data("accounting", table_cont)
 
-    if not table_file and not table_cont:
+    if not table_cont:
         table = data_manager.get_table_from_file("accounting/items.csv")
     elif not table_cont:
         table = table_file
