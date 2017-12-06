@@ -97,19 +97,9 @@ def add(table):
     Returns:
         Table with a new record
     """
-    new_person = [common.generate_random(table)]
-
-    input_list = ui.mass_valid_in([("Name: ", None),
+    return common.add_line(table, [("Name: ", None),
                                    ("Birth year: ", common.validate_byear)
                                    ])
-
-    if input_list is None:
-        return table
-
-    new_person.extend(input_list)
-    table.append(new_person)
-
-    return table
 
 
 def remove(table, id_):
@@ -137,17 +127,9 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-    index = common.index_of_id(table, id_)
-    if index == -1:
-        ui.print_error_message("Wrong ID!")
-        return table
-
-    input_list = ui.mass_valid_in([("Name: ", None),
-                                   ("Birth year: ", common.validate_byear)
-                                   ], update_mode=True)
-
-    table[index] = common.apply_update_to_line(table[index], input_list)
-    return table
+    return common.update_line(table, id_, [("Name: ", None),
+                                           ("Birth year: ", common.validate_byear)
+                                           ])
 
 
 def get_oldest_person(table):
