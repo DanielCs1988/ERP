@@ -24,6 +24,48 @@ INVENTORY_INPUT_SPECIFIERS = [("Name:", common.validate_string),
                               ("Durability: ", common.validate_int)]
 
 
+def menuaction_show_table(table):
+    ui.clear_scr()
+    show_table(table)
+
+
+def menuaction_add(table):
+    add(table)
+    ui.clear_scr()
+
+
+def menuaction_update(table):
+    id_to_update = ui.get_inputs(["Enter ID of item to update:"], "")[0]
+    if id_to_update:
+        update(table, id_to_update)
+    ui.clear_scr()
+
+
+def menuaction_remove(table):
+    id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
+    if id_to_remove:
+        remove(table, id_to_remove)
+    ui.clear_scr()
+
+
+def menuaction_avg_durability(table):
+    ui.clear_scr()
+    avg_durabilities = get_average_durability_by_manufacturers(table)
+    avg_durabilities = [(manufacturer, avg_dur) for manufacturer, avg_dur in avg_durabilities.items()]
+    ui.print_result("Average durability per manufacturer")
+    ui.print_table(avg_durabilities, ["Manufacturer", "Durability"])
+
+
+def menuaction_available_items(table):
+    ui.clear_scr()
+    availables = get_available_items(table)
+    if len(availables) == 0:
+        ui.print_result("No available items found.")
+    else:
+        ui.print_result("Available items")
+        show_table(availables)
+
+
 def start_module():
     """
     Starts this module and displays its menu.
@@ -45,37 +87,19 @@ def start_module():
                            "Durability/manufacturer"], "Back to main menu")
 
             menuitem = ui.get_inputs(["Please choose an option:"], "")[0]
-            
+    
             if(menuitem == "1"):
-                ui.clear_scr()
-                show_table(table)
+                menuaction_show_table(table)
             elif(menuitem == "2"):
-                add(table)
-                ui.clear_scr()
+                menuaction_add(table)
             elif(menuitem == "3"):
-                id_to_update = ui.get_inputs(["Enter ID of item to update:"], "")[0]
-                if id_to_update:
-                    update(table, id_to_update)
-                ui.clear_scr()
+                menuaction_update(table)
             elif(menuitem == "4"):
-                id_to_remove = ui.get_inputs(["Enter ID to remove:"], "")[0]
-                if id_to_remove:
-                    remove(table, id_to_remove)
-                ui.clear_scr()
+                menuaction_remove(table)
             elif menuitem == "5":
-                ui.clear_scr()
-                availables = get_available_items(table)
-                if len(availables) == 0:
-                    ui.print_result("No available items found.")
-                else:
-                    ui.print_result("Available items")
-                    show_table(availables)
+                menuaction_available_items(table)
             elif menuitem == "6":
-                ui.clear_scr()
-                avg_durabilities = get_average_durability_by_manufacturers(table)
-                avg_durabilities = [(manufacturer, avg_dur) for manufacturer, avg_dur in avg_durabilities.items()]
-                ui.print_result("Average durability per manufacturer")
-                ui.print_table(avg_durabilities, ["Manufacturer", "Durability"])
+                menuaction_avg_durability(table)
             else:
                 ui.clear_scr()
     except (KeyboardInterrupt, EOFError):  # Ctrl-C, Ctrl-D
