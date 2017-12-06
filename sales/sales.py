@@ -107,12 +107,14 @@ def start_module():
             ui.print_result("Please enter item IDs. Press Enter (with empty input) to finish.")
             item_ids = []
             while True:
-                new_id = ui.valid_in("ID:", lambda inp: inp.lower() == "end" or common.id_exists(sales_data, inp), True)
-                if not new_id:
+                new_id = ui.valid_in("ID:", lambda inp: common.id_exists(sales_data, inp), True)
+                if not new_id or new_id == "__exit__":
                     break
                 item_ids.append(new_id)
-            sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
-            ui.print_result("Sum of prices: {}".format(sum_prices))
+
+            if len(item_ids) > 0:
+                sum_prices = get_the_sum_of_prices_from_table(sales_data, item_ids)
+                ui.print_result("Sum of prices: {}".format(sum_prices))
         elif option == "9":
             ui.print_result(get_item_id_sold_last_from_table(sales_data))
         elif option == "10":
