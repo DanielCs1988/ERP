@@ -163,9 +163,9 @@ def add(table):
         Table with a new record
     """
     return common.add_line(table, [("Title: ", common.validate_string),
-                                   ("Price: ", common.validate_string),
-                                   ("Month of sale: ", common.validate_byear),
-                                   ("Day of sale: ", common.validate_int),
+                                   ("Price: ", common.validate_int),
+                                   ("Month of sale: ", common.validate_month),
+                                   ("Day of sale: ", common.validate_date),
                                    ("Year of sale: ", common.validate_byear),
                                    ("Customer ID: ", common.validate_id_possible)])
 
