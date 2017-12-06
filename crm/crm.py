@@ -102,17 +102,9 @@ def add(table):
     Returns:
     #    Table with a new record
     #"""
-    new_customer_data = [common.generate_random(table)]
-
-    new_customer_data.extend(ui.mass_valid_in([("Name: ", common.validate_string),
-                                               ("E-mail: ", common.validate_email),
-                                               ("Subscribed? (1 for yes, 0 for no): ", common.validate_boolean)]))
-    if new_customer_data is None:
-        return table
-
-    table.append(new_customer_data)
-
-    return table
+    return common.add_line(table, [("Name: ", common.validate_string),
+                                   ("E-mail: ", common.validate_email),
+                                   ("Subscribed? (1 for yes, 0 for no): ", common.validate_boolean)])
 
 
 def remove(table, id_):
@@ -142,19 +134,9 @@ def update(table, id_):
         table with updated record
     """
 
-    index = common.index_of_id(table, id_)
-    if index == -1:
-        ui.print_error_message("Wrong ID!")
-        return table
-
-    update_input = ui.mass_valid_in([("Name: ", common.validate_string),
-                                     ("E-mail: ", common.validate_email),
-                                     ("Subscribed? (1 for yes, 0 for no)", common.validate_boolean)],
-                                    True)
-
-    table[index] = common.apply_update_to_line(table[index], update_input)
-
-    return table
+    return common.update_line(table, id_, [("Name: ", common.validate_string),
+                                           ("E-mail: ", common.validate_email),
+                                           ("Subscribed? (1 for yes, 0 for no) ", common.validate_boolean)])
 
 
 def get_longest_name_id(table):

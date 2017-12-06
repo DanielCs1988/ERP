@@ -18,6 +18,11 @@ MANUFACTURER = 2
 PURCHASE_DATE = 3
 DURABILITY = 4
 
+INVENTORY_INPUT_SPECIFIERS = [("Name:", common.validate_string),
+                              ("Manufacturer:", common.validate_string),
+                              ("Purchase year: ", common.validate_byear),
+                              ("Durability: ", common.validate_int)]
+
 
 def start_module():
     """
@@ -107,10 +112,7 @@ def add(table):
         Table with a new record
     """
 
-    return common.add_line(table, [("Name:", common.validate_string),
-                           ("Manufacturer:", common.validate_string),
-                           ("Purchase year: ", common.validate_byear),
-                           ("Durability: ", common.validate_int)])
+    return common.add_line(table, INVENTORY_INPUT_SPECIFIERS)
 
 
 def remove(table, id_):
@@ -139,10 +141,7 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-    return common.update_line(table, id_, [("Name:", common.validate_string),
-                              ("Manufacturer:", common.validate_string),
-                              ("Purchase year: ", common.validate_byear),
-                              ("Durability: ", common.validate_int)])
+    return common.update_line(table, id_, INVENTORY_INPUT_SPECIFIERS)
 
 # special functions:
 # ------------------
