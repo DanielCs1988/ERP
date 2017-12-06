@@ -21,6 +21,11 @@ MANUFACTURER = 2
 PRICE = 3
 IN_STOCK = 4
 
+INPUT_DESCRIPTIONS = [("Title: ", common.validate_string),
+                      ("Manufacturer: ", common.validate_string),
+                      ("Price: ", common.validate_int),
+                      ("In Stock: ", common.validate_int)]
+
 
 def start_module():
     """
@@ -112,19 +117,7 @@ def add(table):
         Table with a new record
     """
 
-    new_item = [common.generate_random(table)]
-
-    user_input = ui.mass_valid_in([("Title: ", common.validate_string),
-                                   ("Manufacturer: ", common.validate_string),
-                                   ("Price: ", common.validate_int),
-                                   ("In Stock: ", common.validate_int)])
-    if user_input is None:
-        return table
-
-    new_item.extend(user_input)
-    table.append(new_item)
-
-    return table
+    return common.add_line(table, INPUT_DESCRIPTIONS)
 
 
 def remove(table, id_):
@@ -153,19 +146,8 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-    index = common.index_of_id(table, id_)
-    if index < 0:
-        ui.print_error_message("Invalid ID: {}.".format(id_))
-        return table
+    return common.update_line(table, id_, INPUT_DESCRIPTIONS)
 
-    update_input = ui.mass_valid_in([("Title: ", common.validate_string),
-                                     ("Manufacturer: ", common.validate_string),
-                                     ("Price: ", common.validate_int),
-                                     ("In Stock: ", common.validate_int)], True)
-
-    table[index] = common.apply_update_to_line(table[index], update_input)
-
-    return table
 
 
 # special functions:
