@@ -383,6 +383,8 @@ def add_line(table, input_specifiers):
 
     Args:
         table: table to add new record to
+        input_specifiers (list of tuples): A list of tuples containing request message-validator function pairs. \
+            Passed to ui.mass_valid_input.
 
     Returns:
         Table with a new record
@@ -409,6 +411,8 @@ def update_line(table, id_, input_specifiers):
     Args:
         table: list in which record should be updated
         id_ (str): id of a record to update
+        input_specifiers (list of tuples): A list of tuples containing request message-validator function pairs. \
+            Passed to ui.mass_valid_input.
 
     Returns:
         table with updated record
