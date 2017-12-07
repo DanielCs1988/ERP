@@ -9,6 +9,7 @@ from accounting import accounting
 from sales import sales
 from crm import crm
 from logistics import logistics
+from partners import partners
 from data_analyser import data_analyser
 
 
@@ -29,7 +30,9 @@ def choose():
         crm.start_module()
     elif option == "7":
         logistics.start_module()
-    elif option == "8":
+    elif option == '8':
+        partners.start_module()
+    elif option == "9":
         data_analyser.start_module()
     elif option == "0":
         sys.exit(0)
@@ -45,6 +48,7 @@ def handle_menu():
                "Sales manager",
                "Customer Relationship Management (CRM)",
                "Logistics manager",
+               "Partner registry",
                "Data analyzer"
                ]
 
