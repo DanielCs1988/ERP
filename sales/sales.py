@@ -257,7 +257,7 @@ def get_item_title_sold_last_from_table(table):
 
 
 def get_the_sum_of_prices(item_ids):
-    """Returns the sum of the prices of the items in the item_ids."""
+    """Returns the sum of the prices of the items in the item_ids"""
 
     table = data_manager.get_table_from_file("sales/sales.csv")
     return get_the_sum_of_prices_from_table(table, item_ids)
