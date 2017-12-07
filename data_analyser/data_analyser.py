@@ -26,6 +26,7 @@ def start_module():
         try:
             ui.print_menu("Data Analyser: Main menu", options, "Back to main menu")
             option = ui.valid_in("Please enter a number: ", common.validate_string)
+            ui.clear_scr()
 
             if option == "1":
                 ui.print_result(get_the_last_buyer_id())
