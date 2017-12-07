@@ -90,7 +90,7 @@ def show_table(table):
     """Display the table given as parameter."""
     titles = ["ID", "Name", "Birth Year"]
     ui.clear_scr()
-    ui.print_table(table, titles)
+    ui.print_table(table, titles, NAME)
 
 
 def add(table):

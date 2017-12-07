@@ -93,7 +93,7 @@ def menuaction_add(crm_data):
 def show_table(table):
     """Display the table given as parameter."""
     ui.clear_scr()
-    ui.print_table(table, ["ID", "Name", "E-mail", "Subscribed"])
+    ui.print_table(table, ["ID", "Name", "E-mail", "Subscribed"], NAME)
 
 
 def add(table):

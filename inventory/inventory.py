@@ -53,7 +53,7 @@ def menuaction_avg_durability(table):
     avg_durabilities = get_average_durability_by_manufacturers(table)
     avg_durabilities = [(manufacturer, avg_dur) for manufacturer, avg_dur in avg_durabilities.items()]
     ui.print_result("Average durability per manufacturer")
-    ui.print_table(avg_durabilities, ["Manufacturer", "Durability"])
+    ui.print_table(avg_durabilities, ["Manufacturer", "Durability"], 1)
 
 
 def menuaction_available_items(table):
@@ -104,7 +104,7 @@ def start_module():
 
 def show_table(table):
     """Display the table given as parameter."""
-    ui.print_table(table, ["ID", "Name", "Manufacturer", "Purchase date", "Durability"])
+    ui.print_table(table, ["ID", "Name", "Manufacturer", "Purchase date", "Durability"], NAME)
 
 
 def add(table):
