@@ -35,7 +35,8 @@ def start_module():
                "Remove Entry",
                "Show Payment Total Per Retailers",
                "Date Ordered List of Arrivals",
-               "Show Contact Person for Arrivals"]
+               "Show Contact Person for Arrivals",
+               "Show Contact Information per Payment"]
 
     logistics_file = "logistics/orders.csv"
     order_data = data_manager.get_table_from_file(logistics_file)
@@ -60,6 +61,9 @@ def start_module():
                 menuaction_date_ordered_list_of_arrivals(order_data)
             elif option == "7":
                 ui.print_table(get__arrivals_contact_info(), ["Arrival Date", "Contact Person", "Phone Number"], 0)
+            elif option == "8":
+                ui.print_table(get__payment_total_contacts(),
+                               ["Partner", "E-mail", "Address", "Payment Total"], 3, reversed=True)
             elif option == "0":
                 data_manager.write_table_to_file(logistics_file, order_data)
                 ui.clear_scr()
@@ -141,14 +145,15 @@ def update(table, id_):
                                            ])
 
 
-def get_price_total_per_retailer(table):
+def get_price_total_per_retailer(table, query=partners.NAME):
     """Returns a dictionary with retailers as keys and their due payments added up as values."""
 
     r_payments = {}
 
-    for retailer in {line[RETAILER] for line in table}:
-        sm = common.szum_list([int(line[PRICE]) * int(line[AMOUNT]) for line in table if line[RETAILER] == retailer])
-        r_payments[retailer] = sm
+    for partner_id in {line[PARTNER_ID] for line in table}:
+        sm = common.szum_list([int(line[PRICE]) * int(line[AMOUNT])
+                               for line in table if line[PARTNER_ID] == partner_id])
+        r_payments[partners.get_info_by_id(partner_id, query)] = sm
 
     return r_payments
 
@@ -167,3 +172,10 @@ def get__arrivals_contact_info():
     return [(common.dtime(row[YEAR], row[MONTH], row[DAY]),
              *partners.get_info_by_id(row[PARTNER_ID], [partners.CONTACT_PERSON, partners.PHONE]))
             for row in table]
+
+
+def get__payment_total_contacts():
+    """Returns a table with partner emails as keys and payment totals due as values."""
+    table = data_manager.get_table_from_file("logistics/orders.csv")
+    return [(*partners.get_info_by_id(key, [partners.NAME, partners.EMAIL, partners.ADDRESS]),
+             value) for key, value in get_price_total_per_retailer(table, partners.ID).items()]

@@ -21,7 +21,8 @@ def start_module():
                "Show Most Frequent Buyer's Name",
                "Show Idle Customers",
                "Show Buyer E-mails",
-               "Contacts for earliest arrivals"]
+               "Show Contacts for Earliest Arrivals",
+               "Show Contact Information per Payment"]
     ui.clear_scr()
 
     while True:
@@ -50,6 +51,8 @@ def start_module():
                 ui.print_table(get_buyer_emails(), ["Name", "E-mail"])
             elif option == '9':
                 menuaction_earlist_arrival_contacts()
+            elif option == '10':
+                menuaction_most_expensive_orders()
             elif option == "0":
                 break
             else:
@@ -60,9 +63,15 @@ def start_module():
 
 
 def menuaction_earlist_arrival_contacts():
-    num_eraliest = max(1, int(ui.valid_in("Enter the number of items to show:", ui.validate_int)))
-    arrival_data = get_earliers_arrivals_contact_info(num_eraliest)
+    num_earliest = max(1, int(ui.valid_in("Enter the number of entries to show:", ui.validate_int)))
+    arrival_data = get_earliers_arrivals_contact_info(num_earliest)
     ui.print_table(arrival_data, ["Date", "Contact person", "Phone"])
+
+
+def menuaction_most_expensive_orders():
+    number_of_entries = max(1, int(ui.valid_in("Enter the number of entries to show:", ui.validate_int)))
+    payments_data = get_most_expensive_orders_info(number_of_entries)
+    ui.print_table(payments_data, ["Partner", "E-mail", "Address", "Payment Total"])
 
 
 def get_the_last_buyer_name():
@@ -124,3 +133,10 @@ def get_earliers_arrivals_contact_info(num=1):
     arrival_data = common.qsort_table(arrival_data, 0)
 
     return arrival_data if len(arrival_data) < num else arrival_data[:num]
+
+
+def get_most_expensive_orders_info(num=1):
+    orders_data = logistics.get__payment_total_contacts()
+    orders_data = common.qsort_table(orders_data, 3, reversed=True)
+    
+    return orders_data if len(orders_data) < num else orders_data[:num]
