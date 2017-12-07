@@ -372,9 +372,10 @@ def trial_version(menu_options, characters):
     Chooses a random character from uppercase list,
     the chance will depend on the characters argument. (string or list)
     '''
-    if random_char("uppercase") in characters:
+    if characters in random_char("uppercase"):
         menu_options = menu_options[:4]
         menu_options.append("Buy the full version of the software to unlock more options")
+    return menu_options
 
 
 def handle_kb_interrupt(filename=None, table_to_save=None):

@@ -92,7 +92,8 @@ def start_module(table_cont=None):
                "Which year has the highest profit?",
                "What is the average (per item) profit in a given year?"]
 
-    # options = common.trial_version(options, "X")
+    # uncomment the next line if you don't want to bother with it
+    options = common.trial_version(options, "X")
 
     try:
         while True:
