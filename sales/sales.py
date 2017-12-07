@@ -108,7 +108,7 @@ def menuaction_show_lowest_price_id(sales_data):
 def menuaction_num_sales_per_customer(sales_data):
     ui.clear_scr()
     ui.print_table(get_num_of_sales_per_customer_names_from_table(
-        sales_data), ["Customer ID", "Total Number of Sales"])
+        sales_data), ["Customer ID", "Total Number of Sales"], 1)
 
 
 def menuaction_all_customer_ids(sales_data):
@@ -136,8 +136,8 @@ def menuaction_sales_for_all_customers(sales_data):
     ui.clear_scr()
     ui.print_result("Sales for customers")
     sales_for_customers = get_all_sales_ids_for_customer_ids_form_table(sales_data).items()
-    sales_for_customers = list({row[0]: ", ".join(row[1]) for row in sales_for_customers}.items())
-    ui.print_table(sales_for_customers, ["Customer ID", "Sales IDs"])
+    sales_for_customers = list({row[ID]: ", ".join(row[TITLE]) for row in sales_for_customers}.items())
+    ui.print_table(sales_for_customers, ["Customer ID", "Sales IDs"], ID)
 
 
 def menuaction_sales_between_dates(sales_data):
@@ -243,12 +243,12 @@ def get_title_by_id_from_table(table, id):
 
 def get_item_id_sold_last():
     """Returns the _id_ of the item that was sold most recently."""
-    return common.get_last_by_date(data_manager.get_table_from_file("sales/sales.csv"), YEAR, MONTH, DAY)[0]
+    return common.get_last_by_date(data_manager.get_table_from_file("sales/sales.csv"), YEAR, MONTH, DAY)[ID]
 
 
 def get_item_id_sold_last_from_table(table):
     """Returns the _id_ of the item that was sold most recently."""
-    return common.get_last_by_date(table, YEAR, MONTH, DAY)[0]
+    return common.get_last_by_date(table, YEAR, MONTH, DAY)[ID]
 
 
 def get_item_title_sold_last_from_table(table):
@@ -340,7 +340,7 @@ def get_num_of_sales_per_customer_names_from_table(table):
             sales_per_customers[customer_name] = 1
         else:
             sales_per_customers[customer_name] += 1
-    return sales_per_customers
+    return list(sales_per_customers.items())
 
 
 def get_sum_of_sales_per_customer():
