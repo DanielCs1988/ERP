@@ -29,19 +29,19 @@ def menuaction_show(table):
 
 
 def menuaction_add(table):
-    table = add(table)
+    add(table)
     ui.clear_scr()
 
 
 def menuaction_update(table):
     to_update = ui.get_inputs(["Please enter the ID of the game you want updated: "], "")
-    table = update(table, to_update[0])
+    update(table, to_update[0])
     ui.clear_scr()
 
 
 def menuaction_remove(table):
     to_remove = ui.get_inputs(["Please enter the ID of the game you want removed: "], "")
-    table = remove(table, to_remove[0])
+    remove(table, to_remove[0])
     ui.clear_scr()
 
 
