@@ -73,7 +73,7 @@ def menuaction_earlist_arrival_contacts():
 def menuaction_most_expensive_orders():
     number_of_entries = max(1, int(ui.valid_in("Enter the number of entries to show:", ui.validate_int)))
     payments_data = get_most_expensive_orders_info(number_of_entries)
-    ui.print_table(payments_data, ["Partner", "E-mail", "Address", "Payment Total"])
+    ui.print_table(payments_data, ["Partner", "E-mail", "Bank Account Number", "Payments Due"])
 
 
 def get_the_last_buyer_name():

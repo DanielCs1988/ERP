@@ -5,7 +5,7 @@ Partner registry module. Data structure:
 3. Name of partner's contact person
 4. Partner's e-mail
 5. Partner's phone number
-6. Address of partner's base of operations (that concerns our dealings).
+6. Partner's bank account number.
 """
 
 import os
@@ -18,7 +18,7 @@ NAME = 1
 CONTACT_PERSON = 2
 EMAIL = 3
 PHONE = 4
-ADDRESS = 5
+BANK_ACCOUNT = 5
 
 
 def start_module():
@@ -77,7 +77,7 @@ def menuaction_add(partner_data):
 def show_table(table):
     """Display the table given as parameter."""
     ui.clear_scr()
-    ui.print_table(table, ["ID", "Name", "Contact Person", "E-mail", "Phone number", "Address"], NAME)
+    ui.print_table(table, ["ID", "Name", "Contact Person", "E-mail", "Phone number", "Bank Account Number"], NAME)
 
 
 def add(table):
