@@ -51,7 +51,7 @@ def print_table(table, title_list, order_by=None):
         num += 1
     print("|")
 
-    for row in table if order_by is None else qsort_table(table, order_by, key=lambda x: int(x) if isinstance(x, int) or x.isnumeric() else str(x).lower()):
+    for row in table if order_by is None else qsort_table(table, order_by, key=lambda x: float(x) if isinstance(x, (int, float)) or x.isnumeric() else str(x).lower()):
         count = 0
         for item in row:    # this prints each divider row
             print("|{0}".format("-"*lenghts[count]), end="")
