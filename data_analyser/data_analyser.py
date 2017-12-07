@@ -111,7 +111,7 @@ def get_the_most_frequent_buyers_names(num=1):
 def get_the_most_frequent_buyers_ids(num=1):
     """Returns an ordered (descending) list of tuples of customer names and the number of their sales."""
     buy_frequencies = sales.get_num_of_sales_per_customer_ids()
-    buy_frequencies = common.srt(buy_frequencies.items(), key=common.get_item(1), reversed=True)
+    buy_frequencies = common.srt(buy_frequencies(), key=common.get_item(1), reversed=True)
     return buy_frequencies[:num]
 
 
