@@ -109,5 +109,7 @@ def get_info_by_id(id, req_info):
     partner_data = data_manager.get_table_from_file("partners/partners.csv")
     for line in partner_data:
         if line[ID] == id:
-            return line[req_info]
+            if isinstance(req_info, int):
+                return line[req_info]
+            return [param for index, param in enumerate(line) if index in req_info]
     return None
