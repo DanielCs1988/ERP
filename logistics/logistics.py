@@ -13,6 +13,8 @@ import ui
 import data_manager
 import common
 
+from partners import partners
+
 ID = 0
 TITLE = 1
 AMOUNT = 2
@@ -21,6 +23,7 @@ RETAILER = 4
 YEAR = 5
 MONTH = 6
 DAY = 7
+PARTNER_ID = 8
 
 
 def start_module():
@@ -31,7 +34,8 @@ def start_module():
                "Update Entry",
                "Remove Entry",
                "Show Payment Total Per Retailers",
-               "Date Ordered List of Arrivals"]
+               "Date Ordered List of Arrivals",
+               "Show Contact Person for Arrivals"]
 
     logistics_file = "logistics/orders.csv"
     order_data = data_manager.get_table_from_file(logistics_file)
@@ -54,6 +58,8 @@ def start_module():
                 menuaction_payment_total_per_retailers(order_data)
             elif option == "6":
                 menuaction_date_ordered_list_of_arrivals(order_data)
+            elif option == "7":
+                ui.print_table(get__arrivals_contact_info(), ["Arrival Date", "Contact Person", "Phone Number"], 0)
             elif option == "0":
                 data_manager.write_table_to_file(logistics_file, order_data)
                 ui.clear_scr()
@@ -153,3 +159,11 @@ def date_ordered_payments(table):
     temp_table = [[line[ID], line[TITLE], line[AMOUNT], line[PRICE], line[RETAILER],
                    common.dtime(line[YEAR], line[MONTH], line[DAY])] for line in table]
     return common.srt(temp_table, key=common.get_item(5))
+
+
+def get__arrivals_contact_info():
+    """Returns the contact person and phone number of partner whose order arrives earliest."""
+    table = data_manager.get_table_from_file("logistics/orders.csv")
+    return [(common.dtime(row[YEAR], row[MONTH], row[DAY]),
+             *partners.get_info_by_id(row[PARTNER_ID], [partners.CONTACT_PERSON, partners.PHONE]))
+            for row in table]
