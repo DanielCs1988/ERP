@@ -143,12 +143,12 @@ def menuaction_sales_for_all_customers(sales_data):
 def menuaction_sales_between_dates(sales_data):
     ui.clear_scr()
     params = ui.mass_valid_in([("Month from:", common.validate_month),
-                              ("Day from: ", common.validate_day),
-                              ("Year from: ", common.validate_byear),
-                              ("Month to:", common.validate_month),
-                              ("Day to: ", common.validate_day),
-                              ("Year to: ", common.validate_byear)
-                             ])
+                               ("Day from: ", common.validate_day),
+                               ("Year from: ", common.validate_byear),
+                               ("Month to:", common.validate_month),
+                               ("Day to: ", common.validate_day),
+                               ("Year to: ", common.validate_byear)
+                               ])
     if params:
         show_table(get_items_sold_between(sales_data, *params), False)
         ui.print_result("Table: items sold between specified dates")
@@ -168,7 +168,7 @@ def show_table(table, has_customer_id=True):
                         '/'.join((str(row[YEAR]), str(row[MONTH]), str(row[DAY])))] for row in table]
 
     ui.clear_scr()
-    ui.print_table(output_table, titles)
+    ui.print_table(output_table, titles, TITLE)
 
 
 def add(table):

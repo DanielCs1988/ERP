@@ -77,7 +77,7 @@ def menuaction_add(partner_data):
 def show_table(table):
     """Display the table given as parameter."""
     ui.clear_scr()
-    ui.print_table(table, ["ID", "Name", "Contact Person", "E-mail", "Phone number", "Address"])
+    ui.print_table(table, ["ID", "Name", "Contact Person", "E-mail", "Phone number", "Address"], NAME)
 
 
 def add(table):
