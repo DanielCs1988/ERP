@@ -68,8 +68,8 @@ def menuaction_profit_per_year(table):
                     "The average amount of USD profit per game in {0} is".format(input_year))
 
 
-def menuaction_exit(table):
-    data_manager.write_table_to_file("accounting/items.csv", table)
+def menuaction_exit(accounting_file, table):
+    data_manager.write_table_to_file(accounting_file, table)
     ui.clear_scr()
 
 
@@ -83,7 +83,8 @@ def start_module(table_cont=None):
         table_cont: use the previously opened table,
             in case of keyboard interrupt
     """
-    table = data_manager.get_table_from_file("accounting/items.csv")
+    accounting_file = "accounting/items.csv"
+    table = data_manager.get_table_from_file(accounting_file)
 
     options = ["Show table",
                "Add entry",
@@ -113,12 +114,12 @@ def start_module(table_cont=None):
             elif option == "6":
                 menuaction_profit_per_year(table)
             elif option == "0":
-                menuaction_exit(table)
+                menuaction_exit(accounting_file, table)
                 break
             else:
                 ui.clear_scr()
     except (KeyboardInterrupt, EOFError):
-        common.handle_kb_interrupt("accounting/items.csv", table)
+        common.handle_kb_interrupt(accounting_file, table)
 
 
 def show_table(table):

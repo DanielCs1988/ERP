@@ -1,19 +1,12 @@
-# Do not modify this file (if you want to modify anyway, contact a mentor before, who will explain why do not modify)
-
 import unittest
 import os
 import data_manager
-# Store module
+
 from store import store
-# Human Resources module
 from hr import hr
-# Tool manager module
 from inventory import inventory
-# Accounting module
 from accounting import accounting
-# Sales module
 from sales import sales
-# Customer Relationship Management (CRM) module
 from crm import crm
 from data_analyser import data_analyser
 
