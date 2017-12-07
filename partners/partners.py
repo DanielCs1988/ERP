@@ -28,9 +28,7 @@ def start_module():
     partner_options = ["Show table",
                        "Add entry",
                        "Update entry",
-                       "Remove entry",
-                       "FOO",
-                       "ANOTHER FOO"]
+                       "Remove entry"]
 
     partners_file = "partners/partners.csv"
     partner_data = data_manager.get_table_from_file(partners_file)
@@ -49,10 +47,6 @@ def start_module():
                 menuaction_update(partner_data)
             elif option == "4":
                 menuaction_remove(partner_data)
-            elif option == "5":
-                menuaction_FOO(partner_data)
-            elif option == "6":
-                menuaction_ANOTHER_FOO(partner_data)
             elif option == "0":
                 data_manager.write_table_to_file(partners_file, partner_data)
                 ui.clear_scr()
@@ -61,14 +55,6 @@ def start_module():
                 ui.clear_scr()
         except (KeyboardInterrupt, EOFError):
             common.handle_kb_interrupt(partners_file, partner_data)
-
-
-def menuaction_ANOTHER_FOO(partner_data):
-    raise NotImplementedError
-
-
-def menuaction_FOO(partner_data):
-    raise MemoryError
 
 
 def menuaction_remove(partner_data):
@@ -117,36 +103,11 @@ def update(table, id_):
                                            ("Address: ", common.validate_string)])
 
 
-def get_FOO(table):
-    """Witty descriptor."""
-    raise NotImplementedError
-
-
-def get_subscribed_emails(table):
-    """Another funny comment."""
-    raise NotImplementedError
-
-
-def get_name_by_id(id):
-    """Returns the name (str) of the partner with the given id (str), None in case of non-existing id."""
-    partner_data = data_manager.get_table_from_file("partners/partners.csv")
-    return get_name_by_id_from_table(partner_data, id)
-
-
-def get_name_by_id_from_table(table, id):
-    """Returns the name (str) of the partner with the given id (str), None in case of non-existing id."""
-
-    for line in table:
-        if line[ID] == id:
-            return line[NAME]
-    return None
-
-
-def get_email_by_id(id):
-    """Returns the e-mail (str) of the customer with the given id (str), None in case of non-existing id."""
+def get_info_by_id(id, req_info):
+    """Returns the queried information of the partner with the given id, None in case of non-existing id."""
 
     partner_data = data_manager.get_table_from_file("partners/partners.csv")
     for line in partner_data:
         if line[ID] == id:
-            return line[EMAIL]
+            return line[req_info]
     return None
