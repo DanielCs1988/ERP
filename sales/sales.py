@@ -150,8 +150,13 @@ def menuaction_sales_between_dates(sales_data):
                                ("Year to: ", common.validate_byear)
                                ])
     if params:
-        show_table(get_items_sold_between(sales_data, *params), False)
-        ui.print_result("Table: items sold between specified dates")
+        table_to_print = get_items_sold_between(sales_data, *params)
+        if table_to_print:
+            show_table(table_to_print, False)
+            ui.print_result("Table: items sold between specified dates")
+        else:
+            ui.clear_scr()
+            ui.print_error_message("No entries were found between the given dates.")
     else:
         ui.print_result("No items found between specified dates.")
 
