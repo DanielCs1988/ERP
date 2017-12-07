@@ -4,6 +4,7 @@ import common
 
 from sales import sales
 from crm import crm
+from logistics import logistics
 
 NAME = 0
 MONEY = 1
@@ -19,7 +20,8 @@ def start_module():
                "Show Most Frequent Buyer's ID",
                "Show Most Frequent Buyer's Name",
                "Show Idle Customers",
-               "Show Buyer E-mails"]
+               "Show Buyer E-mails",
+               "Contacts for earliest arrivals"]
     ui.clear_scr()
 
     while True:
@@ -46,6 +48,8 @@ def start_module():
                 ui.print_table(get_idle_customers(), ["Name", "ID"])
             elif option == '8':
                 ui.print_table(get_buyer_emails(), ["Name", "E-mail"])
+            elif option == '9':
+                menuaction_earlist_arrival_contacts()
             elif option == "0":
                 break
             else:
@@ -53,6 +57,12 @@ def start_module():
 
         except (KeyboardInterrupt, EOFError):
                 common.handle_kb_interrupt()
+
+
+def menuaction_earlist_arrival_contacts():
+    num_eraliest = max(1, int(ui.valid_in("Enter the number of items to show:", ui.validate_int)))
+    arrival_data = get_earliers_arrivals_contact_info(num_eraliest)
+    ui.print_table(arrival_data, ["Date", "Contact person", "Phone"])
 
 
 def get_the_last_buyer_name():
@@ -107,3 +117,10 @@ def get_idle_customers():
 def get_buyer_emails():
     """Returns an abc ordered list of tuples with buying customer names and their e-mails."""
     return common.srt(list(sales.get_buyer_emails()))
+
+
+def get_earliers_arrivals_contact_info(num=1):
+    arrival_data = logistics.get__arrivals_contact_info()
+    arrival_data = common.qsort_table(arrival_data, 0)
+
+    return arrival_data if len(arrival_data) < num else arrival_data[:num]
