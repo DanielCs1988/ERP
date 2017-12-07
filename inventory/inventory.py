@@ -104,7 +104,7 @@ def start_module():
 
 def show_table(table):
     """Display the table given as parameter."""
-    ui.print_table(table, ["ID", "Name", "Manufacturer", "Purchase date", "Durability"])
+    ui.print_table(table, ["ID", "Name", "Manufacturer", "Purchase date", "Durability"], NAME)
 
 
 def add(table):

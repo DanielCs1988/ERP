@@ -103,7 +103,7 @@ def show_table(table):
     output_table = [[row[ID], row[TITLE], row[AMOUNT], row[PRICE], row[RETAILER],
                      '/'.join((row[YEAR], row[MONTH], row[DAY]))] for row in table]
     ui.clear_scr()
-    ui.print_table(output_table, titles)
+    ui.print_table(output_table, titles, TITLE)
 
 
 def add(table):
