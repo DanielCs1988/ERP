@@ -47,7 +47,6 @@ def start_module():
             elif option == '8':
                 ui.print_table(get_buyer_emails(), ["Name", "E-mail"])
             elif option == "0":
-                ui.clear_scr()
                 break
             else:
                 ui.clear_scr()

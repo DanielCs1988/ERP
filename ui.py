@@ -11,7 +11,7 @@ def clear_scr():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def print_table(table, title_list):
+def print_table(table, title_list, order_by=None):
     """
     Prints table with data. Sample output:
         /-----------------------------------\
@@ -51,7 +51,7 @@ def print_table(table, title_list):
         num += 1
     print("|")
 
-    for row in table:
+    for row in table if order_by is None else qsort_table(table, order_by, key=lambda x: float(x) if isinstance(x, (int, float)) or x.isnumeric() else str(x).lower()):
         count = 0
         for item in row:    # this prints each divider row
             print("|{0}".format("-"*lenghts[count]), end="")
