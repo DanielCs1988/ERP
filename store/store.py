@@ -50,7 +50,7 @@ def menuaction_count_by_manufacturer(table):
     count_by_manufacturer_dict = get_counts_by_manufacturers(table)
     count_by_manufacturer_table = [(manufacturer, num)
                                    for manufacturer, num in count_by_manufacturer_dict.items()]
-    ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"])
+    ui.print_table(count_by_manufacturer_table, ["Manufacturer", "Count"], 0)
 
 
 def menuaction_average_by_manufacturer(table):
