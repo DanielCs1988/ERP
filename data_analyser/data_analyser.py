@@ -1,3 +1,5 @@
+"""This module provides comprehensive information to answer complex queries using multiple other modules."""
+
 import os
 import ui
 import common
@@ -59,7 +61,7 @@ def start_module():
                 ui.clear_scr()
 
         except (KeyboardInterrupt, EOFError):
-                common.handle_kb_interrupt()
+            common.handle_kb_interrupt()
 
 
 def menuaction_earlist_arrival_contacts():
@@ -129,6 +131,8 @@ def get_buyer_emails():
 
 
 def get_earliers_arrivals_contact_info(num=1):
+    """Returns a list of tuples containing order arrival dates (ordered based on this parameter), 
+       corresponding contact person names and phone numbers."""
     arrival_data = logistics.get__arrivals_contact_info()
     arrival_data = common.qsort_table(arrival_data, 0)
 
@@ -136,7 +140,9 @@ def get_earliers_arrivals_contact_info(num=1):
 
 
 def get_most_expensive_orders_info(num=1):
+    """Returns a list of tuples containing partner names, e-mails,
+       addresses and their relevant payment (due) information."""
     orders_data = logistics.get__payment_total_contacts()
     orders_data = common.qsort_table(orders_data, 3, reversed=True)
-    
+
     return orders_data if len(orders_data) < num else orders_data[:num]
